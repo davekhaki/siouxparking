@@ -8,6 +8,10 @@
   color: azure;
 }
 
+.navbar{
+  border-bottom : 1px solid #ff6a00;
+}
+
 .listRecords {
 }
 
@@ -21,7 +25,19 @@ body {
   bottom: 0;
   width: 100%;
   height: 50px;
-  background-color: black;
+  background-color: #ededed;
   text-align: center;
-  color: white;
+  color: #666;
+  border-top : 1px solid #ff6a00;
 }
+
+
+.header-image{
+  height: 40px;
+}
+
+.textbox:focus {
+  border-color: #ff6a00!important;
+  box-shadow: 0 0 5px #ff6a00!important;
+}
+

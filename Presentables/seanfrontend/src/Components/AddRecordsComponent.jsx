@@ -57,7 +57,7 @@ class AddRecordsComponent extends Component {
                   <label>Visitor:</label>
                   <input
                     name="visitor"
-                    className="form-control"
+                    className="form-control textbox"
                     value={this.state.visitor}
                     onChange={this.changeVisitorHandeler}
                   />
@@ -67,7 +67,7 @@ class AddRecordsComponent extends Component {
                   <label>License Plate:</label>
                   <input
                     name="License Plate"
-                    className="form-control"
+                    className="form-control textbox"
                     value={this.state.numberPlate}
                     onChange={this.changeNumberPlateHandeler}
                   />
@@ -77,7 +77,7 @@ class AddRecordsComponent extends Component {
                   <label>Phone Number:</label>
                   <input
                     name="phnNumber"
-                    className="form-control"
+                    className="form-control textbox"
                     value={this.state.phnNumber}
                     onChange={this.changePhnNumberHandeler}
                   />
