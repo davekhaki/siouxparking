@@ -9,7 +9,7 @@ class FooterComponent extends Component {
     return (
       <div>
         <footer className="footer">
-          <span className="text-muted">Created by Certiorem.</span>
+          <span className="footer-text">Created by Certiorem.</span>
         </footer>
       </div>
     );

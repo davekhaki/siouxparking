@@ -8,10 +8,10 @@ class HeaderComponent extends Component {
     return (
       <div>
         <header>
-          <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+          <nav className="navbar navbar-expand-md navbar-light bg-light">
             <div>
+              <img src="SiouxLogo.png" alt="" className="header-image"/>
               <a href="http://localhost:3000/" className="navbar-brand">
-                {" "}
                 Records
               </a>
             </div>
