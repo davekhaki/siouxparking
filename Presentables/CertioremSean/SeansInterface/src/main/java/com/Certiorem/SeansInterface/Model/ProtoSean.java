@@ -1,11 +1,13 @@
 package com.Certiorem.SeansInterface.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity (name = "ParkingInfo")
 @NoArgsConstructor
@@ -21,5 +23,9 @@ public class ProtoSean {
     private String visitor;
 
     private String phnNumber;
+
+    @Temporal(TemporalType.TIMESTAMP) //TIMESTAMP == date + time
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private Date expectedAt;
 
 }
