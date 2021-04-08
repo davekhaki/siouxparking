@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 
+import TextField from '@material-ui/core/TextField';
+
 class AddRecordsComponent extends Component {
   constructor(props) {
     super(props);
@@ -9,10 +11,12 @@ class AddRecordsComponent extends Component {
       visitor: "",
       numberPlate: "",
       phnNumber: "",
+      expectedAt: "",
     };
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
     this.changeNumberPlateHandeler = this.changeNumberPlateHandeler.bind(this);
     this.changePhnNumberHandeler = this.changePhnNumberHandeler.bind(this);
+    this.changeExpectedAtHandeler = this.changeExpectedAtHandeler.bind(this);
     this.saveRecords = this.saveRecords.bind(this);
   }
 
@@ -22,6 +26,7 @@ class AddRecordsComponent extends Component {
       visitor: this.state.visitor,
       numberPlate: this.state.numberPlate,
       phnNumber: this.state.phnNumber,
+      expectedAt: this.state.expectedAt.split('T')[0] + " " + this.state.expectedAt.split('T')[1],
     };
     console.log("protoSean =>" + JSON.stringify(protoSean));
 
@@ -30,6 +35,7 @@ class AddRecordsComponent extends Component {
       visitor: "",
       numberPlate: "",
       phnNumber: "",
+      expectedAt: "",
     });
     window.location.reload(false);
   };
@@ -45,6 +51,12 @@ class AddRecordsComponent extends Component {
   changePhnNumberHandeler = (event) => {
     this.setState({ phnNumber: event.target.value });
   };
+
+  changeExpectedAtHandeler = (event) => {
+    this.setState({ expectedAt: event.target.value });
+
+  }
+
   render() {
     return (
       <div className="container">
@@ -81,6 +93,26 @@ class AddRecordsComponent extends Component {
                     value={this.state.phnNumber}
                     onChange={this.changePhnNumberHandeler}
                   />
+                </div>
+
+                <div className="form-group">
+                  <label>Expected At:</label>
+                  <TextField
+                    id="expectedAtDateTime"
+                    type="datetime-local"
+                    value={this.state.expectedAt}
+                    onChange={this.changeExpectedAtHandeler}
+                    className={"form-control textbox"}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  {/* <input
+                    name="expectedAt"
+                    className="form-control textbox"
+                    value={this.state.expectedAt}
+                    onChange={this.changeExpectedAtHandeler}
+                  /> */}
                 </div>
 
                 <button className="btn btn-success" onClick={this.saveRecords}>
