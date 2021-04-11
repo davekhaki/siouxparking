@@ -1,8 +1,9 @@
 image: rvancea/maven-chrome-jdk8:latest
 
-build:
-    stage: build
-    script:
-        -  cd Presentables\CertioremSean\SeansInterface
-        - mvn compile
-
+maven-build:
+image: rvancea/maven-chrome-jdk8:latest
+  stage: build
+  script: "mvn package -B"
+  artifacts:
+    paths:
+      - target/*.jar
