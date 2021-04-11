@@ -1,0 +1,13 @@
+package com.Certiorem.SeansInterface;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SeansInterfaceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SeansInterfaceApplication.class, args);
+	}
+
+}
