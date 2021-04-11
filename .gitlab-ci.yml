@@ -3,6 +3,6 @@ image: rvancea/maven-chrome-jdk8:latest
 build:
     stage: build
     script:
-        -  cd Presentables
+        -  cd Presentables\CertioremSean\SeansInterface
         - mvn compile
 
