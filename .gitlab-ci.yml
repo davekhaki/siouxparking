@@ -1,4 +1,3 @@
-image: rvancea/maven-chrome-jdk8:latest
 
 maven-build:
 image: rvancea/maven-chrome-jdk8:latest
