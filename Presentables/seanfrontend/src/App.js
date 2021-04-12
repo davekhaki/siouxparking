@@ -10,10 +10,11 @@ import UpdateRecordsComponent from "./Components/UpdateRecordsCompnent";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import Grid from "@material-ui/core/Grid";
+import LoginButtonComponent from "./Components/LoginButtonComponent";
+import LogoutButtonComponent from "./Components/LoginButtonComponent";
 
 function App() {
   return (
-   
     <div>
       <Router>
         <HeaderComponent />
@@ -30,6 +31,8 @@ function App() {
             <Grid container>
               <Grid item xs={7}>
                 <div>
+                  <LoginButtonComponent />
+                  <LogoutButtonComponent />
                   <ListRecordsComponent />
                 </div>
               </Grid>
