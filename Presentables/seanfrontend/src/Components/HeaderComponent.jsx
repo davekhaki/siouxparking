@@ -15,6 +15,12 @@ class HeaderComponent extends Component {
                 Records
               </a>
             </div>
+
+            <div>
+              <a href="http://localhost:3000/visit-history" className="navbar-brand">
+                Visit History
+              </a>
+            </div>
           </nav>
         </header>
       </div>

@@ -28,7 +28,7 @@ class AddRecordsComponent extends Component {
       phnNumber: this.state.phnNumber,
       expectedAt: this.state.expectedAt.split('T')[0] + " " + this.state.expectedAt.split('T')[1],
     };
-    console.log("protoSean =>" + JSON.stringify(protoSean));
+    // console.log("protoSean =>" + JSON.stringify(protoSean));
 
     ProtoSeanService.addRecords(protoSean);
     this.setState({
@@ -60,7 +60,6 @@ class AddRecordsComponent extends Component {
   render() {
     return (
       <div className="container">
-        <h2 className="text-center">Add records</h2>
         <div className="row">
           <div className="col-md-11 offset-md-1 offset-md-1 ">
             <div className="card-body">

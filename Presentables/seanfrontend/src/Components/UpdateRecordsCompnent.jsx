@@ -9,12 +9,12 @@ class UpdateRecordsComponent extends Component {
       id: this.props.match.params.id,
       visitor: "",
       numberPlate: "",
-      phnNumber: "",
+      phnNumber: ""
     };
-    this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
+    this.changeVisitorHandler = this.changeVisitorHandler.bind(this);
     this.changeNumberPlateHandeler = this.changeNumberPlateHandeler.bind(this);
     this.changePhnNumberHandeler = this.changePhnNumberHandeler.bind(this);
-    this.updateRecords = this.updateRecords.bind(this);
+    this.updateRecord = this.updateRecord.bind(this);
   }
 
   componentDidMount() {
@@ -28,17 +28,21 @@ class UpdateRecordsComponent extends Component {
     });
   }
 
-  updateRecords = (e) => {
+  updateRecord = (e) => {
     e.preventDefault();
-    let protoSean = {
+    let record = {
       visitor: this.state.visitor,
       numberPlate: this.state.numberPlate,
       phnNumber: this.state.phnNumber,
     };
-    console.log("protoSean =>" + JSON.stringify(protoSean));
+    console.log("record =>" + JSON.stringify(record));
+
+    ProtoSeanService.updateRecord(record, this.state.id).then((res) =>{
+      this.props.history.push('/records')
+    })
   };
 
-  changeVisitorHandeler = (event) => {
+  changeVisitorHandler = (event) => {
     this.setState({ visitor: event.target.value });
   };
 
@@ -58,7 +62,7 @@ class UpdateRecordsComponent extends Component {
       <div className="container">
         <div className="row">
           <div className="card col-md-6 offset-md-3 offset-md-3 ">
-            <h2 className="text-center">Add records</h2>
+            <h2 className="text-center">Update record</h2>
             <div className="card-body">
               <form>
                 <div className="form-group">
@@ -67,7 +71,7 @@ class UpdateRecordsComponent extends Component {
                     name="visitor"
                     className="form-control"
                     value={this.state.visitor}
-                    onChange={this.changeVisitorHandeler}
+                    onChange={this.changeVisitorHandler}
                   />
                 </div>
 
@@ -93,15 +97,18 @@ class UpdateRecordsComponent extends Component {
 
                 <button
                   className="btn btn-success"
-                  onClick={this.updateRecords}
+                  onClick={this.updateRecord}
                 >
-                  <button
+                  Save
+                </button>
+
+                <button
                     className="btn btn-danger"
                     onClick={this.cancel.bind(this)}
                     style={{ marginLeft: "10px" }}
-                  ></button>
-                  Add Record
-                </button>
+                  >
+                    Cancel
+                  </button>
               </form>
             </div>
           </div>
