@@ -7,6 +7,7 @@ const LogoutButtonComponent = () => {
   return (
     isAuthenticated && (
       <button
+        style={{ float: "right" }}
         className="btn btn-danger"
         onClick={() => logout({ returnTo: window.location.origin })}
       >
