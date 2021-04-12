@@ -23,7 +23,7 @@ class AddRecordsComponent extends Component {
       numberPlate: this.state.numberPlate,
       phnNumber: this.state.phnNumber,
     };
-    console.log("protoSean =>" + JSON.stringify(protoSean));
+    // console.log("protoSean =>" + JSON.stringify(protoSean));
 
     ProtoSeanService.addRecords(protoSean);
     this.setState({
@@ -48,45 +48,47 @@ class AddRecordsComponent extends Component {
   render() {
     return (
       <div className="container">
-        <h2 className="text-center">Add records</h2>
         <div className="row">
-          <div className="col-md-11 offset-md-1 offset-md-1 ">
-            <div className="card-body">
-              <form>
-                <div className="form-group">
-                  <label>Visitor:</label>
-                  <input
-                    name="visitor"
-                    className="form-control"
-                    value={this.state.visitor}
-                    onChange={this.changeVisitorHandeler}
-                  />
-                </div>
+          <div className="card col-md-6 offset-md-3 offeset-md-3">
+            <h3 className="text-center">Add record</h3>
+            <div className="row">
+              <div className="card-body">
+                <form>
+                  <div className="form-group">
+                    <label>Visitor:</label>
+                    <input
+                      name="visitor"
+                      className="form-control"
+                      value={this.state.visitor}
+                      onChange={this.changeVisitorHandeler}
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <label>License Plate:</label>
-                  <input
-                    name="License Plate"
-                    className="form-control"
-                    value={this.state.numberPlate}
-                    onChange={this.changeNumberPlateHandeler}
-                  />
-                </div>
+                  <div className="form-group">
+                    <label>License Plate:</label>
+                    <input
+                      name="License Plate"
+                      className="form-control"
+                      value={this.state.numberPlate}
+                      onChange={this.changeNumberPlateHandeler}
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <label>Phone Number:</label>
-                  <input
-                    name="phnNumber"
-                    className="form-control"
-                    value={this.state.phnNumber}
-                    onChange={this.changePhnNumberHandeler}
-                  />
-                </div>
+                  <div className="form-group">
+                    <label>Phone Number:</label>
+                    <input
+                      name="phnNumber"
+                      className="form-control"
+                      value={this.state.phnNumber}
+                      onChange={this.changePhnNumberHandeler}
+                    />
+                  </div>
 
-                <button className="btn btn-success" onClick={this.saveRecords}>
-                  Add Record
-                </button>
-              </form>
+                  <button className="btn btn-success" onClick={this.saveRecords}>
+                    Add Record
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>

@@ -11,8 +11,13 @@ class HeaderComponent extends Component {
           <nav className="navbar navbar-expand-md navbar-dark bg-dark">
             <div>
               <a href="http://localhost:3000/" className="navbar-brand">
-                {" "}
                 Records
+              </a>
+            </div>
+
+            <div>
+              <a href="http://localhost:3000/visit-history" className="navbar-brand">
+                Visit History
               </a>
             </div>
           </nav>
