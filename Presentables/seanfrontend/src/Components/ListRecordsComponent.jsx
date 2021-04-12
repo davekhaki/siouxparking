@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
 
-
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ErrorIcon from "@material-ui/icons/Error";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import orange from "@material-ui/core/colors/orange";
 
 class ListRecordsComponent extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       records: [],
@@ -18,7 +17,7 @@ class ListRecordsComponent extends Component {
       numberPlate: "",
       phnNumber: "",
       expectedAt: "",
-      currentDateTime: new Date()
+      currentDateTime: new Date(),
     };
 
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
@@ -37,7 +36,10 @@ class ListRecordsComponent extends Component {
       visitor: this.state.visitor,
       numberPlate: this.state.numberPlate,
       phnNumber: this.state.phnNumber,
-      expectedAt: this.state.expectedAt.split('T')[0] + " " + this.state.expectedAt.split('T')[1],
+      expectedAt:
+        this.state.expectedAt.split("T")[0] +
+        " " +
+        this.state.expectedAt.split("T")[1],
     };
 
     ProtoSeanService.addRecords(protoSean);
@@ -64,15 +66,12 @@ class ListRecordsComponent extends Component {
 
   changeExpectedAtHandeler = (event) => {
     this.setState({ expectedAt: event.target.value });
-
-  }
+  };
 
   deleteRecord(id) {
     ProtoSeanService.deleteRecord(id).then((res) => {
       this.setState({
-        records: this.state.records.filter(
-          (protoSean) => protoSean.id !== id
-        ),
+        records: this.state.records.filter((protoSean) => protoSean.id !== id),
       });
     });
   }
@@ -80,26 +79,24 @@ class ListRecordsComponent extends Component {
   componentDidMount() {
     ProtoSeanService.getRecords().then((res) => {
       this.setState({ records: res.data });
-      
     });
   }
 
-  renderStatus(expectedAtValue){
+  renderStatus(expectedAtValue) {
     var expectedAtDateTime = new Date(expectedAtValue);
-    if(expectedAtDateTime < this.state.currentDateTime){
-      return <ErrorIcon color="error" />
-    }    
-    return <FiberManualRecordIcon style={{ color: "orange" }}/>
+    if (expectedAtDateTime < this.state.currentDateTime) {
+      return <ErrorIcon color="error" />;
+    }
+    return <FiberManualRecordIcon style={{ color: "orange" }} />;
     /* <CheckCircleIcon style={{ color: "green" }} /> */
   }
 
-  editRecord(id){
+  editRecord(id) {
     this.props.history.push(`/update-record/${id}`);
-
   }
 
-  addRecord(){
-    this.props.history.push('/add-record')
+  addRecord() {
+    this.props.history.push("/add-record");
   }
 
   render() {
@@ -122,9 +119,7 @@ class ListRecordsComponent extends Component {
             <tbody>
               {this.state.records.map((protoSean) => (
                 <tr key={protoSean.id}>
-                  <td>
-                    { this.renderStatus(protoSean.expectedAt) }
-                  </td>
+                  <td>{this.renderStatus(protoSean.expectedAt)}</td>
                   <td>{protoSean.visitor}</td>
                   <td>{protoSean.numberPlate}</td>
                   <td>{protoSean.phnNumber}</td>
@@ -136,9 +131,9 @@ class ListRecordsComponent extends Component {
                     >
                       Edit
                     </button>
-                    
+
                     <button
-                      style={{marginLeft: "10px"}}
+                      style={{ marginLeft: "10px" }}
                       onClick={() => this.deleteRecord(protoSean.id)}
                       className="btn btn-danger"
                     >
@@ -185,18 +180,18 @@ class ListRecordsComponent extends Component {
                   </div>
 
                   <div className="form-group">
-                  <label>Expected At:</label>
-                  <TextField
-                    id="expectedAtDateTime"
-                    type="datetime-local"
-                    value={this.state.expectedAt}
-                    onChange={this.changeExpectedAtHandeler}
-                    className={"form-control textbox"}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                  {/* <input
+                    <label>Expected At:</label>
+                    <TextField
+                      id="expectedAtDateTime"
+                      type="datetime-local"
+                      value={this.state.expectedAt}
+                      onChange={this.changeExpectedAtHandeler}
+                      className={"form-control textbox"}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                    {/* <input
                     name="expectedAt"
                     className="form-control textbox"
                     value={this.state.expectedAt}
@@ -204,7 +199,10 @@ class ListRecordsComponent extends Component {
                   /> */}
                   </div>
 
-                  <button className="btn btn-success" onClick={this.saveRecords}>
+                  <button
+                    className="btn btn-success"
+                    onClick={this.saveRecords}
+                  >
                     Add Record
                   </button>
                 </form>
