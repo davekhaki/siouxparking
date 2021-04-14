@@ -6,19 +6,8 @@ const LoginButtonComponent = () => {
 
   return (
     !isAuthenticated && (
-      <button
-        style={{
-          margin: "0",
-          position: "absolute",
-          top: "25%",
-          left: "35%",
-          height: "500px",
-          width: "500px",
-          fontSize: "150px",
-        }}
-        className="btn btn-success"
-        onClick={() => loginWithRedirect()}
-      >
+      <button className="btn btn-success" 
+      onClick={() => loginWithRedirect()}> 
         Log In
       </button>
     )

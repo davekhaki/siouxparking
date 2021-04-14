@@ -1,4 +1,12 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import LogoutButtonComponent from "../Components/LogoutButtonComponent";
+import LoginButtonComponent from "../Components/LoginButtonComponent";
+import AddRecordsComponent from "../Components/AddRecordsComponent";
+
+
+
+
 class HeaderComponent extends Component {
   constructor(props) {
     super(props);
@@ -8,19 +16,47 @@ class HeaderComponent extends Component {
     return (
       <div>
         <header>
-          <nav className="navbar navbar-expand-md navbar-light bg-light">
+          <nav className="navbar">
             <div>
-              <img src="SiouxLogo.png" alt="" className="header-image"/>
-              <a href="http://localhost:3000/" className="navbar-brand">
-                Records
-              </a>
+              <Link to='/records'>
+                <img src="SiouxLogo.png" alt="" className="header-image"/>
+              </Link>
             </div>
+            <ul className="links-list">
+                
+                <li>
+                  <Link to='/'>
+                    Home
+                  </Link>
+                </li>
 
-            <div>
-              <a href="http://localhost:3000/visit-history" className="navbar-brand">
-                Visit History
-              </a>
-            </div>
+                <li>
+                  <Link to='/records'>
+                    Records
+                  </Link>
+                </li>
+
+                {/* <li>
+                  <Link to='/add-record'>
+                    AddRecord
+                  </Link>
+                </li> */}
+
+                <li>
+                  <Link to='/visit-history'>
+                    VisitHistory
+                  </Link>
+                </li>
+
+                <li>
+                  <LoginButtonComponent/>
+                </li>
+
+                <li>
+                  <LogoutButtonComponent/>
+                </li>
+
+              </ul>
           </nav>
         </header>
       </div>

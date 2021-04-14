@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 import TextField from "@material-ui/core/TextField";
 
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import ErrorIcon from "@material-ui/icons/Error";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import orange from "@material-ui/core/colors/orange";
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -49,7 +47,7 @@ class ListRecordsComponent extends Component {
       phnNumber: "",
       expectedAt: "",
     });
-    window.location.reload(false);
+    window.location.reload(true);
   };
 
   changeVisitorHandeler = (event) => {
@@ -102,8 +100,8 @@ class ListRecordsComponent extends Component {
   render() {
     return (
       <div>
-        <h2 className="text-center">Records</h2>
         <div className="row list-row">
+          <h3>Records</h3>
           <table className="table table-striped table-borderless list-item-1">
             <thead>
               <tr>
@@ -124,8 +122,8 @@ class ListRecordsComponent extends Component {
                   <td>{protoSean.numberPlate}</td>
                   <td>{protoSean.phnNumber}</td>
                   <td>{protoSean.expectedAt}</td>
-                  <td>
-                    <button
+                  <td className="action-column">
+                    <button style={{width:"50px" }}
                       onClick={() => this.editRecord(protoSean.id)}
                       className="btn btn-info"
                     >
@@ -133,7 +131,8 @@ class ListRecordsComponent extends Component {
                     </button>
 
                     <button
-                      style={{ marginLeft: "10px" }}
+                      style={{ marginLeft: "10px",
+                      width:"80px" }}
                       onClick={() => this.deleteRecord(protoSean.id)}
                       className="btn btn-danger"
                     >

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const PROTOSHAUN_API_BASE_URL = "http://localhost:8080/parking/records";
+const PROTOSHAUN_API_BASE_URL = "http://localhost:8081/parking/records";
 
 class ProtoSeanService {
   getRecords() {
