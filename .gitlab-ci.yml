@@ -12,7 +12,7 @@ cache:
 
 
 .verify: &verify
-  stage: test
+  stage: build
   script:
     - cd Presentables
     - cd CertioremSean
