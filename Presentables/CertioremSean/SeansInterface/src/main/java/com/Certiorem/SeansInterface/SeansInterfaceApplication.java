@@ -1,8 +1,8 @@
 package com.Certiorem.SeansInterface;
 
 import com.Certiorem.SeansInterface.Model.ProtoSean;
-//import net.sf.javaanpr.imageanalysis.CarSnapshot;
-//import net.sf.javaanpr.intelligence.Intelligence;
+import net.sf.javaanpr.imageanalysis.CarSnapshot;
+import net.sf.javaanpr.intelligence.Intelligence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,22 +27,22 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 
 		SpringApplication.run(SeansInterfaceApplication.class, args);
 
-//		System.err.println("something");
-//
-//		Intelligence intelligence = null;
-//		try {
-//			intelligence = new Intelligence();
-//			String path="src/test/resources/snapshots/test_001.jpg";
-//			CarSnapshot carSnapshot=new CarSnapshot(path);
-//			String smth=intelligence.recognize(carSnapshot);
-//			System.err.println(smth);
-//		} catch (ParserConfigurationException e) {
-//			e.printStackTrace();
-//		} catch (SAXException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		System.err.println("something");
+
+		Intelligence intelligence = null;
+		try {
+			intelligence = new Intelligence();
+			String path="src/test/resources/snapshots/test_001.jpg";
+			CarSnapshot carSnapshot=new CarSnapshot(path);
+			String smth=intelligence.recognize(carSnapshot);
+			System.err.println(smth);
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
