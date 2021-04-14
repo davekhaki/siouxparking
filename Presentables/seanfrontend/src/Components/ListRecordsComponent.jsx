@@ -16,6 +16,7 @@ class ListRecordsComponent extends Component {
       phnNumber: "",
       expectedAt: "",
       currentDateTime: new Date(),
+      isAscending: false,
     };
 
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
@@ -26,6 +27,8 @@ class ListRecordsComponent extends Component {
     this.addRecord = this.addRecord.bind(this);
     this.editRecord = this.editRecord.bind(this);
     this.deleteRecord = this.deleteRecord.bind(this);
+
+    this.sortBy = this.sortBy.bind(this);
   }
 
   saveRecords = (e) => {
@@ -97,6 +100,30 @@ class ListRecordsComponent extends Component {
     this.props.history.push("/add-record");
   }
 
+  sortBy(key) {
+
+    var variable = this.state.records.sort();
+    console.log(variable);
+
+    if(this.state.isAscending){
+      this.setState({
+        records: this.state.records.sort((a,b) => a[key] < b[key] ? 1 : -1)
+      })
+      this.setState({
+        isAscending: false
+      })
+    }
+    else{
+      this.setState({
+        records: this.state.records.sort((a,b) => a[key] > b[key] ? 1 : -1) 
+      })
+      this.setState({
+        isAscending: true
+      })
+    }
+
+  }
+
   render() {
     return (
       <div>
@@ -106,11 +133,11 @@ class ListRecordsComponent extends Component {
             <thead>
               <tr>
                 <th> Status </th>
-                <th> Visitor </th>
-                <th> License Plate </th>
-                <th> Phone Number </th>
-                <th> Expected At </th>
-                <th> Actions </th>
+                <th onClick={() => {this.sortBy('visitor')}}> Visitor </th>
+                <th onClick={() => {this.sortBy('numberPlate')}}> License Plate </th>
+                <th onClick={() => {this.sortBy('phnNumber')}}> Phone Number </th>
+                <th onClick={() => {this.sortBy('expectedAt')}}> Expected At </th>
+                <th > Actions </th>
               </tr>
             </thead>
 
