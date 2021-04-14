@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import BinderComponent from "../Components/BinderComponent";
 
 class HomeComponent extends Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class HomeComponent extends Component {
   render() {
     return (
       <div>
-       <h1>Bruh.. this the Homepage</h1> 
+       <BinderComponent/>
       </div>
     );
   }

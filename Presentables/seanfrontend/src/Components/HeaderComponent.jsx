@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import LogoutButtonComponent from "../Components/LogoutButtonComponent";
 import LoginButtonComponent from "../Components/LoginButtonComponent";
-import AddRecordsComponent from "../Components/AddRecordsComponent";
 
 
 

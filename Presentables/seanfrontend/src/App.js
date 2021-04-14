@@ -33,7 +33,6 @@ function App() {
               path="/visit-history"
               component={VisitHistoryComponent}
             ></Route>
-            
           </Switch>
         </div>
         <FooterComponent />
