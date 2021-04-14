@@ -1,29 +1,10 @@
 image: rvancea/maven-chrome-jdk8:latest
 
-variables:
-
-  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
-
-  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
-
-cache:
-  paths:
-    - .m2/repository
-
-
-.verify: &verify
-  stage: build
+build:
   script:
-    - cd Presentables
-    - cd CertioremSean
-    - cd SeansInterface
-    - 'mvn $MAVEN_CLI_OPTS verify'
-  except:
-    - master
-
-
-verify:jdk8:
-  <<: *verify
+    - 'cp ci_settings.xml /root/.m2/settings.xml'
+    - 'mvn compile'
+  
 
 
 
