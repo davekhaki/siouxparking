@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 
+import TextField from '@material-ui/core/TextField';
+
 class AddRecordsComponent extends Component {
   constructor(props) {
     super(props);
@@ -9,10 +11,12 @@ class AddRecordsComponent extends Component {
       visitor: "",
       numberPlate: "",
       phnNumber: "",
+      expectedAt: "",
     };
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
     this.changeNumberPlateHandeler = this.changeNumberPlateHandeler.bind(this);
     this.changePhnNumberHandeler = this.changePhnNumberHandeler.bind(this);
+    this.changeExpectedAtHandeler = this.changeExpectedAtHandeler.bind(this);
     this.saveRecords = this.saveRecords.bind(this);
   }
 
@@ -22,14 +26,16 @@ class AddRecordsComponent extends Component {
       visitor: this.state.visitor,
       numberPlate: this.state.numberPlate,
       phnNumber: this.state.phnNumber,
+      expectedAt: this.state.expectedAt.split('T')[0] + " " + this.state.expectedAt.split('T')[1],
     };
-    console.log("protoSean =>" + JSON.stringify(protoSean));
+    // console.log("protoSean =>" + JSON.stringify(protoSean));
 
     ProtoSeanService.addRecords(protoSean);
     this.setState({
       visitor: "",
       numberPlate: "",
       phnNumber: "",
+      expectedAt: "",
     });
     window.location.reload(false);
   };
@@ -45,10 +51,15 @@ class AddRecordsComponent extends Component {
   changePhnNumberHandeler = (event) => {
     this.setState({ phnNumber: event.target.value });
   };
+
+  changeExpectedAtHandeler = (event) => {
+    this.setState({ expectedAt: event.target.value });
+
+  }
+
   render() {
     return (
       <div className="container">
-        <h2 className="text-center">Add records</h2>
         <div className="row">
           <div className="col-md-11 offset-md-1 offset-md-1 ">
             <div className="card-body">
@@ -57,7 +68,7 @@ class AddRecordsComponent extends Component {
                   <label>Visitor:</label>
                   <input
                     name="visitor"
-                    className="form-control"
+                    className="form-control textbox"
                     value={this.state.visitor}
                     onChange={this.changeVisitorHandeler}
                   />
@@ -67,7 +78,7 @@ class AddRecordsComponent extends Component {
                   <label>License Plate:</label>
                   <input
                     name="License Plate"
-                    className="form-control"
+                    className="form-control textbox"
                     value={this.state.numberPlate}
                     onChange={this.changeNumberPlateHandeler}
                   />
@@ -77,10 +88,30 @@ class AddRecordsComponent extends Component {
                   <label>Phone Number:</label>
                   <input
                     name="phnNumber"
-                    className="form-control"
+                    className="form-control textbox"
                     value={this.state.phnNumber}
                     onChange={this.changePhnNumberHandeler}
                   />
+                </div>
+
+                <div className="form-group">
+                  <label>Expected At:</label>
+                  <TextField
+                    id="expectedAtDateTime"
+                    type="datetime-local"
+                    value={this.state.expectedAt}
+                    onChange={this.changeExpectedAtHandeler}
+                    className={"form-control textbox"}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  {/* <input
+                    name="expectedAt"
+                    className="form-control textbox"
+                    value={this.state.expectedAt}
+                    onChange={this.changeExpectedAtHandeler}
+                  /> */}
                 </div>
 
                 <button className="btn btn-success" onClick={this.saveRecords}>
