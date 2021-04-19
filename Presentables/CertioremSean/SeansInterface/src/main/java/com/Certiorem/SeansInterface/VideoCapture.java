@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class VideoCapture {
 
-    public static void convertMovieToJPG(String mp4Path, String imagePath, String imgType, int frameJump) throws Exception, IOException
+    public static void convertMovieToJPG(String mp4Path, String imagePath, String imgType) throws Exception, IOException
     {
         Java2DFrameConverter converter = new Java2DFrameConverter();
         FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber(mp4Path);
@@ -28,8 +28,11 @@ public class VideoCapture {
                 BufferedImage bi = converter.convert(frame);
                 String path = imagePath+ File.separator+imgNum+".jpg";
                 ImageIO.write(bi,imgType, new File(path));
-                ii+=frameJump;
+                //frameJump is an int argument in the method parameters
+               // ii+=frameJump;   instead of setting this manually we will jump every second
+                ii+=(int)frameRate;
             }
+            System.out.println("successfully finished");
             frameGrabber.stop();
         } catch (Exception e) {
             e.printStackTrace();

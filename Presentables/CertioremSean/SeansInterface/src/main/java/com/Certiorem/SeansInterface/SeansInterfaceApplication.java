@@ -35,7 +35,7 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 		String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
 		String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
 		try {
-			convertMovieToJPG(mp4Path, imagePath,"jpg",0);
+			convertMovieToJPG(mp4Path, imagePath,"jpg");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
