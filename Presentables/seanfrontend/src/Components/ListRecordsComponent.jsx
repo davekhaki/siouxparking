@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, useCallback } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 import TextField from "@material-ui/core/TextField";
 
 import ErrorIcon from "@material-ui/icons/Error";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import InfiniteScrollComponent from "./InfiniteScrollComponent";
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -17,6 +18,9 @@ class ListRecordsComponent extends Component {
       expectedAt: "",
       currentDateTime: new Date(),
       isAscending: false,
+      currentPage: 1,
+      recordsPerPage: 7,
+      hasMore: false
     };
 
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
@@ -27,9 +31,10 @@ class ListRecordsComponent extends Component {
     this.addRecord = this.addRecord.bind(this);
     this.editRecord = this.editRecord.bind(this);
     this.deleteRecord = this.deleteRecord.bind(this);
-
     this.sortBy = this.sortBy.bind(this);
   }
+
+  
 
   saveRecords = (e) => {
     e.preventDefault();
@@ -80,6 +85,9 @@ class ListRecordsComponent extends Component {
   componentDidMount() {
     ProtoSeanService.getRecords().then((res) => {
       this.setState({ records: res.data });
+      const indexOfLastRecord = this.state.currentPage * this.state.recordsPerPage;
+      const indexOfFirstRecord = indexOfLastRecord - this.state.recordsPerPage;
+      this.setState({records: this.state.records.slice(indexOfFirstRecord, indexOfLastRecord)});
     });
   }
 
@@ -125,6 +133,8 @@ class ListRecordsComponent extends Component {
   }
 
   render() {
+
+
     return (
       <div>
         <div className="row list-row">
@@ -142,8 +152,11 @@ class ListRecordsComponent extends Component {
             </thead>
 
             <tbody>
-              {this.state.records.map((protoSean) => (
-                <tr key={protoSean.id}>
+            
+              {this.state.records.map((protoSean, index) => (
+                
+              // (this.state.records.length === index + 1) ? 
+              <tr key={protoSean.id}>
                   <td>{this.renderStatus(protoSean.expectedAt)}</td>
                   <td>{protoSean.visitor}</td>
                   <td>{protoSean.numberPlate}</td>
