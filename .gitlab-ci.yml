@@ -1,4 +1,4 @@
-image: rvancea/maven-chrome-openjdk15:latest
+image: ruby:2.6
 
 build-job:
   stage: build
