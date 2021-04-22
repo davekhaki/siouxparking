@@ -32,8 +32,10 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 //		System.out.println("Enter the folder path where the images will be saved (eg c:\\convertedImages)");
 //		String imagePath=s.nextLine();
 
-		String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
-		String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
+		String mp4Path="../CertioremSean/SeansInterface/src/main/resources/vids/anprVideo.mp4";
+		//String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
+//		String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
+		String imagePath="../CertioremSean/SeansInterface/src/main/resources/picsFromVideo";
 		try {
 			convertMovieToJPG(mp4Path, imagePath,"jpg");
 		} catch (Exception e) {
@@ -44,7 +46,7 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 //		Intelligence intelligence = null;
 //		try {
 //			intelligence = new Intelligence();
-//			String path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\pics\\lamboCar.png";
+//			String path="..\\CertioremSean\\SeansInterface\\src\\main\\resources\\pics\\chosenAgain.jpg";
 //			CarSnapshot carSnapshot=new CarSnapshot(path);
 //			String smth=intelligence.recognize(carSnapshot);
 //			System.err.println(smth);

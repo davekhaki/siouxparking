@@ -18,7 +18,16 @@
 <!DOCTYPE structure SYSTEM "src/main/resources/dtd/syntax.dtd">
 
 <structure>
-    <type name="netherlands">
+    <type name="netherlands6">
+        <char content="0123456789"/>
+        <char content="0123456789"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+    </type>
+
+    <type name="netherlands8">
 		<char content="0123456789"/>
         <char content="abcdefghijklmno0pqrstuvwxyz"/>
         <char content="abcdefghijklmno0pqrstuvwxyz"/>
@@ -27,14 +36,41 @@
         <char content="0123456789"/>
     </type>
 	
-	<type name="netherlands2">
+	<type name="netherlands10">
 		<char content="abcdefghijklmno0pqrstuvwxyz"/>
 		<char content="0123456789"/>
         <char content="0123456789"/>
         <char content="0123456789"/>
         <char content="abcdefghijklmno0pqrstuvwxyz"/>
         <char content="abcdefghijklmno0pqrstuvwxyz"/>
-    </type>	
+    </type>
+    <type name="netherlands11">
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="0123456789"/>
+        <char content="0123456789"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+    </type>
+
+    <type name="belgium2">
+        <char content="0123456789"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="0123456789"/>
+        <char content="0123456789"/>
+        <char content="0123456789"/>
+    </type>
+
+    <type name="belgium">
+        <char content="0123456789"/>
+        <char content="0123456789"/>
+        <char content="0123456789"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+    </type>
 	
     <type name="germany">
         <char content="abcdefghijklmno0pqrstuvwxyz"/>
