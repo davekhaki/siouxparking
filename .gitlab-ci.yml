@@ -1,12 +1,22 @@
-image: rvancea/maven-chrome-openjdk15:latest
+image: ruby:2.6
 
-build:
+build-job:
+  stage: build
   script:
-    - 'cd Presentables'
-    - 'cd CertioremSean'
-    - 'cd SeansInterface'
-    - 'cp ci_settings.xml /root/.m2/settings.xml'
-    - 'mvn compile'
+    - echo "Hello, $GITLAB_USER_LOGIN!"
+
+test-job1:
+  stage: test
+  script:
+    - echo "This job tests something"
+
+test-job2:
+  stage: test
+  script:
+    - echo "This job tests something, but takes more time than test-job1."
+    - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
+    - echo "which simulates a test that runs 20 seconds longer than test-job1"
+    - sleep 20
   
 
 
