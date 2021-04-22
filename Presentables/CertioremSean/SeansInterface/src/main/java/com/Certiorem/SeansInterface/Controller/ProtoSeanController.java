@@ -3,10 +3,12 @@ package com.Certiorem.SeansInterface.Controller;
 import com.Certiorem.SeansInterface.Exception.ProtoSeanException;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
+import com.Certiorem.SeansInterface.Service.ProtoSeanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,25 +21,29 @@ public class ProtoSeanController {
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
 
+    @Autowired
+    private ProtoSeanService protoSeanService;
+
     // Get all records
     @GetMapping("/records")
-    public List<ProtoSean> getAllRecords(){
-        return protoSeanRepo.findAll();
+    public ArrayList<ProtoSean> getAllRecords(){
+        return protoSeanService.retrieveRecordsFromDB();
     }
 
     // Add the records
     @PostMapping("/records")
     public ProtoSean createRecords(@RequestBody ProtoSean protoSean){
-        return protoSeanRepo.save(protoSean);
+        return protoSeanService.createVisitors(protoSean);
     }
 
     // Retrieve per ID of the record
     @GetMapping("/records/{id}")
     public ResponseEntity<ProtoSean>  getRecordsById(@PathVariable("id") Long id){
-        ProtoSean protoSean = protoSeanRepo.findById(id)
+      ProtoSean protoSean = protoSeanRepo.findById(id)
                 .orElseThrow(() -> new ProtoSeanException("404: Record with id '"+id+"'Not found "));
         return ResponseEntity.ok(protoSean);
     }
+
 
     // Update the information stored
     @PutMapping("/records/{id}")
