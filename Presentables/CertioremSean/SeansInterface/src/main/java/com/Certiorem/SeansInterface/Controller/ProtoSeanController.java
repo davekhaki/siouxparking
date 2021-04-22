@@ -48,6 +48,9 @@ public class ProtoSeanController {
         protoSean.setNumberPlate(protoSeanDetails.getNumberPlate());
         protoSean.setVisitor(protoSeanDetails.getVisitor());
         protoSean.setPhnNumber(protoSeanDetails.getPhnNumber());
+        protoSean.setHostEmail(protoSeanDetails.getHostEmail());
+        protoSean.setExpectedAt(protoSeanDetails.getExpectedAt());
+
 
         ProtoSean updatedRecord = protoSeanRepo.save(protoSean);
         return ResponseEntity.ok(updatedRecord);
