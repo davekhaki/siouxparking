@@ -2,8 +2,7 @@ import React, { Component, useCallback } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 import TextField from "@material-ui/core/TextField";
 
-import ErrorIcon from "@material-ui/icons/Error";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+
 import InfiniteScrollComponent from "./InfiniteScrollComponent";
 
 class ListRecordsComponent extends Component {
@@ -29,8 +28,8 @@ class ListRecordsComponent extends Component {
     this.changeExpectedAtHandeler = this.changeExpectedAtHandeler.bind(this);
     this.saveRecords = this.saveRecords.bind(this);
     this.addRecord = this.addRecord.bind(this);
-    this.editRecord = this.editRecord.bind(this);
-    this.deleteRecord = this.deleteRecord.bind(this);
+    // this.editRecord = this.editRecord.bind(this);
+    // this.deleteRecord = this.deleteRecord.bind(this);
     this.sortBy = this.sortBy.bind(this);
   }
 
@@ -58,6 +57,8 @@ class ListRecordsComponent extends Component {
     window.location.reload(true);
   };
 
+
+
   changeVisitorHandeler = (event) => {
     this.setState({ visitor: event.target.value });
   };
@@ -74,14 +75,6 @@ class ListRecordsComponent extends Component {
     this.setState({ expectedAt: event.target.value });
   };
 
-  deleteRecord(id) {
-    ProtoSeanService.deleteRecord(id).then((res) => {
-      this.setState({
-        records: this.state.records.filter((protoSean) => protoSean.id !== id),
-      });
-    });
-  }
-
   componentDidMount() {
     ProtoSeanService.getRecords().then((res) => {
       this.setState({ records: res.data });
@@ -91,18 +84,7 @@ class ListRecordsComponent extends Component {
     });
   }
 
-  renderStatus(expectedAtValue) {
-    var expectedAtDateTime = new Date(expectedAtValue);
-    if (expectedAtDateTime < this.state.currentDateTime) {
-      return <ErrorIcon color="error" />;
-    }
-    return <FiberManualRecordIcon style={{ color: "orange" }} />;
-    /* <CheckCircleIcon style={{ color: "green" }} /> */
-  }
 
-  editRecord(id) {
-    this.props.history.push(`/update-record/${id}`);
-  }
 
   addRecord() {
     this.props.history.push("/add-record");
@@ -152,35 +134,7 @@ class ListRecordsComponent extends Component {
             </thead>
 
             <tbody>
-            
-              {this.state.records.map((protoSean, index) => (
-                
-              // (this.state.records.length === index + 1) ? 
-              <tr key={protoSean.id}>
-                  <td>{this.renderStatus(protoSean.expectedAt)}</td>
-                  <td>{protoSean.visitor}</td>
-                  <td>{protoSean.numberPlate}</td>
-                  <td>{protoSean.phnNumber}</td>
-                  <td>{protoSean.expectedAt}</td>
-                  <td className="action-column">
-                    <button style={{width:"50px" }}
-                      onClick={() => this.editRecord(protoSean.id)}
-                      className="btn btn-info"
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      style={{ marginLeft: "10px",
-                      width:"80px" }}
-                      onClick={() => this.deleteRecord(protoSean.id)}
-                      className="btn btn-danger"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              <InfiniteScrollComponent records ={this.state.records} currentDateTime ={this.state.currentDateTime}/>
             </tbody>
           </table>
           <div className="list-item-2">
