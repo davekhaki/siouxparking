@@ -85,3 +85,14 @@ button {
   width: 120px;
   cursor: pointer;
 }
+
+.icon-meaning{
+  visibility: hidden;
+}
+
+.MuiSvgIcon-colorError:hover .icon-meaning{
+  visibility: visible;
+  background: yellow;
+}
+
+

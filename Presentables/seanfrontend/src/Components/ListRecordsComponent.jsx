@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
+
 import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import ErrorIcon from "@material-ui/icons/Error";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -86,10 +89,22 @@ class ListRecordsComponent extends Component {
   renderStatus(expectedAtValue) {
     var expectedAtDateTime = new Date(expectedAtValue);
     if (expectedAtDateTime < this.state.currentDateTime) {
-      return <ErrorIcon color="error" />;
-    }
-    return <FiberManualRecordIcon style={{ color: "orange" }} />;
-    /* <CheckCircleIcon style={{ color: "green" }} /> */
+      /* HARD CODED ARRIVAL ICON 
+      if(expectedAtDateTime.getFullYear() === 2020){
+        return ( <Tooltip title="Arrived" placement="left" arrow>
+        <CheckCircleIcon style={{ color: "green" }} />
+        </Tooltip>);
+      }
+      else
+      */
+      /* LATE ICON */
+      return ( <Tooltip title="Late" placement="left" arrow> 
+      <ErrorIcon color="error" /> 
+      </Tooltip> )}
+      /* WAITING ICON */
+    return ( <Tooltip title="Waiting" placement="left" arrow>
+      <FiberManualRecordIcon style={{ color: "orange" }} /> 
+      </Tooltip>);
   }
 
   editRecord(id) {
