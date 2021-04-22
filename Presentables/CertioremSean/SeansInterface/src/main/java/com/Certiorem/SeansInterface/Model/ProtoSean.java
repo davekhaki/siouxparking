@@ -24,6 +24,8 @@ public class ProtoSean {
 
     private String phnNumber;
 
+    private String hostEmail;
+
     @Temporal(TemporalType.TIMESTAMP) //TIMESTAMP == date + time
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date expectedAt;

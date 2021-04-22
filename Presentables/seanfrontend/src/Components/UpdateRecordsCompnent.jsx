@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
+import TextField from "@material-ui/core/TextField";
 
 class UpdateRecordsComponent extends Component {
   constructor(props) {
@@ -9,11 +10,15 @@ class UpdateRecordsComponent extends Component {
       id: this.props.match.params.id,
       visitor: "",
       numberPlate: "",
-      phnNumber: ""
+      phnNumber: "",
+      hostEmail: "",
+      expectedAt: "",
     };
     this.changeVisitorHandler = this.changeVisitorHandler.bind(this);
     this.changeNumberPlateHandeler = this.changeNumberPlateHandeler.bind(this);
     this.changePhnNumberHandeler = this.changePhnNumberHandeler.bind(this);
+    this.changeHostEmailHandeler = this.changeHostEmailHandeler.bind(this);
+    this.changeExpectedAtHandeler = this.changeExpectedAtHandeler.bind(this);
     this.updateRecord = this.updateRecord.bind(this);
   }
 
@@ -24,6 +29,8 @@ class UpdateRecordsComponent extends Component {
         visitor: protoSean.visitor,
         numberPlate: protoSean.numberPlate,
         phnNumber: protoSean.phnNumber,
+        hostEmail: protoSean.hostEmail,
+        expectedAt: protoSean.expectedAt,
       });
     });
   }
@@ -34,6 +41,11 @@ class UpdateRecordsComponent extends Component {
       visitor: this.state.visitor,
       numberPlate: this.state.numberPlate,
       phnNumber: this.state.phnNumber,
+      hostEmail: this.state.hostEmail,
+      expectedAt:
+        this.state.expectedAt.split("T")[0] +
+        " " +
+        this.state.expectedAt.split("T")[1],
     };
     console.log("record =>" + JSON.stringify(record));
 
@@ -52,6 +64,14 @@ class UpdateRecordsComponent extends Component {
 
   changePhnNumberHandeler = (event) => {
     this.setState({ phnNumber: event.target.value });
+  };
+
+  changeHostEmailHandeler = (event) => {
+    this.setState({ hostEmail: event.target.value });
+  };
+
+  changeExpectedAtHandeler = (event) => {
+    this.setState({ expectedAt: event.target.value });
   };
 
   cancel() {
@@ -94,6 +114,36 @@ class UpdateRecordsComponent extends Component {
                     onChange={this.changePhnNumberHandeler}
                   />
                 </div>
+
+                <div className="form-group">
+                    <label>Host Email:</label>
+                    <input type="email"
+                      name="hostEmail"
+                      className="form-control textbox"
+                      value={this.state.hostEmail}
+                      onChange={this.changeHostEmailHandeler}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Expected At:</label>
+                    <TextField
+                      id="expectedAtDateTime"
+                      type="datetime-local"
+                      value={this.state.expectedAt}
+                      onChange={this.changeExpectedAtHandeler}
+                      className={"form-control textbox"}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                    {/* <input
+                    name="expectedAt"
+                    className="form-control textbox"
+                    value={this.state.expectedAt}
+                    onChange={this.changeExpectedAtHandeler}
+                  /> */}
+                  </div>
 
                 <button
                   className="btn btn-success"
