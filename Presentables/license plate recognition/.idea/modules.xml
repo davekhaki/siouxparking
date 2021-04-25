@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../CertioremSean/SeansInterface/SeansInterface.iml" filepath="$PROJECT_DIR$/../CertioremSean/SeansInterface/SeansInterface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/javaanpr.iml" filepath="$PROJECT_DIR$/javaanpr.iml" />
+    </modules>
+  </component>
+</project>

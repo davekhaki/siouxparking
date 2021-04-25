@@ -9,12 +9,20 @@ class UpdateRecordsComponent extends Component {
       id: this.props.match.params.id,
       visitor: "",
       numberPlate: "",
+<<<<<<< Updated upstream
       phnNumber: "",
+=======
+      phnNumber: ""
+>>>>>>> Stashed changes
     };
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
     this.changeNumberPlateHandeler = this.changeNumberPlateHandeler.bind(this);
     this.changePhnNumberHandeler = this.changePhnNumberHandeler.bind(this);
+<<<<<<< Updated upstream
     this.updateRecords = this.updateRecords.bind(this);
+=======
+    this.updateRecord = this.updateRecord.bind(this);
+>>>>>>> Stashed changes
   }
 
   componentDidMount() {
