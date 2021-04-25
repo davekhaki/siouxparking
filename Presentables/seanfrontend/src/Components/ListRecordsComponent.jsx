@@ -17,9 +17,9 @@ class ListRecordsComponent extends Component {
       expectedAt: "",
       currentDateTime: new Date(),
       isAscending: false,
+      hasMore: false,
       currentPage: 1,
       recordsPerPage: 7,
-      hasMore: false
     };
 
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
@@ -28,8 +28,6 @@ class ListRecordsComponent extends Component {
     this.changeExpectedAtHandeler = this.changeExpectedAtHandeler.bind(this);
     this.saveRecords = this.saveRecords.bind(this);
     this.addRecord = this.addRecord.bind(this);
-    // this.editRecord = this.editRecord.bind(this);
-    // this.deleteRecord = this.deleteRecord.bind(this);
     this.sortBy = this.sortBy.bind(this);
   }
 
