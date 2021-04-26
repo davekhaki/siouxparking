@@ -4,6 +4,8 @@ import com.Certiorem.SeansInterface.Exception.ProtoSeanException;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +18,31 @@ import java.util.Map;
 @RequestMapping("/parking")
 public class ProtoSeanController {
 
+
+
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
 
     // Get all records
     @GetMapping("/records")
-    public List<ProtoSean> getAllRecords(){
-        return protoSeanRepo.findAll();
+    public List<ProtoSean> getAllRecords(String keyword, String type){
+        ProtoSean protoSean = new ProtoSean();
+        ExampleMatcher matching = ExampleMatcher.matching();
+
+        if ("1".equals(type)) {
+            protoSean.setVisitor(keyword);
+            matching = matching.withMatcher("visitor", ExampleMatcher.GenericPropertyMatchers.contains());
+        } else if ("2".equals(type)) {
+            protoSean.setNumberPlate(keyword);
+            matching = matching.withMatcher("numberPlate", ExampleMatcher.GenericPropertyMatchers.contains());
+        } else if ("3".equals(type)) {
+            protoSean.setPhnNumber(keyword);
+            matching = matching.withMatcher("phnNumber", ExampleMatcher.GenericPropertyMatchers.contains());
+        }
+
+
+        Example<ProtoSean> example = Example.of(protoSean, matching);
+        return protoSeanRepo.findAll(example);
     }
 
     // Add the records

@@ -7,6 +7,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ErrorIcon from "@material-ui/icons/Error";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import SearchRecordsComponent from './SearchRecordsComponent';
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -21,6 +22,8 @@ class ListRecordsComponent extends Component {
       hostEmail: "",
       currentDateTime: new Date(),
       isAscending: false,
+      keyword: '',
+      type: 1
     };
 
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
@@ -28,6 +31,8 @@ class ListRecordsComponent extends Component {
     this.changePhnNumberHandeler = this.changePhnNumberHandeler.bind(this);
     this.changeHostEmailHandeler = this.changeHostEmailHandeler.bind(this);
     this.changeExpectedAtHandeler = this.changeExpectedAtHandeler.bind(this);
+    this.changeRecordInputHandler = this.changeRecordInputHandler.bind(this);
+    this.changeRecordSelectHandler = this.changeRecordSelectHandler.bind(this);
     this.saveRecords = this.saveRecords.bind(this);
     this.addRecord = this.addRecord.bind(this);
     this.editRecord = this.editRecord.bind(this);
@@ -80,6 +85,19 @@ class ListRecordsComponent extends Component {
     this.setState({ expectedAt: event.target.value });
   };
 
+
+  changeRecordInputHandler = (event) => {
+    this.setState({ keyword: event.target.value }, () => {
+      this.getAllRecords();
+    });
+  }
+
+  changeRecordSelectHandler = (event) => {
+    this.setState({ type: event.target.value }, () => {
+      this.getAllRecords();
+    });
+  }
+
   deleteRecord(id) {
     ProtoSeanService.deleteRecord(id).then((res) => {
       this.setState({
@@ -89,7 +107,12 @@ class ListRecordsComponent extends Component {
   }
 
   componentDidMount() {
-    ProtoSeanService.getRecords().then((res) => {
+    this.getAllRecords();
+  }
+
+  getAllRecords = () => {
+    const { keyword, type } = this.state;
+    ProtoSeanService.getRecords(keyword, type).then((res) => {
       this.setState({ records: res.data });
     });
   }
@@ -151,6 +174,10 @@ class ListRecordsComponent extends Component {
     return (
       <div>
         <div className="row list-row">
+        <SearchRecordsComponent keyword={this.state.keyword}
+                                  type={this.state.type}
+                                  changeRecordInputHandler={this.changeRecordInputHandler}
+                                  changeRecordSelectHandler={this.changeRecordSelectHandler} />
           <h3>Records</h3>
           <table className="table table-striped table-borderless list-item-1">
             <thead>
