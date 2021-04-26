@@ -1,2 +1,0 @@
-# Group1_parkingApp
-
