@@ -34,7 +34,12 @@ a:hover, a:visited, a:link, a:active
 
 .list-row {
   display: grid !important;
-  grid-template-columns: 1fr, 05fr;
+  grid-template-columns: 1fr 0.5fr;
+}
+
+.list-row h3 {
+  grid-column: 1;
+  justify-self: center;
 }
 
 .action-column{
@@ -93,6 +98,21 @@ button {
 .MuiSvgIcon-colorError:hover .icon-meaning{
   visibility: visible;
   background: yellow;
+}
+
+.record-search-wrapper {
+  display: grid;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.record-search-input {
+  width: 200px;
+}
+
+.record-search-select {
+  width: 150px;
+  margin-left: 10px !important;
 }
 
 

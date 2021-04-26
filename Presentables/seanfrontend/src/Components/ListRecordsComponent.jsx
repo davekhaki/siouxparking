@@ -85,7 +85,6 @@ class ListRecordsComponent extends Component {
     this.setState({ expectedAt: event.target.value });
   };
 
-
   changeRecordInputHandler = (event) => {
     this.setState({ keyword: event.target.value }, () => {
       this.getAllRecords();
