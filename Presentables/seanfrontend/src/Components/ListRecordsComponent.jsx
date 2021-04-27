@@ -19,7 +19,7 @@ class ListRecordsComponent extends Component {
       isAscending: false,
       hasMore: false,
       currentPage: 1,
-      recordsPerPage: 7,
+      recordsPerPage: 10,
     };
 
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
@@ -117,9 +117,9 @@ class ListRecordsComponent extends Component {
 
     return (
       <div>
-        <div className="row list-row">
+        <div className="row list-row records-table">
           <h3>Records</h3>
-          <table className="table table-striped table-borderless list-item-1">
+          <table className="table table-striped table-borderless list-item-1" >
             <thead>
               <tr>
                 <th> Status </th>

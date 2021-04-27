@@ -19,12 +19,13 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
             }
             if(observer.current) {
                   observer.current.disconnect();
-                  observer.current = new IntersectionObserver(entries => {
-                        if(entries[0].isIntersecting) {
-                              console.log("Visible");
-                        }
-                  })
             }
+            observer.current = new IntersectionObserver(entries => {
+                  if(entries[0].isIntersecting) {
+                        console.log("Visible");
+                        setCurrentPage(currentPage => currentPage + 1);
+                  }
+            })
             if(node) {
                   observer.current.observe(node);
             }

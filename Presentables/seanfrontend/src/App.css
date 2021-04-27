@@ -85,3 +85,8 @@ button {
   width: 120px;
   cursor: pointer;
 }
+
+.records-table {
+  max-height: 75vh !important; 
+  overflow-y: scroll !important;
+}
