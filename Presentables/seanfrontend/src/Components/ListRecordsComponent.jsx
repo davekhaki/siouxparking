@@ -18,8 +18,9 @@ class ListRecordsComponent extends Component {
       currentDateTime: new Date(),
       isAscending: false,
       hasMore: false,
-      currentPage: 1,
-      recordsPerPage: 10,
+      isRecord: false
+      // currentPage: 1,
+      // recordsPerPage: 10,
     };
 
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
@@ -76,13 +77,11 @@ class ListRecordsComponent extends Component {
   componentDidMount() {
     ProtoSeanService.getRecords().then((res) => {
       this.setState({ records: res.data });
-      const indexOfLastRecord = this.state.currentPage * this.state.recordsPerPage;
-      const indexOfFirstRecord = indexOfLastRecord - this.state.recordsPerPage;
-      this.setState({records: this.state.records.slice(indexOfFirstRecord, indexOfLastRecord)});
+      console.log(this.state.records);
+      this.setState({isRecord: true});
     });
+
   }
-
-
 
   addRecord() {
     this.props.history.push("/add-record");
@@ -132,7 +131,7 @@ class ListRecordsComponent extends Component {
             </thead>
 
             <tbody>
-              <InfiniteScrollComponent records ={this.state.records} currentDateTime ={this.state.currentDateTime}/>
+              { this.state.isRecord && <InfiniteScrollComponent records ={this.state.records}  currentDateTime ={this.state.currentDateTime}/>}
             </tbody>
           </table>
           <div className="list-item-2">

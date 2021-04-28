@@ -10,7 +10,8 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
       const [isLoading, setIsLoading] = useState(false);
       const [hasMore, setHasMore] = useState(false);
       const [currentPage, setCurrentPage] = useState(1);
-      const [recordsPerPage, setRecordsPerPage] = useState(7);
+      const [recordsPerPage, setRecordsPerPage] = useState(9);
+      const [modifiedRecords, setModifiedRecords] = useState(records);  
 
       const observer = useRef();
       const lastBookElementRef = useCallback(node => {
@@ -23,7 +24,8 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
             observer.current = new IntersectionObserver(entries => {
                   if(entries[0].isIntersecting) {
                         console.log("Visible");
-                        setCurrentPage(currentPage => currentPage + 1);
+                        setCurrentPage(previousPageNumber => previousPageNumber + 1);
+                        console.log(currentPage);
                   }
             })
             if(node) {
@@ -31,6 +33,22 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
             }
             console.log(node);
       }, [isLoading, hasMore]);
+
+      useEffect(() => {
+
+            const indexOfLastRecord = currentPage * recordsPerPage;
+            const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+            if(currentPage === 1){
+                  setModifiedRecords(records.slice(indexOfFirstRecord, indexOfLastRecord));
+  
+            }
+            else {
+                  setModifiedRecords(modifiedRecords.concat(records.slice(indexOfFirstRecord, indexOfLastRecord)) );
+                  console.log(currentPage);
+            }
+
+
+      }, [currentPage])
 
       // const [records, setRecords] = useState(records);
 
@@ -48,6 +66,7 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
       }
 
       const renderStatus = (expectedAtValue) => {
+
             var expectedAtDateTime = new Date(expectedAtValue);
             if (expectedAtDateTime < currentDateTime) {
               return <ErrorIcon color="error" />;
@@ -60,7 +79,8 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
 
       const tableGenerate = (protoSean, index) => {
 
-            if(records.length === index + 1) {
+            if(modifiedRecords.length === index + 1) {
+                  
                   return(
                         <tr key={protoSean.id} ref={lastBookElementRef}>
                         <td>{renderStatus(protoSean.expectedAt)}</td>
@@ -119,13 +139,14 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
       }
 
       return (
-            
-            records.map((protoSean, index) => (
+
+            modifiedRecords.map((protoSean, index) => (
                   
 
                   tableGenerate(protoSean, index)
 
 
                   ))
+
       )
 }
