@@ -34,11 +34,11 @@ a:hover, a:visited, a:link, a:active
 
 .list-row {
   display: grid !important;
-  grid-template-columns: 1fr, 05fr;
+  grid-template-columns: 1fr, 05fr!important;
 }
 
 .action-column{
-  width: 180px;
+  width: 500px!important;
 }
 
 .list-item-1 {
