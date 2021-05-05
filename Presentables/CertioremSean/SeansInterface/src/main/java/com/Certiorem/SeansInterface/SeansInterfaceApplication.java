@@ -26,21 +26,23 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 
 		System.err.println("something");
 
+//		WapMessage.sendMessage();
+
 //		Scanner s=new Scanner(System.in);
 //		System.out.println("Enter the path of mp4 (for eg c:\\test.mp4)");
 //		String mp4Path=s.nextLine();
 //		System.out.println("Enter the folder path where the images will be saved (eg c:\\convertedImages)");
 //		String imagePath=s.nextLine();
 
-		String mp4Path="../CertioremSean/SeansInterface/src/main/resources/vids/anprVideo.mp4";
-		//String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
-//		String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
-		String imagePath="../CertioremSean/SeansInterface/src/main/resources/picsFromVideo";
-		try {
-			convertMovieToJPG(mp4Path, imagePath,"jpg");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		String mp4Path="../CertioremSean/SeansInterface/src/main/resources/vids/anprVideo.mp4";
+//		//String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
+////		String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
+//		String imagePath="../CertioremSean/SeansInterface/src/main/resources/picsFromVideo";
+//		try {
+//			convertMovieToJPG(mp4Path, imagePath,"jpg");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 
 //		Intelligence intelligence = null;
