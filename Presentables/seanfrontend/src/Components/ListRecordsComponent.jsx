@@ -2,11 +2,11 @@ import React, { Component, useCallback } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 
 import TextField from "@material-ui/core/TextField";
-import Tooltip from "@material-ui/core/Tooltip";
+// import Tooltip from "@material-ui/core/Tooltip";
 
-import ErrorIcon from "@material-ui/icons/Error";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+// import ErrorIcon from "@material-ui/icons/Error";
+// import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+// import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import SearchRecordsComponent from './SearchRecordsComponent';
 
 import InfiniteScrollComponent from "./InfiniteScrollComponent";
