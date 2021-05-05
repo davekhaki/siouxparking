@@ -19,13 +19,12 @@ import java.util.Map;
 public class ProtoSeanController {
 
 
-
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
 
     // Get all records
     @GetMapping("/records")
-    public List<ProtoSean> getAllRecords(String keyword, String type){
+    public List<ProtoSean> getAllRecords(String keyword, String type) {
         ProtoSean protoSean = new ProtoSean();
         ExampleMatcher matching = ExampleMatcher.matching();
 
@@ -39,31 +38,32 @@ public class ProtoSeanController {
             protoSean.setPhnNumber(keyword);
             matching = matching.withMatcher("phnNumber", ExampleMatcher.GenericPropertyMatchers.contains());
         }
-
-
         Example<ProtoSean> example = Example.of(protoSean, matching);
-        return protoSeanRepo.findAll(example);
+        if (keyword == null || type == null)
+            return protoSeanRepo.findAll();
+        else
+            return protoSeanRepo.findAll(example);
     }
 
     // Add the records
     @PostMapping("/records")
-    public ProtoSean createRecords(@RequestBody ProtoSean protoSean){
+    public ProtoSean createRecords(@RequestBody ProtoSean protoSean) {
         return protoSeanRepo.save(protoSean);
     }
 
     // Retrieve per ID of the record
     @GetMapping("/records/{id}")
-    public ResponseEntity<ProtoSean>  getRecordsById(@PathVariable("id") Long id){
+    public ResponseEntity<ProtoSean> getRecordsById(@PathVariable("id") Long id) {
         ProtoSean protoSean = protoSeanRepo.findById(id)
-                .orElseThrow(() -> new ProtoSeanException("404: Record with id '"+id+"'Not found "));
+                .orElseThrow(() -> new ProtoSeanException("404: Record with id '" + id + "'Not found "));
         return ResponseEntity.ok(protoSean);
     }
 
     // Update the information stored
     @PutMapping("/records/{id}")
-    public ResponseEntity<ProtoSean> updateRecord(@PathVariable Long id, @RequestBody ProtoSean protoSeanDetails){
+    public ResponseEntity<ProtoSean> updateRecord(@PathVariable Long id, @RequestBody ProtoSean protoSeanDetails) {
         ProtoSean protoSean = protoSeanRepo.findById(id)
-                .orElseThrow(() -> new ProtoSeanException("404: Record with id '"+id+"'Not found "));
+                .orElseThrow(() -> new ProtoSeanException("404: Record with id '" + id + "'Not found "));
 
         protoSean.setNumberPlate(protoSeanDetails.getNumberPlate());
         protoSean.setVisitor(protoSeanDetails.getVisitor());
@@ -77,12 +77,12 @@ public class ProtoSeanController {
     }
 
     @DeleteMapping("/records/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteRecord(@PathVariable Long id){
+    public ResponseEntity<Map<String, Boolean>> deleteRecord(@PathVariable Long id) {
         ProtoSean protoSean = protoSeanRepo.findById(id)
-                .orElseThrow(() -> new ProtoSeanException("404: Record with id '"+id+"'Not found "));
+                .orElseThrow(() -> new ProtoSeanException("404: Record with id '" + id + "'Not found "));
 
         protoSeanRepo.delete(protoSean);
-        Map<String,Boolean> response = new HashMap<>();
+        Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
     }
