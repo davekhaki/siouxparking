@@ -2,6 +2,9 @@ package com.Certiorem.SeansInterface.LicenseRecognition;
 
 import com.Certiorem.SeansInterface.Exception.ProtoSeanException;
 import com.Certiorem.SeansInterface.LicenseRecognition.VideoCapture;
+import com.Certiorem.SeansInterface.Messaging.MessageInterface;
+import com.Certiorem.SeansInterface.Messaging.SmsMessage;
+import com.Certiorem.SeansInterface.Messaging.WapMessage;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
 import net.sf.javaanpr.imageanalysis.CarSnapshot;
@@ -19,12 +22,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @EnableScheduling
 @Component
 public class Algorithm {
+    //should be false for production
     boolean finishedLoadingVideo = true;
-    int picCounter = 3;
+    int picCounter = 1;
+    MessageInterface messageInterface;
     Intelligence intelligence;
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
@@ -72,17 +78,36 @@ public class Algorithm {
                         ProtoSean visitor = protoSeanRepo.findByNumberPlate(plate);
 
                         if (visitor != null) {
-                            System.out.println("visitor found by plate " + plate);
+                            System.err.println("visitor found by plate " + plate);
 
+                            String phoneNumber = visitor.getPhnNumber();
+                            Date expectedAt = visitor.getExpectedAt();
+                            String date = expectedAt.toString().substring(0, 10);
+                            String hour = expectedAt.toString().substring(11);
+                            if (visitor.getHasWhatsApp() == 1) {
+                                messageInterface = new WapMessage();
+
+                            } else {
+                                messageInterface = new SmsMessage();
+
+                            }
+//                            if(visitor.getArrived()==0)
+//                                messageInterface.sendMessage(phoneNumber,date,hour);
+//                            else{
+//                                System.err.println("vistor already here, not sending message");
+//                            }
+
+                            visitor.setArrived(1);
+                            protoSeanRepo.save(visitor);
 
                         } else {
-                            System.out.println("visitor not found by plate " + plate);
+                            System.err.println("visitor not found by plate " + plate);
                         }
 
 
                     } else {
                         //plate not recognized
-                        System.err.println("Plate is null");
+                        System.err.println("Plate from pic " + picCounter + " is null");
                     }
                 } else {
                     System.err.println("File " + picCounter + " does not exist");
