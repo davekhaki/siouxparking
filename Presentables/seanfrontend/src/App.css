@@ -96,3 +96,11 @@ button {
 }
 
 
+.records-table {
+  max-height: 75vh !important; 
+  overflow-y: scroll !important;
+}
+
+/* .records-table::-webkit-scrollbar {
+  display: none;
+} */

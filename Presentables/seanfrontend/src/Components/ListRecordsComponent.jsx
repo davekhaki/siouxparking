@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useCallback } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 
 import TextField from "@material-ui/core/TextField";
@@ -8,6 +8,8 @@ import ErrorIcon from "@material-ui/icons/Error";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import SearchRecordsComponent from './SearchRecordsComponent';
+
+import InfiniteScrollComponent from "./InfiniteScrollComponent";
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -23,7 +25,11 @@ class ListRecordsComponent extends Component {
       currentDateTime: new Date(),
       isAscending: false,
       keyword: '',
-      type: 1
+      type: 1,
+      hasMore: false,
+      isRecord: false
+      // currentPage: 1,
+      // recordsPerPage: 10,
     };
 
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
@@ -35,11 +41,10 @@ class ListRecordsComponent extends Component {
     this.changeRecordSelectHandler = this.changeRecordSelectHandler.bind(this);
     this.saveRecords = this.saveRecords.bind(this);
     this.addRecord = this.addRecord.bind(this);
-    this.editRecord = this.editRecord.bind(this);
-    this.deleteRecord = this.deleteRecord.bind(this);
-
     this.sortBy = this.sortBy.bind(this);
   }
+
+  
 
   saveRecords = (e) => {
     e.preventDefault();
@@ -65,6 +70,8 @@ class ListRecordsComponent extends Component {
     window.location.reload(true);
   };
 
+
+
   changeVisitorHandeler = (event) => {
     this.setState({ visitor: event.target.value });
   };
@@ -85,7 +92,6 @@ class ListRecordsComponent extends Component {
     this.setState({ expectedAt: event.target.value });
   };
 
-
   changeRecordInputHandler = (event) => {
     this.setState({ keyword: event.target.value }, () => {
       this.getAllRecords();
@@ -98,13 +104,6 @@ class ListRecordsComponent extends Component {
     });
   }
 
-  deleteRecord(id) {
-    ProtoSeanService.deleteRecord(id).then((res) => {
-      this.setState({
-        records: this.state.records.filter((protoSean) => protoSean.id !== id),
-      });
-    });
-  }
 
   componentDidMount() {
     this.getAllRecords();
@@ -114,32 +113,10 @@ class ListRecordsComponent extends Component {
     const { keyword, type } = this.state;
     ProtoSeanService.getRecords(keyword, type).then((res) => {
       this.setState({ records: res.data });
+      console.log(this.state.records);
+      this.setState({isRecord: true});  
     });
-  }
 
-  renderStatus(expectedAtValue) {
-    var expectedAtDateTime = new Date(expectedAtValue);
-    if (expectedAtDateTime < this.state.currentDateTime) {
-      /* HARD CODED ARRIVAL ICON 
-      if(expectedAtDateTime.getFullYear() === 2020){
-        return ( <Tooltip title="Arrived" placement="left" arrow>
-        <CheckCircleIcon style={{ color: "green" }} />
-        </Tooltip>);
-      }
-      else
-      */
-      /* LATE ICON */
-      return ( <Tooltip title="Late" placement="left" arrow> 
-      <ErrorIcon color="error" /> 
-      </Tooltip> )}
-      /* WAITING ICON */
-    return ( <Tooltip title="Waiting" placement="left" arrow>
-      <FiberManualRecordIcon style={{ color: "orange" }} /> 
-      </Tooltip>);
-  }
-
-  editRecord(id) {
-    this.props.history.push(`/update-record/${id}`);
   }
 
   addRecord() {
@@ -171,15 +148,17 @@ class ListRecordsComponent extends Component {
   }
 
   render() {
+
+
     return (
       <div>
-        <div className="row list-row">
+        <div className="row list-row records-table">
         <SearchRecordsComponent keyword={this.state.keyword}
                                   type={this.state.type}
                                   changeRecordInputHandler={this.changeRecordInputHandler}
                                   changeRecordSelectHandler={this.changeRecordSelectHandler} />
           <h3>Records</h3>
-          <table className="table table-striped table-borderless list-item-1">
+          <table className="table table-striped table-borderless list-item-1" >
             <thead>
               <tr>
                 <th> Status </th>
@@ -193,33 +172,7 @@ class ListRecordsComponent extends Component {
             </thead>
 
             <tbody>
-              {this.state.records.map((protoSean) => (
-                <tr key={protoSean.id}>
-                  <td>{this.renderStatus(protoSean.expectedAt)}</td>
-                  <td>{protoSean.visitor}</td>
-                  <td>{protoSean.numberPlate}</td>
-                  <td>{protoSean.phnNumber}</td>
-                  <td>{protoSean.hostEmail}</td>
-                  <td>{protoSean.expectedAt}</td>
-                  <td className="action-column">
-                    <button style={{width:"50px" }}
-                      onClick={() => this.editRecord(protoSean.id)}
-                      className="btn btn-info"
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      style={{ marginLeft: "10px",
-                      width:"80px" }}
-                      onClick={() => this.deleteRecord(protoSean.id)}
-                      className="btn btn-danger"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              { this.state.isRecord && <InfiniteScrollComponent records ={this.state.records}  currentDateTime ={this.state.currentDateTime}/>}
             </tbody>
           </table>
           <div className="list-item-2">
