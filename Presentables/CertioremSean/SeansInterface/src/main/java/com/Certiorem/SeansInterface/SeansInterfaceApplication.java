@@ -1,6 +1,7 @@
 package com.Certiorem.SeansInterface;
 
 import com.Certiorem.SeansInterface.Messaging.MessageInterface;
+import com.Certiorem.SeansInterface.Messaging.SmsMessage;
 import com.Certiorem.SeansInterface.Messaging.WapMessage;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 
 		System.err.println("something");
 
-		MessageInterface messageInterface=new WapMessage();
+		MessageInterface messageInterface=new SmsMessage();
 		messageInterface.sendMessage("+40770618495","sometime","soon");
 
 
