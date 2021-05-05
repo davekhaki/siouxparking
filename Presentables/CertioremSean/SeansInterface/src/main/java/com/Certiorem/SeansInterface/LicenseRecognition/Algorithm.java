@@ -91,8 +91,10 @@ public class Algorithm {
                                 messageInterface = new SmsMessage();
 
                             }
-//                            if(visitor.getArrived()==0)
-//                                messageInterface.sendMessage(phoneNumber,date,hour);
+//                            if(visitor.getArrived()==0) {
+//                                System.err.println("Sending message to "+phoneNumber);
+//                                messageInterface.sendMessage(phoneNumber, date, hour);
+//                            }
 //                            else{
 //                                System.err.println("vistor already here, not sending message");
 //                            }
