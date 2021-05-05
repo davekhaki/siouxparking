@@ -1,5 +1,7 @@
 package com.Certiorem.SeansInterface;
 
+import com.Certiorem.SeansInterface.Messaging.MessageInterface;
+import com.Certiorem.SeansInterface.Messaging.WapMessage;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -26,7 +28,9 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 
 		System.err.println("something");
 
-//		WapMessage.sendMessage();
+		MessageInterface messageInterface=new WapMessage();
+		messageInterface.sendMessage("+40770618495","sometime","soon");
+
 
 //		Scanner s=new Scanner(System.in);
 //		System.out.println("Enter the path of mp4 (for eg c:\\test.mp4)");
