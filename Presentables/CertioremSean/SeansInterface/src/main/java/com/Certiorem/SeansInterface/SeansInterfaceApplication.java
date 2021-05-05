@@ -1,8 +1,6 @@
 package com.Certiorem.SeansInterface;
 
-import com.Certiorem.SeansInterface.Messaging.MessageInterface;
-import com.Certiorem.SeansInterface.Messaging.SmsMessage;
-import com.Certiorem.SeansInterface.Messaging.WapMessage;
+import com.Certiorem.SeansInterface.LicenseRecognition.VideoCapture;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,9 +10,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
-import java.util.Scanner;
-
-import static com.Certiorem.SeansInterface.VideoCapture.convertMovieToJPG;
 
 //@EnableScheduling
 @SpringBootApplication
@@ -29,8 +24,8 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 
 		System.err.println("something");
 
-		MessageInterface messageInterface=new SmsMessage();
-		messageInterface.sendMessage("+40770618495","sometime","soon");
+//		MessageInterface messageInterface=new SmsMessage();
+//		messageInterface.sendMessage("+40770618495","sometime","soon");
 
 
 //		Scanner s=new Scanner(System.in);
@@ -39,15 +34,7 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 //		System.out.println("Enter the folder path where the images will be saved (eg c:\\convertedImages)");
 //		String imagePath=s.nextLine();
 
-//		String mp4Path="../CertioremSean/SeansInterface/src/main/resources/vids/anprVideo.mp4";
-//		//String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
-////		String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
-//		String imagePath="../CertioremSean/SeansInterface/src/main/resources/picsFromVideo";
-//		try {
-//			convertMovieToJPG(mp4Path, imagePath,"jpg");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+
 
 
 //		Intelligence intelligence = null;

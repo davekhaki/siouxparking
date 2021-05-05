@@ -1,4 +1,4 @@
-package com.Certiorem.SeansInterface;
+package com.Certiorem.SeansInterface.LicenseRecognition;
 
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class VideoCapture {
 
-    public static void convertMovieToJPG(String mp4Path, String imagePath, String imgType) throws Exception, IOException
+    public static boolean convertMovieToJPG(String mp4Path, String imagePath, String imgType) throws Exception, IOException
     {
         Java2DFrameConverter converter = new Java2DFrameConverter();
         FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber(mp4Path);
@@ -34,8 +34,10 @@ public class VideoCapture {
             }
             System.out.println("successfully finished");
             frameGrabber.stop();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 }
