@@ -44,10 +44,41 @@ class ListRecordsComponent extends Component {
     this.sortBy = this.sortBy.bind(this);
   }
 
-  
+  validateEmail(email){
+    const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+    const result = pattern.test(email);
+    if(result===true){
+      console.log("good email");
+      this.setState({ hostEmail : email })
+      return true;
+    } else{
+      console.log("bad email");
+      alert("Email must have an @ and a .");
+      return false;
+    }
+  }
+
+  validatePhoneNumber(number){
+    const pattern = /^\d+$/;
+    const result = pattern.test(number);
+    if(result===true){
+      console.log("good phone");
+      this.setState({ phnNumber : number })
+      return true;
+    } else{
+      console.log("bad phone");
+      alert("Phone number must only be numbers");
+      return false;
+    }
+  }
 
   saveRecords = (e) => {
     e.preventDefault();
+
+    if(!this.validateEmail(this.state.hostEmail)) return;
+    if(!this.validatePhoneNumber(this.state.phnNumber)) return;
+    
+
     let protoSean = {
       visitor: this.state.visitor,
       numberPlate: this.state.numberPlate,

@@ -87,6 +87,7 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
                         <td>{protoSean.visitor}</td>
                         <td>{protoSean.numberPlate}</td>
                         <td>{protoSean.phnNumber}</td>
+                        <td>{protoSean.hostEmail}</td>
                         <td>{protoSean.expectedAt}</td>
                         <td className="action-column">
                               <button style={{width:"50px" }}
@@ -115,6 +116,7 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
                         <td>{protoSean.visitor}</td>
                         <td>{protoSean.numberPlate}</td>
                         <td>{protoSean.phnNumber}</td>
+                        <td>{protoSean.hostEmail}</td>
                         <td>{protoSean.expectedAt}</td>
                         <td className="action-column">
                               <button style={{width:"50px" }}
