@@ -4,6 +4,10 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import ProtoSeanService from "../Services/ProtoSeanService";
 import { useHistory } from "react-router-dom";
 
+import emailjs from 'emailjs-com';
+import { init } from 'emailjs-com';
+init("user_M2a200P72UriRnwy71LC6");
+
 export default function InfiniteScrollComponent({records, currentDateTime}) {
 
       let history = useHistory();
@@ -65,6 +69,13 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
             history.push(`/update-record/${id}`);
       }
 
+      const sendEmail = (visitorName, email) => {
+            emailjs.send("service_sioux","template_bl2vryd",{
+              message:  `${visitorName} has arrived!`,
+              to_email: `${email}`
+              });
+          }
+
       const renderStatus = (expectedAtValue) => {
 
             var expectedAtDateTime = new Date(expectedAtValue);
@@ -98,12 +109,17 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
                               </button>
 
                               <button
-                              style={{ marginLeft: "10px",
-                              width:"80px" }}
+                              style={{ width:"80px" }}
                               onClick={() => deleteRecord(protoSean.id)}
                               className="btn btn-danger"
                               >
                               Delete
+                              </button>
+                              <button style={{  width:"80px" }}
+                                    onClick={() => sendEmail(protoSean.visitor, protoSean.hostEmail)}
+                                    className="btn btn-info"
+                                    >
+                                    Arrived
                               </button>
                         </td>
                         </tr>
@@ -127,12 +143,18 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
                               </button>
 
                               <button
-                              style={{ marginLeft: "10px",
+                              style={{ 
                               width:"80px" }}
                               onClick={() => deleteRecord(protoSean.id)}
                               className="btn btn-danger"
                               >
                               Delete
+                              </button>
+                              <button style={{  width:"80px" }}
+                                    onClick={() => sendEmail(protoSean.visitor, protoSean.hostEmail)}
+                                    className="btn btn-info"
+                                    >
+                                    Arrived
                               </button>
                         </td>
                         </tr>

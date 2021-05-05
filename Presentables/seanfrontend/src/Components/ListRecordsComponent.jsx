@@ -2,14 +2,17 @@ import React, { Component, useCallback } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 
 import TextField from "@material-ui/core/TextField";
-// import Tooltip from "@material-ui/core/Tooltip";
-
-// import ErrorIcon from "@material-ui/icons/Error";
-// import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import Tooltip from "@material-ui/core/Tooltip";
+import ErrorIcon from "@material-ui/icons/Error";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 // import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import SearchRecordsComponent from './SearchRecordsComponent';
-
 import InfiniteScrollComponent from "./InfiniteScrollComponent";
+import emailjs from 'emailjs-com';
+import { init } from 'emailjs-com';
+init("user_M2a200P72UriRnwy71LC6");
+
+
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -42,6 +45,13 @@ class ListRecordsComponent extends Component {
     this.saveRecords = this.saveRecords.bind(this);
     this.addRecord = this.addRecord.bind(this);
     this.sortBy = this.sortBy.bind(this);
+  }
+  
+  sendEmail(visitorName, email){
+    emailjs.send("service_sioux","template_bl2vryd",{
+      message:  `${visitorName} has arrived!`,
+      to_email: `${email}`
+      });
   }
 
   validateEmail(email){
