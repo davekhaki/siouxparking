@@ -152,6 +152,7 @@ class ListRecordsComponent extends Component {
 
   getAllRecords = () => {
     const { keyword, type } = this.state;
+    this.setState({isRecord: false});
     ProtoSeanService.getRecords(keyword, type).then((res) => {
       this.setState({ records: res.data });
       console.log(this.state.records);
@@ -159,6 +160,7 @@ class ListRecordsComponent extends Component {
     });
 
   }
+
 
   addRecord() {
     this.props.history.push("/add-record");

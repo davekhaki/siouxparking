@@ -4,11 +4,10 @@ import com.Certiorem.SeansInterface.Exception.ProtoSeanException;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,24 +24,31 @@ public class ProtoSeanController {
     // Get all records
     @GetMapping("/records")
     public List<ProtoSean> getAllRecords(String keyword, String type) {
-        ProtoSean protoSean = new ProtoSean();
-        ExampleMatcher matching = ExampleMatcher.matching();
-
-        if ("1".equals(type)) {
-            protoSean.setVisitor(keyword);
-            matching = matching.withMatcher("visitor", ExampleMatcher.GenericPropertyMatchers.contains());
-        } else if ("2".equals(type)) {
-            protoSean.setNumberPlate(keyword);
-            matching = matching.withMatcher("numberPlate", ExampleMatcher.GenericPropertyMatchers.contains());
-        } else if ("3".equals(type)) {
-            protoSean.setPhnNumber(keyword);
-            matching = matching.withMatcher("phnNumber", ExampleMatcher.GenericPropertyMatchers.contains());
-        }
-        Example<ProtoSean> example = Example.of(protoSean, matching);
-        if (keyword == null || type == null)
             return protoSeanRepo.findAll();
-        else
-            return protoSeanRepo.findAll(example);
+    }
+
+    @GetMapping("/records/{keyword}/{type}")
+    public List<ProtoSean> searchRecords(@PathVariable("keyword") String keyword, @PathVariable("type") String type) {
+        //type 1 = visitor, type 2 = numberPlate, type 3 = phone number
+
+        keyword = keyword.toLowerCase();
+
+        List<ProtoSean> daList = protoSeanRepo.findAll();
+        List<ProtoSean> finalList = new ArrayList<>();
+
+        for (ProtoSean record: daList) {
+            if(type.equals("1") && record.getVisitor().toLowerCase().contains(keyword)){
+                finalList.add(record);
+            }
+            else if(type.equals("2") && record.getNumberPlate().toLowerCase().contains(keyword)){
+                finalList.add(record);
+            }
+            else if(type.equals("3") && record.getPhnNumber().toLowerCase().contains(keyword)){
+                finalList.add(record);
+            }
+        }
+
+        return finalList;
     }
 
     // Add the records
