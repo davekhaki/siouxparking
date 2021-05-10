@@ -23,7 +23,11 @@ function App() {
         <div className="container">
           <Switch>
             <Route path="/" exact component={HomeComponent}></Route>
-            <Route path="/records" exact component={ListRecordsComponent}></Route>
+            <Route
+              path="/records"
+              exact
+              component={ListRecordsComponent}
+            ></Route>
             <Route path="/add-record" component={AddRecordsComponent}></Route>
             <Route
               path="/update-record/:id"

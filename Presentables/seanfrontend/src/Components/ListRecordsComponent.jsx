@@ -1,18 +1,14 @@
-import React, { Component, useCallback } from "react";
+import React, { Component, useCallback, useState } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 
 import TextField from "@material-ui/core/TextField";
-import Tooltip from "@material-ui/core/Tooltip";
-import ErrorIcon from "@material-ui/icons/Error";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 // import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import SearchRecordsComponent from './SearchRecordsComponent';
+import SearchRecordsComponent from "./SearchRecordsComponent";
 import InfiniteScrollComponent from "./InfiniteScrollComponent";
-import emailjs from 'emailjs-com';
-import { init } from 'emailjs-com';
+import emailjs from "emailjs-com";
+import { init } from "emailjs-com";
+import DateSelectorComponent from "./DateSelectorComponent";
 init("user_M2a200P72UriRnwy71LC6");
-
-
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -27,10 +23,11 @@ class ListRecordsComponent extends Component {
       hostEmail: "",
       currentDateTime: new Date(),
       isAscending: false,
-      keyword: '',
+      keyword: "",
       type: 1,
       hasMore: false,
-      isRecord: false
+      isRecord: false,
+      selectedDate: "",
       // currentPage: 1,
       // recordsPerPage: 10,
     };
@@ -45,37 +42,37 @@ class ListRecordsComponent extends Component {
     this.saveRecords = this.saveRecords.bind(this);
     this.addRecord = this.addRecord.bind(this);
     this.sortBy = this.sortBy.bind(this);
+    //this.changeDateSelection = this.changeDateSelection.bind(this);
   }
-  
-  sendEmail(visitorName, email){
-    emailjs.send("service_sioux","template_bl2vryd",{
-      message:  `${visitorName} has arrived!`,
-      to_email: `${email}`
-      });
+  sendEmail(visitorName, email) {
+    emailjs.send("service_sioux", "template_bl2vryd", {
+      message: `${visitorName} has arrived!`,
+      to_email: `${email}`,
+    });
   }
 
-  validateEmail(email){
+  validateEmail(email) {
     const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
     const result = pattern.test(email);
-    if(result===true){
+    if (result === true) {
       console.log("good email");
-      this.setState({ hostEmail : email })
+      this.setState({ hostEmail: email });
       return true;
-    } else{
+    } else {
       console.log("bad email");
       alert("Email must have an @ and a .");
       return false;
     }
   }
 
-  validatePhoneNumber(number){
+  validatePhoneNumber(number) {
     const pattern = /^\d+$/;
     const result = pattern.test(number);
-    if(result===true){
+    if (result === true) {
       console.log("good phone");
-      this.setState({ phnNumber : number })
+      this.setState({ phnNumber: number });
       return true;
-    } else{
+    } else {
       console.log("bad phone");
       alert("Phone number must only be numbers");
       return false;
@@ -85,9 +82,8 @@ class ListRecordsComponent extends Component {
   saveRecords = (e) => {
     e.preventDefault();
 
-    if(!this.validateEmail(this.state.hostEmail)) return;
-    if(!this.validatePhoneNumber(this.state.phnNumber)) return;
-    
+    if (!this.validateEmail(this.state.hostEmail)) return;
+    if (!this.validatePhoneNumber(this.state.phnNumber)) return;
 
     let protoSean = {
       visitor: this.state.visitor,
@@ -106,12 +102,10 @@ class ListRecordsComponent extends Component {
       numberPlate: "",
       phnNumber: "",
       hostEmail: "",
-      expectedAt: ""
+      expectedAt: "",
     });
     window.location.reload(true);
   };
-
-
 
   changeVisitorHandeler = (event) => {
     this.setState({ visitor: event.target.value });
@@ -137,14 +131,17 @@ class ListRecordsComponent extends Component {
     this.setState({ keyword: event.target.value }, () => {
       this.getAllRecords();
     });
-  }
+  };
 
   changeRecordSelectHandler = (event) => {
     this.setState({ type: event.target.value }, () => {
       this.getAllRecords();
     });
-  }
+  };
 
+  //changeDateSelection = (event) => {
+  //this.setState({ selectedDate: event.target.value }, () => {});
+  //};
 
   componentDidMount() {
     this.getAllRecords();
@@ -152,70 +149,105 @@ class ListRecordsComponent extends Component {
 
   getAllRecords = () => {
     const { keyword, type } = this.state;
-    this.setState({isRecord: false});
+    this.setState({ isRecord: false });
     ProtoSeanService.getRecords(keyword, type).then((res) => {
       this.setState({ records: res.data });
       console.log(this.state.records);
-      this.setState({isRecord: true});  
+      this.setState({ isRecord: true });
     });
-
-  }
-
+  };
 
   addRecord() {
     this.props.history.push("/add-record");
   }
 
   sortBy(key) {
-
     var variable = this.state.records.sort();
     console.log(variable);
 
-    if(this.state.isAscending){
+    if (this.state.isAscending) {
       this.setState({
-        records: this.state.records.sort((a,b) => a[key] < b[key] ? 1 : -1)
-      })
+        records: this.state.records.sort((a, b) => (a[key] < b[key] ? 1 : -1)),
+      });
       this.setState({
-        isAscending: false
-      })
+        isAscending: false,
+      });
+    } else {
+      this.setState({
+        records: this.state.records.sort((a, b) => (a[key] > b[key] ? 1 : -1)),
+      });
+      this.setState({
+        isAscending: true,
+      });
     }
-    else{
-      this.setState({
-        records: this.state.records.sort((a,b) => a[key] > b[key] ? 1 : -1) 
-      })
-      this.setState({
-        isAscending: true
-      })
-    }
-
   }
 
   render() {
-
-
     return (
       <div>
         <div className="row list-row records-table">
-        <SearchRecordsComponent keyword={this.state.keyword}
-                                  type={this.state.type}
-                                  changeRecordInputHandler={this.changeRecordInputHandler}
-                                  changeRecordSelectHandler={this.changeRecordSelectHandler} />
+          <SearchRecordsComponent
+            keyword={this.state.keyword}
+            type={this.state.type}
+            changeRecordInputHandler={this.changeRecordInputHandler}
+            changeRecordSelectHandler={this.changeRecordSelectHandler}
+          />
           <h3>Records</h3>
-          <table className="table table-striped table-borderless list-item-1" >
+          <DateSelectorComponent />
+          <table className="table table-striped table-borderless list-item-1">
             <thead>
               <tr>
                 <th> Status </th>
-                <th onClick={() => {this.sortBy('visitor')}}> Visitor </th>
-                <th onClick={() => {this.sortBy('numberPlate')}}> License Plate </th>
-                <th onClick={() => {this.sortBy('phnNumber')}}> Phone Number </th>
-                <th onClick={() => {this.sortBy('hostEmail')}}> Host Email </th>
-                <th onClick={() => {this.sortBy('expectedAt')}}> Expected At </th>
-                <th > Actions </th>
+                <th
+                  onClick={() => {
+                    this.sortBy("visitor");
+                  }}
+                >
+                  {" "}
+                  Visitor{" "}
+                </th>
+                <th
+                  onClick={() => {
+                    this.sortBy("numberPlate");
+                  }}
+                >
+                  {" "}
+                  License Plate{" "}
+                </th>
+                <th
+                  onClick={() => {
+                    this.sortBy("phnNumber");
+                  }}
+                >
+                  {" "}
+                  Phone Number{" "}
+                </th>
+                <th
+                  onClick={() => {
+                    this.sortBy("hostEmail");
+                  }}
+                >
+                  Host Email{" "}
+                </th>
+                <th
+                  onClick={() => {
+                    this.sortBy("expectedAt");
+                  }}
+                >
+                  {" "}
+                  Expected At{" "}
+                </th>
+                <th> Actions </th>
               </tr>
             </thead>
 
             <tbody>
-              { this.state.isRecord && <InfiniteScrollComponent records ={this.state.records}  currentDateTime ={this.state.currentDateTime}/>}
+              {this.state.isRecord && (
+                <InfiniteScrollComponent
+                  records={this.state.records}
+                  currentDateTime={this.state.currentDateTime}
+                />
+              )}
             </tbody>
           </table>
           <div className="list-item-2">
@@ -256,7 +288,8 @@ class ListRecordsComponent extends Component {
 
                   <div className="form-group">
                     <label>Host Email:</label>
-                    <input type="email"
+                    <input
+                      type="email"
                       name="hostEmail"
                       className="form-control textbox"
                       value={this.state.hostEmail}
