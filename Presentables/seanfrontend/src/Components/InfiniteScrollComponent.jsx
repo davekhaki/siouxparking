@@ -1,12 +1,16 @@
 import React, { useRef, useCallback, useState, useEffect} from 'react'
 import ErrorIcon from "@material-ui/icons/Error";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import Tooltip from "@material-ui/core/Tooltip";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import InfoIcon from '@material-ui/icons/Info';
+import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
+import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
+import Brightness1Icon from '@material-ui/icons/Brightness1';
 import ProtoSeanService from "../Services/ProtoSeanService";
 import { useHistory } from "react-router-dom";
-
-import emailjs from 'emailjs-com';
-import { init } from 'emailjs-com';
-init("user_M2a200P72UriRnwy71LC6");
+import Notifier from "react-desktop-notification"
 
 export default function InfiniteScrollComponent({records, currentDateTime}) {
 
@@ -63,30 +67,43 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
                   window.location.reload(true);
             });
       }
+
+      const gotNewNotification = (visitor) =>{
+            Notifier.start("A visitor has arrived!",visitor + " has just arrived","localhost:3000/records", "/SiouxLogo.png");
+      }
         
           
       const editRecord = (id) => {
             history.push(`/update-record/${id}`);
       }
 
-      const sendEmail = (visitorName, email) => {
-            emailjs.send("service_sioux","template_bl2vryd",{
-              message:  `${visitorName} has arrived!`,
-              to_email: `${email}`
-              });
-          }
-
-      const renderStatus = (expectedAtValue) => {
+      const renderStatus = (expectedAtValue, arrivedCheck) => {
 
             var expectedAtDateTime = new Date(expectedAtValue);
-            if (expectedAtDateTime < currentDateTime) {
-              return <ErrorIcon color="error" />;
+            
+            if(arrivedCheck === 1){
+                  return ( <Tooltip title="Arrived" placement="left" arrow>
+                  <CheckCircleIcon style={{ color: "green" }} />
+                  </Tooltip>);
             }
-            return <FiberManualRecordIcon style={{ color: "orange" }} />;
+            else if (arrivedCheck === 0){
+                  if (expectedAtDateTime < currentDateTime) {
+                        return ( <Tooltip title="Late" placement="left" arrow> 
+                        <ErrorIcon color="error" /> 
+                        </Tooltip> )
+                  }
+                  else if (expectedAtDateTime > currentDateTime) {
+                        return( <Tooltip title="Expected" placement="left" arrow>
+                        <InfoIcon style={{ color: "orange" }} /> 
+                        </Tooltip>);
+                  }
+            }
+
+            
+            
+
             /* <CheckCircleIcon style={{ color: "green" }} /> */
       }
-
-
 
       const tableGenerate = (protoSean, index) => {
 
@@ -94,33 +111,37 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
                   
                   return(
                         <tr key={protoSean.id} ref={lastBookElementRef}>
-                        <td>{renderStatus(protoSean.expectedAt)}</td>
+                        <td>{renderStatus(protoSean.expectedAt, protoSean.arrived)}</td>
                         <td>{protoSean.visitor}</td>
                         <td>{protoSean.numberPlate}</td>
                         <td>{protoSean.phnNumber}</td>
                         <td>{protoSean.hostEmail}</td>
                         <td>{protoSean.expectedAt}</td>
                         <td className="action-column">
-                              <button style={{width:"50px" }}
+
+                              <button style={{width:"80px" }}
                               onClick={() => editRecord(protoSean.id)}
                               className="btn btn-info"
                               >
+                              <EditTwoToneIcon  
+                                    style={{ color: "white", width: "25px", height: "25px", marginRight: "2px" }} />
                               Edit
                               </button>
 
                               <button
-                              style={{ width:"80px" }}
+                              style={{ 
+                                    width: "100px",
+                                    marginLeft: "10px"}}
                               onClick={() => deleteRecord(protoSean.id)}
                               className="btn btn-danger"
                               >
+                              <DeleteTwoToneIcon  
+                                        style={{ color: "white", width: "25px", height: "25px", marginRight: "2px" }} />
                               Delete
                               </button>
-                              <button style={{  width:"80px" }}
-                                    onClick={() => sendEmail(protoSean.visitor, protoSean.hostEmail)}
-                                    className="btn btn-info"
-                                    >
-                                    Arrived
-                              </button>
+
+                              <button onClick = {()=> gotNewNotification(protoSean.visitor)}></button>
+                              
                         </td>
                         </tr>
                   )
@@ -128,33 +149,32 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
             else {
                   return (
                         <tr key={protoSean.id}>
-                        <td>{renderStatus(protoSean.expectedAt)}</td>
+                        <td>{renderStatus(protoSean.expectedAt, protoSean.arrived)}</td>
                         <td>{protoSean.visitor}</td>
                         <td>{protoSean.numberPlate}</td>
                         <td>{protoSean.phnNumber}</td>
                         <td>{protoSean.hostEmail}</td>
                         <td>{protoSean.expectedAt}</td>
                         <td className="action-column">
-                              <button style={{width:"50px" }}
+                              <button style={{width:"80px" }}
                               onClick={() => editRecord(protoSean.id)}
                               className="btn btn-info"
                               >
+                              <EditTwoToneIcon  
+                                    style={{ color: "white", width: "25px", height: "25px", marginRight: "2px" }} />
                               Edit
                               </button>
 
                               <button
                               style={{ 
-                              width:"80px" }}
+                                    width: "100px",
+                                    marginLeft: "10px"}}
                               onClick={() => deleteRecord(protoSean.id)}
                               className="btn btn-danger"
                               >
+                              <DeleteTwoToneIcon  
+                                        style={{ color: "white", width: "25px", height: "25px", marginRight: "2px" }} />
                               Delete
-                              </button>
-                              <button style={{  width:"80px" }}
-                                    onClick={() => sendEmail(protoSean.visitor, protoSean.hostEmail)}
-                                    className="btn btn-info"
-                                    >
-                                    Arrived
                               </button>
                         </td>
                         </tr>

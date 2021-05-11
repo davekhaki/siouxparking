@@ -2,17 +2,12 @@ import React, { Component, useCallback } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 
 import TextField from "@material-ui/core/TextField";
-import Tooltip from "@material-ui/core/Tooltip";
-import ErrorIcon from "@material-ui/icons/Error";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+// import Tooltip from "@material-ui/core/Tooltip";
+// import ErrorIcon from "@material-ui/icons/Error";
+// import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 // import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import SearchRecordsComponent from './SearchRecordsComponent';
 import InfiniteScrollComponent from "./InfiniteScrollComponent";
-import emailjs from 'emailjs-com';
-import { init } from 'emailjs-com';
-init("user_M2a200P72UriRnwy71LC6");
-
-
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -25,6 +20,7 @@ class ListRecordsComponent extends Component {
       phnNumber: "",
       expectedAt: "",
       hostEmail: "",
+      arrived: "",
       currentDateTime: new Date(),
       isAscending: false,
       keyword: '',
@@ -47,13 +43,6 @@ class ListRecordsComponent extends Component {
     this.sortBy = this.sortBy.bind(this);
   }
   
-  sendEmail(visitorName, email){
-    emailjs.send("service_sioux","template_bl2vryd",{
-      message:  `${visitorName} has arrived!`,
-      to_email: `${email}`
-      });
-  }
-
   validateEmail(email){
     const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
     const result = pattern.test(email);
@@ -145,7 +134,6 @@ class ListRecordsComponent extends Component {
     });
   }
 
-
   componentDidMount() {
     this.getAllRecords();
   }
@@ -195,29 +183,32 @@ class ListRecordsComponent extends Component {
 
     return (
       <div>
-        <div className="row list-row records-table">
-        <SearchRecordsComponent keyword={this.state.keyword}
+        <div className="row list-row">
+          <SearchRecordsComponent keyword={this.state.keyword}
                                   type={this.state.type}
                                   changeRecordInputHandler={this.changeRecordInputHandler}
                                   changeRecordSelectHandler={this.changeRecordSelectHandler} />
           <h3>Records</h3>
-          <table className="table table-striped table-borderless list-item-1" >
-            <thead>
-              <tr>
-                <th> Status </th>
-                <th onClick={() => {this.sortBy('visitor')}}> Visitor </th>
-                <th onClick={() => {this.sortBy('numberPlate')}}> License Plate </th>
-                <th onClick={() => {this.sortBy('phnNumber')}}> Phone Number </th>
-                <th onClick={() => {this.sortBy('hostEmail')}}> Host Email </th>
-                <th onClick={() => {this.sortBy('expectedAt')}}> Expected At </th>
-                <th > Actions </th>
-              </tr>
-            </thead>
+          <div className="records-table">
+            <table className="table table-striped table-borderless list-item-1" >
+              <thead className="table-head">
+                <tr>
+                  <th> Status </th>
+                  <th onClick={() => {this.sortBy('visitor')}}> Visitor </th>
+                  <th onClick={() => {this.sortBy('numberPlate')}}> License Plate </th>
+                  <th onClick={() => {this.sortBy('phnNumber')}}> Phone Number </th>
+                  <th onClick={() => {this.sortBy('hostEmail')}}> Host Email </th>
+                  <th onClick={() => {this.sortBy('expectedAt')}}> Expected At </th>
+                  <th > Actions </th>
+                </tr>
+              </thead>
 
-            <tbody>
-              { this.state.isRecord && <InfiniteScrollComponent records ={this.state.records}  currentDateTime ={this.state.currentDateTime}/>}
-            </tbody>
-          </table>
+              <tbody className="table-body">
+                { this.state.isRecord && <InfiniteScrollComponent records ={this.state.records}  currentDateTime ={this.state.currentDateTime}/>}
+              </tbody>
+            </table>
+          </div>
+          
           <div className="list-item-2">
             <h3 className="text-center">Add record</h3>
             <div className="row">

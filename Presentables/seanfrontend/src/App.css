@@ -34,11 +34,11 @@ a:hover, a:visited, a:link, a:active
 
 .list-row {
   display: grid !important;
-  grid-template-columns: 1fr, 05fr!important;
+  grid-template-columns: 1fr, 1fr!important;
 }
 
 .action-column{
-  width: 500px!important;
+  display: flex;
 }
 
 .list-item-1 {
@@ -98,9 +98,10 @@ button {
 
 .records-table {
   max-height: 75vh !important; 
+  min-width: fit-content;
   overflow-y: scroll !important;
 }
 
-/* .records-table::-webkit-scrollbar {
+.records-table::-webkit-scrollbar {
   display: none;
-} */
+}
