@@ -5,10 +5,7 @@ import TextField from "@material-ui/core/TextField";
 // import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import SearchRecordsComponent from "./SearchRecordsComponent";
 import InfiniteScrollComponent from "./InfiniteScrollComponent";
-import emailjs from "emailjs-com";
-import { init } from "emailjs-com";
 import DateSelectorComponent from "./DateSelectorComponent";
-init("user_M2a200P72UriRnwy71LC6");
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -42,13 +39,8 @@ class ListRecordsComponent extends Component {
     this.saveRecords = this.saveRecords.bind(this);
     this.addRecord = this.addRecord.bind(this);
     this.sortBy = this.sortBy.bind(this);
+    this.dateSelectorReceive = this.dateSelectorReceive.bind(this);
     //this.changeDateSelection = this.changeDateSelection.bind(this);
-  }
-  sendEmail(visitorName, email) {
-    emailjs.send("service_sioux", "template_bl2vryd", {
-      message: `${visitorName} has arrived!`,
-      to_email: `${email}`,
-    });
   }
 
   validateEmail(email) {
@@ -148,9 +140,10 @@ class ListRecordsComponent extends Component {
   }
 
   getAllRecords = () => {
-    const { keyword, type } = this.state;
+    //if selectedDate is 0, else return selected date records, gotta add into API
+    const { keyword, type, selectedDate } = this.state;
     this.setState({ isRecord: false });
-    ProtoSeanService.getRecords(keyword, type).then((res) => {
+    ProtoSeanService.getRecords(keyword, type, selectedDate).then((res) => {
       this.setState({ records: res.data });
       console.log(this.state.records);
       this.setState({ isRecord: true });
@@ -182,6 +175,11 @@ class ListRecordsComponent extends Component {
     }
   }
 
+  dateSelectorReceive(date) {
+    console.log(date);
+    this.setState({selectedDate: date});
+  }
+
   render() {
     return (
       <div>
@@ -193,7 +191,7 @@ class ListRecordsComponent extends Component {
             changeRecordSelectHandler={this.changeRecordSelectHandler}
           />
           <h3>Records</h3>
-          <DateSelectorComponent />
+          <DateSelectorComponent passDate = {this.dateSelectorReceive}/>
           <table className="table table-striped table-borderless list-item-1">
             <thead>
               <tr>
