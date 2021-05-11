@@ -38,18 +38,18 @@ class EmailSenderComponent {
 
     }
 
-    @Scheduled(fixedDelay = 1000)
-    public void NotifyByEmail(){
-        List<ProtoSean> visitors = protoSeanRepo.findAll();
-
-        visitors.forEach(visitor ->{
-            if(visitor.getArrived() == 1){
-                if(visitor.getHostNotified() != 1){
-                    this.sendEmail(visitor.getHostEmail(), visitor.getVisitor() + " has arrived!", "A visitor has arrived");
-                    visitor.setHostNotified(1);
-                    protoSeanRepo.save(visitor);
-                }
-            }
-        });
-    }
+//    @Scheduled(fixedDelay = 1000)
+//    public void NotifyByEmail(){
+//        List<ProtoSean> visitors = protoSeanRepo.findAll();
+//
+//        visitors.forEach(visitor ->{
+//            if(visitor.getArrived() == 1){
+//                if(visitor.getHostNotified() != 1){
+//                    this.sendEmail(visitor.getHostEmail(), visitor.getVisitor() + " has arrived!", "A visitor has arrived");
+//                    visitor.setHostNotified(1);
+//                    protoSeanRepo.save(visitor);
+//                }
+//            }
+//        });
+//    }
 }

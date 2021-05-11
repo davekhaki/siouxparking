@@ -141,7 +141,7 @@ const tableGenerate = (protoSean, index) => {
                         Delete
                         </button>
 
-                        <button onClick = {()=> gotNewNotification(protoSean.visitor)}></button>
+                        {/* <button onClick = {()=> gotNewNotification(protoSean.visitor)}></button> */}
                         
                   </td>
                   </tr>

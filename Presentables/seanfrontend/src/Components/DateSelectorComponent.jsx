@@ -34,7 +34,6 @@ function DateSelectorComponent({passDate}) {
   
 
   return (
-    <div>
       <DatePicker
         dateFormat="yyyy/MM/dd"
         selected={selectedDate}
@@ -46,7 +45,6 @@ function DateSelectorComponent({passDate}) {
         showYearDropdown
         scrollableYearDropdown
       />
-    </div>
   );
 }
 

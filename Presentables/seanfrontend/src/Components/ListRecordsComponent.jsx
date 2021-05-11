@@ -200,73 +200,83 @@ class ListRecordsComponent extends Component {
   render() {
     return (
       <div>
-        <div className="row list-row records-table">
-          <SearchRecordsComponent
-            keyword={this.state.keyword}
-            type={this.state.type}
-            changeRecordInputHandler={this.changeRecordInputHandler}
-            changeRecordSelectHandler={this.changeRecordSelectHandler}
-          />
-          <h3>Records</h3>
-          <DateSelectorComponent passDate = {this.dateSelectorReceive}/>
-          <table className="table table-striped table-borderless list-item-1">
-            <thead>
-              <tr>
-                <th> Status </th>
-                <th
-                  onClick={() => {
-                    this.sortBy("visitor");
-                  }}
-                >
-                  {" "}
-                  Visitor{" "}
-                </th>
-                <th
-                  onClick={() => {
-                    this.sortBy("numberPlate");
-                  }}
-                >
-                  {" "}
-                  License Plate{" "}
-                </th>
-                <th
-                  onClick={() => {
-                    this.sortBy("phnNumber");
-                  }}
-                >
-                  {" "}
-                  Phone Number{" "}
-                </th>
-                <th
-                  onClick={() => {
-                    this.sortBy("hostEmail");
-                  }}
-                >
-                  Host Email{" "}
-                </th>
-                <th
-                  onClick={() => {
-                    this.sortBy("expectedAt");
-                  }}
-                >
-                  {" "}
-                  Expected At{" "}
-                </th>
-                <th> Actions </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {this.state.isRecord && (
-                <InfiniteScrollComponent
-                  records={this.state.records}
-                  currentDateTime={this.state.currentDateTime}
+        <div className="row list-row ">
+          <div className="search-controls">
+            <div className="search-control-1">
+                <SearchRecordsComponent
+                  keyword={this.state.keyword}
+                  type={this.state.type}
+                  changeRecordInputHandler={this.changeRecordInputHandler}
+                  changeRecordSelectHandler={this.changeRecordSelectHandler}
                 />
-              )}
-            </tbody>
-          </table>
+                {/* <h3>Records</h3> */}
+              </div>
+              <div className="search-control-2">
+                <DateSelectorComponent passDate = {this.dateSelectorReceive}/>
+              </div>
+          </div>
+            
+          <div className="records-table list-item-1">
+            <table className="table table-striped table-borderless ">
+              <thead className="table-head">
+                <tr>
+                  <th> Status </th>
+                  <th
+                    onClick={() => {
+                      this.sortBy("visitor");
+                    }}
+                  >
+                    {" "}
+                    Visitor{" "}
+                  </th>
+                  <th
+                    onClick={() => {
+                      this.sortBy("numberPlate");
+                    }}
+                  >
+                    {" "}
+                    License Plate{" "}
+                  </th>
+                  <th
+                    onClick={() => {
+                      this.sortBy("phnNumber");
+                    }}
+                  >
+                    {" "}
+                    Phone Number{" "}
+                  </th>
+                  <th
+                    onClick={() => {
+                      this.sortBy("hostEmail");
+                    }}
+                  >
+                    Host Email{" "}
+                  </th>
+                  <th
+                    onClick={() => {
+                      this.sortBy("expectedAt");
+                    }}
+                  >
+                    {" "}
+                    Expected At{" "}
+                  </th>
+                  <th> Actions </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {this.state.isRecord && (
+                  <InfiniteScrollComponent
+                    records={this.state.records}
+                    currentDateTime={this.state.currentDateTime}
+                  />
+                )}
+              </tbody>
+            </table>
+          </div>
+          
           <div className="list-item-2">
-            <h3 className="text-center">Add Record</h3>
+            <h4 className="text-center">Create new appointment</h4>
             <div className="row">
               <div className="card-body">
                 <form>
@@ -339,7 +349,7 @@ class ListRecordsComponent extends Component {
                     className="btn btn-success"
                     onClick={this.saveRecords}
                   >
-                    Add Record
+                    Create
                   </button>
                 </form>
               </div>
