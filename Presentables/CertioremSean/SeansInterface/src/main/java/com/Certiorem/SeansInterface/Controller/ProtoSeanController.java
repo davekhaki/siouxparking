@@ -60,7 +60,10 @@ public class ProtoSeanController {
 
         for (ProtoSean record: daList) {
             if(record.getExpectedAt().toString().contains(selectedDate)) {
-                if(type.equals("1") && record.getVisitor().toLowerCase().contains(keyword)){
+                if(type.equals("1") && keyword.equals("date")) {
+                    finalList.add(record);
+                }
+                else if(type.equals("1") && record.getVisitor().toLowerCase().contains(keyword)){
                     finalList.add(record);
                 }
                 else if(type.equals("2") && record.getNumberPlate().toLowerCase().contains(keyword)){

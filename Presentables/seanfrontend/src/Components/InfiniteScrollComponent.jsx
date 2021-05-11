@@ -34,13 +34,11 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
                   if(entries[0].isIntersecting) {
                         console.log("Visible");
                         setCurrentPage(previousPageNumber => previousPageNumber + 1);
-                        console.log(currentPage);
                   }
             })
             if(node) {
                   observer.current.observe(node);
             }
-            console.log(node);
       }, [isLoading, hasMore]);
 
       useEffect(() => {
@@ -53,7 +51,7 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
       }
       else {
             setModifiedRecords(modifiedRecords.concat(records.slice(indexOfFirstRecord, indexOfLastRecord)) );
-            console.log(currentPage);
+            console.log("Page: " + currentPage);
       }
 
 

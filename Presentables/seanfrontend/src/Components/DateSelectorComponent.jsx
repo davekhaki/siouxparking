@@ -9,7 +9,6 @@ function DateSelectorComponent({passDate}) {
   useEffect(() => {
     if(selectedDate != null) {
       console.log("date changed")
-      console.log(selectedDate)
     }
   }, [selectedDate]);
 
@@ -40,7 +39,16 @@ function DateSelectorComponent({passDate}) {
         selected={selectedDate}
         onChange={date => {
           setSelectedDate(date);
-          passDate(date.getFullYear() + "-" + monthFormatter(date.getMonth()) + "-" + dayFormatter(date.getDate()))
+          console.log(date)
+          if(date == null) {
+            passDate("");
+          } else {
+            passDate(date.getFullYear() + "-" + monthFormatter(date.getMonth() + 1) + "-" + dayFormatter(date.getDate()));
+          }
+
+
+          
+
         } }
         filterDate={date => date.getDay() != 6 && date.getDay() != 0}
         showYearDropdown
