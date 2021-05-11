@@ -97,6 +97,7 @@ class ListRecordsComponent extends Component {
         this.state.expectedAt.split("T")[0] +
         " " +
         this.state.expectedAt.split("T")[1],
+      hasWhatsApp: this.state.hasWhatsApp,
     };
 
     ProtoSeanService.addRecords(protoSean);
