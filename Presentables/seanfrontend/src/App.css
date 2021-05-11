@@ -34,11 +34,11 @@ a:hover, a:visited, a:link, a:active
 
 .list-row {
   display: grid !important;
-  grid-template-columns: 1fr, 05fr;
+  grid-template-columns: 1fr, 1fr!important;
 }
 
 .action-column{
-  width: 180px;
+  display: flex;
 }
 
 .list-item-1 {
@@ -84,4 +84,24 @@ button {
   padding: 1rem 2rem;
   width: 120px;
   cursor: pointer;
+}
+
+.icon-meaning{
+  visibility: hidden;
+}
+
+.MuiSvgIcon-colorError:hover .icon-meaning{
+  visibility: visible;
+  background: yellow;
+}
+
+
+.records-table {
+  max-height: 75vh !important; 
+  min-width: fit-content;
+  overflow-y: scroll !important;
+}
+
+.records-table::-webkit-scrollbar {
+  display: none;
 }

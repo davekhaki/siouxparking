@@ -24,6 +24,15 @@ public class ProtoSean {
 
     private String phnNumber;
 
+    private String hostEmail;
+
+    private int arrived;
+
+    private int hostNotified;
+
+    @Column(columnDefinition = "integer default 1")
+    private int hasWhatsApp;
+
     @Temporal(TemporalType.TIMESTAMP) //TIMESTAMP == date + time
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date expectedAt;

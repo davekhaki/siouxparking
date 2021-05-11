@@ -41,11 +41,11 @@ class HeaderComponent extends Component {
                   </Link>
                 </li> */}
 
-                <li>
+                {/* <li>
                   <Link to='/visit-history'>
                     VisitHistory
                   </Link>
-                </li>
+                </li> */}
 
                 <li>
                   <LoginButtonComponent/>
