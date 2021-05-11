@@ -33,7 +33,7 @@ public class ProtoSeanController {
 
         keyword = keyword.toLowerCase();
 
-        List<ProtoSean> daList = protoSeanRepo.findAll();
+        List<ProtoSean> daList = protoSeanRepo.findAll(); //less gooo
         List<ProtoSean> finalList = new ArrayList<>();
 
         for (ProtoSean record: daList) {
@@ -45,6 +45,30 @@ public class ProtoSeanController {
             }
             else if(type.equals("3") && record.getPhnNumber().toLowerCase().contains(keyword)){
                 finalList.add(record);
+            }
+        }
+
+        return finalList;
+    }
+
+    @GetMapping("/records/{keyword}/{type}/{selectedDate}")
+    public List<ProtoSean> searchRecordsWithDate(@PathVariable("keyword") String keyword, @PathVariable("type") String type, @PathVariable("selectedDate") String selectedDate) {
+        keyword = keyword.toLowerCase();
+
+        List<ProtoSean> daList = protoSeanRepo.findAll();
+        List<ProtoSean> finalList = new ArrayList<>();
+
+        for (ProtoSean record: daList) {
+            if(record.getExpectedAt().toString().contains(selectedDate)) {
+                if(type.equals("1") && record.getVisitor().toLowerCase().contains(keyword)){
+                    finalList.add(record);
+                }
+                else if(type.equals("2") && record.getNumberPlate().toLowerCase().contains(keyword)){
+                    finalList.add(record);
+                }
+                else if(type.equals("3") && record.getPhnNumber().toLowerCase().contains(keyword)){
+                    finalList.add(record);
+                }
             }
         }
 
