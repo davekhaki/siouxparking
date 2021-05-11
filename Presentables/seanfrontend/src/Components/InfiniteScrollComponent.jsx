@@ -1,165 +1,186 @@
 import React, { useRef, useCallback, useState, useEffect } from "react";
 import ErrorIcon from "@material-ui/icons/Error";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import Tooltip from "@material-ui/core/Tooltip";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import InfoIcon from '@material-ui/icons/Info';
+import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
+import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
+import Brightness1Icon from '@material-ui/icons/Brightness1';
 import ProtoSeanService from "../Services/ProtoSeanService";
 import { useHistory } from "react-router-dom";
+import Notifier from "react-desktop-notification"
 
-import emailjs from "emailjs-com";
-import { init } from "emailjs-com";
-init("user_M2a200P72UriRnwy71LC6");
 
-export default function InfiniteScrollComponent({ records, currentDateTime }) {
-  let history = useHistory();
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage, setRecordsPerPage] = useState(9);
-  const [modifiedRecords, setModifiedRecords] = useState(records);
+export default function InfiniteScrollComponent({records, currentDateTime}) {
 
-  const observer = useRef();
-  const lastBookElementRef = useCallback(
-    (node) => {
-      if (isLoading) {
-        return;
+      let history = useHistory();
+      const [isLoading, setIsLoading] = useState(false);
+      const [hasMore, setHasMore] = useState(false);
+      const [currentPage, setCurrentPage] = useState(1);
+      const [recordsPerPage, setRecordsPerPage] = useState(9);
+      const [modifiedRecords, setModifiedRecords] = useState(records);  
+
+      const observer = useRef();
+      const lastBookElementRef = useCallback(node => {
+            if(isLoading) {
+                  return      
+            }
+            if(observer.current) {
+                  observer.current.disconnect();
+            }
+            observer.current = new IntersectionObserver(entries => {
+                  if(entries[0].isIntersecting) {
+                        console.log("Visible");
+                        setCurrentPage(previousPageNumber => previousPageNumber + 1);
+                        console.log(currentPage);
+                  }
+            })
+            if(node) {
+                  observer.current.observe(node);
+            }
+            console.log(node);
+      }, [isLoading, hasMore]);
+
+      useEffect(() => {
+
+      const indexOfLastRecord = currentPage * recordsPerPage;
+      const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+      if(currentPage === 1){
+            setModifiedRecords(records.slice(indexOfFirstRecord, indexOfLastRecord));
+
       }
-      if (observer.current) {
-        observer.current.disconnect();
+      else {
+            setModifiedRecords(modifiedRecords.concat(records.slice(indexOfFirstRecord, indexOfLastRecord)) );
+            console.log(currentPage);
       }
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          console.log("Visible");
-          setCurrentPage((previousPageNumber) => previousPageNumber + 1);
-          console.log(currentPage);
-        }
-      });
-      if (node) {
-        observer.current.observe(node);
-      }
-      console.log(node);
-    },
-    [isLoading, hasMore]
-  );
 
-  useEffect(() => {
-    const indexOfLastRecord = currentPage * recordsPerPage;
-    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-    if (currentPage === 1) {
-      setModifiedRecords(records.slice(indexOfFirstRecord, indexOfLastRecord));
-    } else {
-      setModifiedRecords(
-        modifiedRecords.concat(
-          records.slice(indexOfFirstRecord, indexOfLastRecord)
-        )
-      );
-      console.log(currentPage);
-    }
-  }, [currentPage]);
 
-  // const [records, setRecords] = useState(records);
+}, [currentPage])
 
-  const deleteRecord = (id) => {
-    if (window.confirm("Are you sure you want to delete this?")) {
+// const [records, setRecords] = useState(records);
+
+const deleteRecord = (id) => {
       ProtoSeanService.deleteRecord(id).then((res) => {
-        records.filter((protoSean) => protoSean.id !== id);
-        window.location.reload(true);
+
+            records.filter((protoSean) => protoSean.id !== id)
+            window.location.reload(true);
       });
-    }
-  };
+}
 
-  const editRecord = (id) => {
-    history.push(`/update-record/${id}`);
-  };
+const gotNewNotification = (visitor) =>{
+      Notifier.start("A visitor has arrived!",visitor + " has just arrived","localhost:3000/records", "/SiouxLogo.png");
+}
+  
+    
+const editRecord = (id) => {
+      history.push(`/update-record/${id}`);
+}
 
-  const sendEmail = (visitorName, email) => {
-    emailjs.send("service_sioux", "template_bl2vryd", {
-      message: `${visitorName} has arrived!`,
-      to_email: `${email}`,
-    });
-  };
+const renderStatus = (expectedAtValue, arrivedCheck) => {
 
-  const renderStatus = (expectedAtValue) => {
-    var expectedAtDateTime = new Date(expectedAtValue);
-    if (expectedAtDateTime < currentDateTime) {
-      return <ErrorIcon color="error" />;
-    }
-    return <FiberManualRecordIcon style={{ color: "orange" }} />;
-    /* <CheckCircleIcon style={{ color: "green" }} /> */
-  };
+      var expectedAtDateTime = new Date(expectedAtValue);
+      
+      if(arrivedCheck === 1){
+            return ( <Tooltip title="Arrived" placement="left" arrow>
+            <CheckCircleIcon style={{ color: "green" }} />
+            </Tooltip>);
+      }
+      else if (arrivedCheck === 0){
+            if (expectedAtDateTime < currentDateTime) {
+                  return ( <Tooltip title="Late" placement="left" arrow> 
+                  <ErrorIcon color="error" /> 
+                  </Tooltip> )
+            }
+            else if (expectedAtDateTime > currentDateTime) {
+                  return( <Tooltip title="Expected" placement="left" arrow>
+                  <InfoIcon style={{ color: "orange" }} /> 
+                  </Tooltip>);
+            }
+      }
 
-  const tableGenerate = (protoSean, index) => {
-    if (modifiedRecords.length === index + 1) {
-      return (
-        <tr key={protoSean.id} ref={lastBookElementRef}>
-          <td>{renderStatus(protoSean.expectedAt)}</td>
-          <td>{protoSean.visitor}</td>
-          <td>{protoSean.numberPlate}</td>
-          <td>{protoSean.phnNumber}</td>
-          <td>{protoSean.hostEmail}</td>
-          <td>{protoSean.expectedAt}</td>
-          <td className="action-column">
-            <button
-              style={{ width: "50px" }}
-              onClick={() => editRecord(protoSean.id)}
-              className="btn btn-info"
-            >
-              Edit
-            </button>
+      
+      
 
-            <button
-              style={{ width: "80px" }}
-              onClick={() => deleteRecord(protoSean.id)}
-              className="btn btn-danger"
-            >
-              Delete
-            </button>
-            <button
-              style={{ width: "80px" }}
-              onClick={() => sendEmail(protoSean.visitor, protoSean.hostEmail)}
-              className="btn btn-info"
-            >
-              Arrived
-            </button>
-          </td>
-        </tr>
-      );
-    } else {
-      return (
-        <tr key={protoSean.id}>
-          <td>{renderStatus(protoSean.expectedAt)}</td>
-          <td>{protoSean.visitor}</td>
-          <td>{protoSean.numberPlate}</td>
-          <td>{protoSean.phnNumber}</td>
-          <td>{protoSean.hostEmail}</td>
-          <td>{protoSean.expectedAt}</td>
-          <td className="action-column">
-            <button
-              style={{ width: "50px" }}
-              onClick={() => editRecord(protoSean.id)}
-              className="btn btn-info"
-            >
-              Edit
-            </button>
+      /* <CheckCircleIcon style={{ color: "green" }} /> */
+}
 
-            <button
-              style={{
-                width: "80px",
-              }}
-              onClick={() => deleteRecord(protoSean.id)}
-              className="btn btn-danger"
-            >
-              Delete
-            </button>
-            <button
-              style={{ width: "80px" }}
-              onClick={() => sendEmail(protoSean.visitor, protoSean.hostEmail)}
-              className="btn btn-info"
-            >
-              Arrived
-            </button>
-          </td>
-        </tr>
-      );
-    }
+const tableGenerate = (protoSean, index) => {
+
+      if(modifiedRecords.length === index + 1) {
+            
+            return(
+                  <tr key={protoSean.id} ref={lastBookElementRef}>
+                  <td>{renderStatus(protoSean.expectedAt, protoSean.arrived)}</td>
+                  <td>{protoSean.visitor}</td>
+                  <td>{protoSean.numberPlate}</td>
+                  <td>{protoSean.phnNumber}</td>
+                  <td>{protoSean.hostEmail}</td>
+                  <td>{protoSean.expectedAt}</td>
+                  <td className="action-column">
+
+                        <button style={{width:"80px" }}
+                        onClick={() => editRecord(protoSean.id)}
+                        className="btn btn-info"
+                        >
+                        <EditTwoToneIcon  
+                              style={{ color: "white", width: "25px", height: "25px", marginRight: "2px" }} />
+                        Edit
+                        </button>
+
+                        <button
+                        style={{ 
+                              width: "100px",
+                              marginLeft: "10px"}}
+                        onClick={() => deleteRecord(protoSean.id)}
+                        className="btn btn-danger"
+                        >
+                        <DeleteTwoToneIcon  
+                                  style={{ color: "white", width: "25px", height: "25px", marginRight: "2px" }} />
+                        Delete
+                        </button>
+
+                        <button onClick = {()=> gotNewNotification(protoSean.visitor)}></button>
+                        
+                  </td>
+                  </tr>
+            )
+      }
+      else {
+            return (
+                  <tr key={protoSean.id}>
+                  <td>{renderStatus(protoSean.expectedAt, protoSean.arrived)}</td>
+                  <td>{protoSean.visitor}</td>
+                  <td>{protoSean.numberPlate}</td>
+                  <td>{protoSean.phnNumber}</td>
+                  <td>{protoSean.hostEmail}</td>
+                  <td>{protoSean.expectedAt}</td>
+                  <td className="action-column">
+                        <button style={{width:"80px" }}
+                        onClick={() => editRecord(protoSean.id)}
+                        className="btn btn-info"
+                        >
+                        <EditTwoToneIcon  
+                              style={{ color: "white", width: "25px", height: "25px", marginRight: "2px" }} />
+                        Edit
+                        </button>
+
+                        <button
+                        style={{ 
+                              width: "100px",
+                              marginLeft: "10px"}}
+                        onClick={() => deleteRecord(protoSean.id)}
+                        className="btn btn-danger"
+                        >
+                        <DeleteTwoToneIcon  
+                                  style={{ color: "white", width: "25px", height: "25px", marginRight: "2px" }} />
+                        Delete
+                        </button>
+                  </td>
+                  </tr>
+            )
+      }
   };
 
   return modifiedRecords.map((protoSean, index) =>

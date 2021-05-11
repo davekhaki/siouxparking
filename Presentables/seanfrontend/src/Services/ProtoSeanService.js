@@ -5,7 +5,7 @@ const PROTOSHAUN_API_BASE_URL = "http://localhost:8081/parking/records";
 class ProtoSeanService {
   getRecords(keyword, type) {
 
-    if (keyword != "") {
+    if (keyword !== "") {
       return axios.get(PROTOSHAUN_API_BASE_URL + "/" + keyword + "/" + type)
     }
     return axios.get(PROTOSHAUN_API_BASE_URL);
