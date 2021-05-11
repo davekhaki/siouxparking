@@ -100,6 +100,8 @@ public class ProtoSeanController {
         protoSean.setPhnNumber(protoSeanDetails.getPhnNumber());
         protoSean.setHostEmail(protoSeanDetails.getHostEmail());
         protoSean.setExpectedAt(protoSeanDetails.getExpectedAt());
+        protoSean.setArrived(protoSeanDetails.getArrived());
+        protoSean.setHostNotified(protoSeanDetails.getHostNotified());
 
 
         ProtoSean updatedRecord = protoSeanRepo.save(protoSean);

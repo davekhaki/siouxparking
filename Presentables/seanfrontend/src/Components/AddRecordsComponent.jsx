@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ProtoSeanService from "../Services/ProtoSeanService";
 
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
 
 class AddRecordsComponent extends Component {
   constructor(props) {
@@ -12,11 +12,13 @@ class AddRecordsComponent extends Component {
       numberPlate: "",
       phnNumber: "",
       expectedAt: "",
+      hasWhatsApp: false,
     };
     this.changeVisitorHandeler = this.changeVisitorHandeler.bind(this);
     this.changeNumberPlateHandeler = this.changeNumberPlateHandeler.bind(this);
     this.changePhnNumberHandeler = this.changePhnNumberHandeler.bind(this);
     this.changeExpectedAtHandeler = this.changeExpectedAtHandeler.bind(this);
+    this.changeHasWhatsAppHandeler = this.changeHasWhatsAppHandeler.bind(this);
     this.saveRecords = this.saveRecords.bind(this);
   }
 
@@ -26,7 +28,10 @@ class AddRecordsComponent extends Component {
       visitor: this.state.visitor,
       numberPlate: this.state.numberPlate,
       phnNumber: this.state.phnNumber,
-      expectedAt: this.state.expectedAt.split('T')[0] + " " + this.state.expectedAt.split('T')[1],
+      expectedAt:
+        this.state.expectedAt.split("T")[0] +
+        " " +
+        this.state.expectedAt.split("T")[1],
     };
     // console.log("protoSean =>" + JSON.stringify(protoSean));
 
@@ -36,6 +41,7 @@ class AddRecordsComponent extends Component {
       numberPlate: "",
       phnNumber: "",
       expectedAt: "",
+      hasWhatsApp: false,
     });
     window.location.reload(false);
   };
@@ -54,8 +60,11 @@ class AddRecordsComponent extends Component {
 
   changeExpectedAtHandeler = (event) => {
     this.setState({ expectedAt: event.target.value });
+  };
 
-  }
+  changeHasWhatsAppHandeler = (event) => {
+    this.setState({ hasWhatsApp: event.target.value });
+  };
 
   render() {
     return (
@@ -106,12 +115,15 @@ class AddRecordsComponent extends Component {
                       shrink: true,
                     }}
                   />
-                  {/* <input
-                    name="expectedAt"
-                    className="form-control textbox"
-                    value={this.state.expectedAt}
-                    onChange={this.changeExpectedAtHandeler}
-                  /> */}
+                </div>
+                <div className="form-group">
+                  <input
+                    type="radio"
+                    name="hasWhatsApp"
+                    value={this.state.hasWhatsApp}
+                    onChange={this.changeHasWhatsAppHandeler}
+                  />
+                  Has WhatsApp?
                 </div>
 
                 <button className="btn btn-success" onClick={this.saveRecords}>

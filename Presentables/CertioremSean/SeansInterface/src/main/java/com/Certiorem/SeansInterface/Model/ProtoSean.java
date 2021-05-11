@@ -28,6 +28,8 @@ public class ProtoSean {
 
     private int arrived;
 
+    private int hostNotified;
+
     @Column(columnDefinition = "integer default 1")
     private int hasWhatsApp;
 
