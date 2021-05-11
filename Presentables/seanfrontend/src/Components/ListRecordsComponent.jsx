@@ -43,12 +43,6 @@ class ListRecordsComponent extends Component {
     this.sortBy = this.sortBy.bind(this);
     //this.changeDateSelection = this.changeDateSelection.bind(this);
   }
-  sendEmail(visitorName, email) {
-    emailjs.send("service_sioux", "template_bl2vryd", {
-      message: `${visitorName} has arrived!`,
-      to_email: `${email}`,
-    });
-  }
 
   validateEmail(email) {
     const pattern =
