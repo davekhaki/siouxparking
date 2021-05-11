@@ -28,6 +28,7 @@ class ListRecordsComponent extends Component {
       hasMore: false,
       isRecord: false,
       selectedDate: "",
+      hasWhatsApp: 0,
       // currentPage: 1,
       // recordsPerPage: 10,
     };
@@ -39,6 +40,7 @@ class ListRecordsComponent extends Component {
     this.changeExpectedAtHandeler = this.changeExpectedAtHandeler.bind(this);
     this.changeRecordInputHandler = this.changeRecordInputHandler.bind(this);
     this.changeRecordSelectHandler = this.changeRecordSelectHandler.bind(this);
+    this.changeHasWhatsAppHandler = this.changeHasWhatsAppHandler.bind(this);
     this.saveRecords = this.saveRecords.bind(this);
     this.addRecord = this.addRecord.bind(this);
     this.sortBy = this.sortBy.bind(this);
@@ -52,7 +54,8 @@ class ListRecordsComponent extends Component {
   }
 
   validateEmail(email) {
-    const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+    const pattern =
+      /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
     const result = pattern.test(email);
     if (result === true) {
       console.log("good email");
@@ -103,6 +106,7 @@ class ListRecordsComponent extends Component {
       phnNumber: "",
       hostEmail: "",
       expectedAt: "",
+      hasWhatsApp: 0,
     });
     window.location.reload(true);
   };
@@ -125,6 +129,18 @@ class ListRecordsComponent extends Component {
 
   changeExpectedAtHandeler = (event) => {
     this.setState({ expectedAt: event.target.value });
+  };
+
+  changeHasWhatsAppHandler = (event) => {
+    if (event.target.checked) {
+      this.setState({
+        hasWhatsApp: 1,
+      });
+    } else {
+      this.setState({
+        hasWhatsApp: 0,
+      });
+    }
   };
 
   changeRecordInputHandler = (event) => {
@@ -251,7 +267,7 @@ class ListRecordsComponent extends Component {
             </tbody>
           </table>
           <div className="list-item-2">
-            <h3 className="text-center">Add record</h3>
+            <h3 className="text-center">Add Record</h3>
             <div className="row">
               <div className="card-body">
                 <form>
@@ -309,12 +325,15 @@ class ListRecordsComponent extends Component {
                         shrink: true,
                       }}
                     />
-                    {/* <input
-                    name="expectedAt"
-                    className="form-control textbox"
-                    value={this.state.expectedAt}
-                    onChange={this.changeExpectedAtHandeler}
-                  /> */}
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="checkbox"
+                      name="hasWhatsApp"
+                      value={this.state.hasWhatsApp}
+                      onChange={this.changeHasWhatsAppHandler}
+                    />{" "}
+                    Has WhatsApp? (Check the box, if the visitor has a WhatsApp)
                   </div>
 
                   <button
