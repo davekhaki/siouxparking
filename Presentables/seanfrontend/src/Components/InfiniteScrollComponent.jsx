@@ -101,13 +101,6 @@ export default function InfiniteScrollComponent({ records, currentDateTime }) {
             >
               Delete
             </button>
-            <button
-              style={{ width: "80px" }}
-              onClick={() => sendEmail(protoSean.visitor, protoSean.hostEmail)}
-              className="btn btn-info"
-            >
-              Arrived
-            </button>
           </td>
         </tr>
       );
@@ -137,13 +130,6 @@ export default function InfiniteScrollComponent({ records, currentDateTime }) {
               className="btn btn-danger"
             >
               Delete
-            </button>
-            <button
-              style={{ width: "80px" }}
-              onClick={() => sendEmail(protoSean.visitor, protoSean.hostEmail)}
-              className="btn btn-info"
-            >
-              Arrived
             </button>
           </td>
         </tr>
