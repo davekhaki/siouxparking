@@ -38,6 +38,7 @@ class ListRecordsComponent extends Component {
     this.changeRecordInputHandler = this.changeRecordInputHandler.bind(this);
     this.changeRecordSelectHandler = this.changeRecordSelectHandler.bind(this);
     this.changeHasWhatsAppHandler = this.changeHasWhatsAppHandler.bind(this);
+    this.dateSelectorReceive = this.dateSelectorReceive.bind(this);
     this.saveRecords = this.saveRecords.bind(this);
     this.addRecord = this.addRecord.bind(this);
     this.sortBy = this.sortBy.bind(this);
@@ -148,6 +149,12 @@ class ListRecordsComponent extends Component {
     });
   };
 
+  dateSelectorReceive = (date) => {
+    this.setState({selectedDate: date}, () => {
+      this.getAllRecords();
+    });
+  }
+
   //changeDateSelection = (event) => {
   //this.setState({ selectedDate: event.target.value }, () => {});
   //};
@@ -158,6 +165,7 @@ class ListRecordsComponent extends Component {
 
   getAllRecords = () => {
     //if selectedDate is 0, else return selected date records, gotta add into API
+    console.log("ListREcord " + this.state.selectedDate);
     const { keyword, type, selectedDate } = this.state;
     this.setState({ isRecord: false });
     ProtoSeanService.getRecords(keyword, type, selectedDate).then((res) => {
@@ -192,10 +200,7 @@ class ListRecordsComponent extends Component {
     }
   }
 
-  dateSelectorReceive(date) {
-    console.log(date);
-    this.setState({selectedDate: date});
-  }
+
 
   render() {
     return (
