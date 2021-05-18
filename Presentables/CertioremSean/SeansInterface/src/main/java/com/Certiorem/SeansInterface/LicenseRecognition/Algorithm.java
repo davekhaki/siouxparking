@@ -7,6 +7,7 @@ import com.Certiorem.SeansInterface.Messaging.SmsMessage;
 import com.Certiorem.SeansInterface.Messaging.WapMessage;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
+import com.github.sarxos.webcam.Webcam;
 import net.sf.javaanpr.imageanalysis.CarSnapshot;
 import net.sf.javaanpr.intelligence.Intelligence;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,11 +30,15 @@ import java.util.Date;
 @EnableScheduling
 @Component
 public class Algorithm {
-    //should be false for production
+    //should be false for production checks if video has been loaded before recognizing plates
     boolean finishedLoadingVideo = false;
+    //if this is true then inputStream will be used instead of a video
+    boolean useCameraStream=true;
     int picCounter = 1;
     MessageInterface messageInterface;
     Intelligence intelligence;
+    Webcam webcam = Webcam.getDefault();
+    int snapshotCounter=1;
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
 
@@ -59,13 +66,36 @@ public class Algorithm {
 //            e.printStackTrace();
 //        }
 //    }
+    @Scheduled(fixedDelay = 2000)
+    public void snapShotFromStream(){
+        webcam.open();
+        try {
+            String filePath="../CertioremSean/SeansInterface/src/main" +
+                    "/resources/picsFromStream/snapshot"+snapshotCounter+".png";
+            ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
+            System.err.println("webcam snapshot "+snapshotCounter+" taken");
+            snapshotCounter++;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Scheduled(fixedDelay = 2000)
     public void recognizeLoadedPics() {
-        if (finishedLoadingVideo) {
+        if(useCameraStream)
+            System.err.println("Using camera");
+        else
+            System.err.println("Using given video");
+        if (finishedLoadingVideo || useCameraStream) {
             try {
-                String path = "..\\CertioremSean\\" +
-                        "SeansInterface\\src\\main\\resources\\picsFromVideo\\" + picCounter + ".jpg";
+                String path="";
+                if(!useCameraStream) {
+                    path = "..\\CertioremSean\\" +
+                            "SeansInterface\\src\\main\\resources\\picsFromVideo\\" + picCounter + ".jpg";
+                } else {
+                    path="../CertioremSean/SeansInterface/src/main/resources/picsFromStream/snapshot"+picCounter+".png";
+                }
                 Path formattedPath = Paths.get(path);
                 boolean fileExists = Files.exists(formattedPath);
                 if (fileExists) {
@@ -91,13 +121,13 @@ public class Algorithm {
                                 messageInterface = new SmsMessage();
 
                             }
-                            if(visitor.getArrived()==0) {
-                                System.err.println("Sending message to "+phoneNumber);
-                                messageInterface.sendMessage(phoneNumber, date, hour);
-                            }
-                            else{
-                                System.err.println("vistor already here, not sending message");
-                            }
+//                            if(visitor.getArrived()==0) {
+//                                System.err.println("Sending message to "+phoneNumber);
+//                                messageInterface.sendMessage(phoneNumber, date, hour);
+//                            }
+//                            else{
+//                                System.err.println("vistor already here, not sending message");
+//                            }
 
                             visitor.setArrived(1);
                             protoSeanRepo.save(visitor);
