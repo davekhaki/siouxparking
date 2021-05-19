@@ -31,17 +31,17 @@ import java.util.Date;
 @Component
 public class Algorithm {
     //should be false for production checks if video has been loaded before recognizing plates
-    boolean finishedLoadingVideo = false;
+    boolean finishedLoadingVideo = true;
     //if this is true then inputStream will be used instead of a video
-    boolean useCameraStream=true;
+    boolean useCameraStream=false;
     int picCounter = 1;
     MessageInterface messageInterface;
-    Intelligence intelligence;
-    Webcam webcam = Webcam.getDefault();
+
+//    Webcam webcam = Webcam.getDefault();
     int snapshotCounter=1;
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
-
+    Intelligence intelligence;
     {
         try {
             intelligence = new Intelligence();
@@ -66,27 +66,29 @@ public class Algorithm {
 //            e.printStackTrace();
 //        }
 //    }
-    @Scheduled(fixedDelay = 2000)
-    public void snapShotFromStream(){
-        webcam.open();
-        try {
-            String filePath="../CertioremSean/SeansInterface/src/main" +
-                    "/resources/picsFromStream/snapshot"+snapshotCounter+".png";
-            ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
-            System.err.println("webcam snapshot "+snapshotCounter+" taken");
-            snapshotCounter++;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Scheduled(fixedDelay = 2000)
+//    public void snapShotFromStream(){
+//        if(useCameraStream) {
+//            webcam.open();
+//            try {
+//                String filePath = "../CertioremSean/SeansInterface/src/main" +
+//                        "/resources/picsFromStream/snapshot" + snapshotCounter + ".png";
+//                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
+//                System.err.println("webcam snapshot " + snapshotCounter + " taken");
+//                snapshotCounter++;
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     @Scheduled(fixedDelay = 2000)
     public void recognizeLoadedPics() {
-        if(useCameraStream)
-            System.err.println("Using camera");
-        else
-            System.err.println("Using given video");
+//        if(useCameraStream)
+//            System.err.println("Using camera");
+//        else
+//            System.err.println("Using given video");
         if (finishedLoadingVideo || useCameraStream) {
             try {
                 String path="";
@@ -99,6 +101,7 @@ public class Algorithm {
                 Path formattedPath = Paths.get(path);
                 boolean fileExists = Files.exists(formattedPath);
                 if (fileExists) {
+//                    System.err.println(picCounter);
                     CarSnapshot snapshot = new CarSnapshot(path);
                     String plate = intelligence.recognize(snapshot);
                     picCounter++;
