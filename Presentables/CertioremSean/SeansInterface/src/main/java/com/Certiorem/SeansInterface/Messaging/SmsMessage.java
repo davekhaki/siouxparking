@@ -11,12 +11,12 @@ public class SmsMessage implements MessageInterface {
     public static final String AUTH_TOKEN = "dcc069ad0c735e248eed50e19b9d37ec";
     public static final String SENDER="+12408235422";   //my trial number from twilio
 
-    public void sendMessage(String receiver,String date,String hour) {
+    public void sendMessage(String receiver,String spot) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Message message = Message.creator(
                 new com.twilio.type.PhoneNumber(receiver),
                 new com.twilio.type.PhoneNumber(SmsMessage.SENDER),
-                "Your appointment is coming up on "+date+" at "+hour)
+                "Your parkingSpot code is "+spot)
                 .create();
 
         System.out.println(message.getSid());

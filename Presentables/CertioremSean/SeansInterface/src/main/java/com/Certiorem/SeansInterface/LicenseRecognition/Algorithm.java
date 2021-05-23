@@ -1,13 +1,10 @@
 package com.Certiorem.SeansInterface.LicenseRecognition;
 
-import com.Certiorem.SeansInterface.Exception.ProtoSeanException;
-import com.Certiorem.SeansInterface.LicenseRecognition.VideoCapture;
 import com.Certiorem.SeansInterface.Messaging.MessageInterface;
 import com.Certiorem.SeansInterface.Messaging.SmsMessage;
 import com.Certiorem.SeansInterface.Messaging.WapMessage;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
-import com.github.sarxos.webcam.Webcam;
 import net.sf.javaanpr.imageanalysis.CarSnapshot;
 import net.sf.javaanpr.intelligence.Intelligence;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +13,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
-import javax.imageio.ImageIO;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @EnableScheduling
@@ -36,6 +29,7 @@ public class Algorithm {
     boolean useCameraStream=false;
     int picCounter = 1;
     MessageInterface messageInterface;
+    boolean[] occupiedSpaces;
 
 //    Webcam webcam = Webcam.getDefault();
     int snapshotCounter=1;
@@ -52,6 +46,11 @@ public class Algorithm {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Scheduled(fixedDelay = Long.MAX_VALUE)
+    public void readCsv(){
+        occupiedSpaces = CsvReader.parseCsv();
     }
 
 //    @Scheduled(fixedDelay = Long.MAX_VALUE)
@@ -117,6 +116,16 @@ public class Algorithm {
                             Date expectedAt = visitor.getExpectedAt();
                             String date = expectedAt.toString().substring(0, 10);
                             String hour = expectedAt.toString().substring(11);
+                            String spot="parkingSpot";
+                            for (int i = 0; i < occupiedSpaces.length; i++) {
+                                if(!occupiedSpaces[i]) {
+                                    spot = Integer.toString(i);
+                                    occupiedSpaces[i]=true;
+                                    break;
+                                }
+                                spot="noSpace";
+                            }
+
                             if (visitor.getHasWhatsApp() == 1) {
                                 messageInterface = new WapMessage();
 
@@ -126,10 +135,10 @@ public class Algorithm {
                             }
 //                            if(visitor.getArrived()==0) {
 //                                System.err.println("Sending message to "+phoneNumber);
-//                                messageInterface.sendMessage(phoneNumber, date, hour);
+//                                messageInterface.sendMessage(phoneNumber, spot);
 //                            }
 //                            else{
-//                                System.err.println("vistor already here, not sending message");
+//                                System.err.println("visitor already here, not sending message");
 //                            }
 
                             visitor.setArrived(1);

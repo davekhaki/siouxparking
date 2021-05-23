@@ -1,5 +1,6 @@
 package com.Certiorem.SeansInterface;
 
+import com.Certiorem.SeansInterface.LicenseRecognition.CsvReader;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.github.sarxos.webcam.Webcam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 
 		System.err.println("something");
 
+//		boolean[] parkingSpaces= CsvReader.parseCsv();
+//		System.err.println("sth");
 //		Webcam webcam = Webcam.getDefault();
 //		webcam.open();
 //		try {
