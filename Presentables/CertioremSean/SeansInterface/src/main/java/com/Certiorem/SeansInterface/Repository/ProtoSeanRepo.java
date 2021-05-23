@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProtoSeanRepo extends JpaRepository<ProtoSean, Long> {
 
+    ProtoSean findByNumberPlate(String numberPlate);
 
 }

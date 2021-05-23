@@ -5,20 +5,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
-import java.util.Scanner;
-
-import static com.Certiorem.SeansInterface.VideoCapture.convertMovieToJPG;
 
 //@EnableScheduling
 @SpringBootApplication
+@ComponentScan({"com"})
 public class SeansInterfaceApplication implements CommandLineRunner {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+
+//	@Autowired
+//	private EmailSenderService emailSenderService;
 
 	public static void main(String[] args) {
 
@@ -26,25 +30,23 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 
 		System.err.println("something");
 
+//		MessageInterface messageInterface=new SmsMessage();
+//		messageInterface.sendMessage("+40770618495","sometime","soon");
+
+
 //		Scanner s=new Scanner(System.in);
 //		System.out.println("Enter the path of mp4 (for eg c:\\test.mp4)");
 //		String mp4Path=s.nextLine();
 //		System.out.println("Enter the folder path where the images will be saved (eg c:\\convertedImages)");
 //		String imagePath=s.nextLine();
 
-		String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
-		String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
-		try {
-			convertMovieToJPG(mp4Path, imagePath,"jpg");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 
 
 //		Intelligence intelligence = null;
 //		try {
 //			intelligence = new Intelligence();
-//			String path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\pics\\lamboCar.png";
+//			String path="..\\CertioremSean\\SeansInterface\\src\\main\\resources\\pics\\chosenAgain.jpg";
 //			CarSnapshot carSnapshot=new CarSnapshot(path);
 //			String smth=intelligence.recognize(carSnapshot);
 //			System.err.println(smth);
@@ -66,5 +68,12 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 				BeanPropertyRowMapper.newInstance(ProtoSean.class));
 		visitors.forEach(System.out :: println);
 	}
+
+//	@EventListener(ApplicationReadyEvent.class)
+//	public void triggerMail(){
+//		emailSenderService.sendEmail("cankonedelchev@gmail.com",
+//										  "Email was sent properly.",
+//									    "A visitor has arrived");
+//	}
 
 }

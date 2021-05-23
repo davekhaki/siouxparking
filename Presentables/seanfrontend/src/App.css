@@ -34,16 +34,11 @@ a:hover, a:visited, a:link, a:active
 
 .list-row {
   display: grid !important;
-  grid-template-columns: 1fr 0.5fr;
-}
-
-.list-row h3 {
-  grid-column: 1;
-  justify-self: center;
+  grid-template-columns: 1fr, 1fr!important;
 }
 
 .action-column{
-  width: 180px;
+  display: flex;
 }
 
 .list-item-1 {
@@ -108,6 +103,7 @@ button {
 
 .record-search-input {
   width: 200px;
+  margin-right: 10px !important;
 }
 
 .record-search-select {
@@ -116,3 +112,27 @@ button {
 }
 
 
+.records-table {
+  max-height: 75vh !important; 
+  min-width: fit-content;
+  overflow-y: scroll !important;
+}
+
+.records-table::-webkit-scrollbar {
+  display: none;
+}
+
+.search-date-picker {
+  margin: 0 !important;
+  width: 200px;
+}
+
+.search-date-picker button, .MuiPickersBasePicker-pickerView .MuiPickersCalendarHeader-switchHeader button {
+  width: 48px;
+}
+
+.record-title {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  text-align: center;
+}
