@@ -4,7 +4,6 @@ import ProtoSeanService from "../Services/ProtoSeanService";
 import TextField from "@material-ui/core/TextField";
 import SearchRecordsComponent from "./SearchRecordsComponent";
 import InfiniteScrollComponent from "./InfiniteScrollComponent";
-import DateSelectorComponent from "./DateSelectorComponent";
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -166,9 +165,9 @@ class ListRecordsComponent extends Component {
   getAllRecords = () => {
     //if selectedDate is 0, else return selected date records, gotta add into API
     console.log("ListREcord " + this.state.selectedDate);
-    const { keyword, type, selectedDate } = this.state;
+    const { keyword, selectedDate } = this.state;
     this.setState({ isRecord: false });
-    ProtoSeanService.getRecords(keyword, type, selectedDate).then((res) => {
+    ProtoSeanService.getRecords(keyword, selectedDate).then((res) => {
       this.setState({ records: res.data });
       console.log(this.state.records);
       this.setState({ isRecord: true });
@@ -206,14 +205,16 @@ class ListRecordsComponent extends Component {
     return (
       <div>
         <div className="row list-row records-table">
-          <SearchRecordsComponent
-            keyword={this.state.keyword}
-            type={this.state.type}
-            changeRecordInputHandler={this.changeRecordInputHandler}
-            changeRecordSelectHandler={this.changeRecordSelectHandler}
-          />
-          <h3>Records</h3>
-          <DateSelectorComponent passDate = {this.dateSelectorReceive}/>
+          <h3 className="record-title list-item-1">Records</h3>
+          <div></div>
+          <div className="row list-row">
+            <SearchRecordsComponent
+              keyword={this.state.keyword}
+              type={this.state.type}
+              changeRecordInputHandler={this.changeRecordInputHandler}
+              dateSelectorReceive={this.dateSelectorReceive}
+            />
+          </div>
           <table className="table table-striped table-borderless list-item-1">
             <thead>
               <tr>

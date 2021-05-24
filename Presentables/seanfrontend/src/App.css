@@ -95,6 +95,22 @@ button {
   background: yellow;
 }
 
+.record-search-wrapper {
+  display: grid;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.record-search-input {
+  width: 200px;
+  margin-right: 10px !important;
+}
+
+.record-search-select {
+  width: 150px;
+  margin-left: 10px !important;
+}
+
 
 .records-table {
   max-height: 75vh !important; 
@@ -104,4 +120,19 @@ button {
 
 .records-table::-webkit-scrollbar {
   display: none;
+}
+
+.search-date-picker {
+  margin: 0 !important;
+  width: 200px;
+}
+
+.search-date-picker button, .MuiPickersBasePicker-pickerView .MuiPickersCalendarHeader-switchHeader button {
+  width: 48px;
+}
+
+.record-title {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  text-align: center;
 }

@@ -3,19 +3,19 @@ import axios from "axios";
 const PROTOSHAUN_API_BASE_URL = "http://localhost:8081/parking/records";
 
 class ProtoSeanService {
-  getRecords(keyword, type, selectedDate) {
+  getRecords(keyword, selectedDate) {
     console.log(selectedDate);
     if(selectedDate != "") {
       console.log("pog")
       if(keyword == "") {
         keyword = "date";
       }
-      console.log((PROTOSHAUN_API_BASE_URL + "/" + keyword + "/" + type + "/" + selectedDate).toString())
+      console.log((PROTOSHAUN_API_BASE_URL + "/" + keyword + "/" + selectedDate).toString())
 
-      return axios.get(PROTOSHAUN_API_BASE_URL + "/" + keyword + "/" + type + "/" + selectedDate)
+      return axios.get(PROTOSHAUN_API_BASE_URL + "/" + keyword + "/" + selectedDate)
     }
     else if (keyword != "") {
-      return axios.get(PROTOSHAUN_API_BASE_URL + "/" + keyword + "/" + type)
+      return axios.get(PROTOSHAUN_API_BASE_URL + "/keyword/" + keyword)
     }
     return axios.get(PROTOSHAUN_API_BASE_URL);
   }

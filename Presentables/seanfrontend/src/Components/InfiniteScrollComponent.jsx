@@ -10,7 +10,7 @@ import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import ProtoSeanService from "../Services/ProtoSeanService";
 import { useHistory } from "react-router-dom";
-import Notifier from "react-desktop-notification"
+import Notifier from "react-desktop-notifications";
 
 
 export default function InfiniteScrollComponent({records, currentDateTime}) {
