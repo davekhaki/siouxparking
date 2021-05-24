@@ -5,6 +5,7 @@ import com.Certiorem.SeansInterface.Messaging.SmsMessage;
 import com.Certiorem.SeansInterface.Messaging.WapMessage;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
+import com.github.sarxos.webcam.Webcam;
 import net.sf.javaanpr.imageanalysis.CarSnapshot;
 import net.sf.javaanpr.intelligence.Intelligence;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,12 @@ public class Algorithm {
     //should be false for production checks if video has been loaded before recognizing plates
     boolean finishedLoadingVideo = true;
     //if this is true then inputStream will be used instead of a video
-    boolean useCameraStream=true;
+    boolean useCameraStream=false;
     int picCounter = 1;
     MessageInterface messageInterface;
     boolean[] occupiedSpaces;
 
-    Webcam webcam = Webcam.getDefault();
+//    Webcam webcam = Webcam.getDefault();
     int snapshotCounter=1;
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
@@ -65,22 +66,22 @@ public class Algorithm {
 //            e.printStackTrace();
 //        }
 //    }
-    @Scheduled(fixedDelay = 2000)
-    public void snapShotFromStream(){
-        if(useCameraStream) {
-            webcam.open();
-            try {
-                String filePath = "../CertioremSean/SeansInterface/src/main" +
-                        "/resources/picsFromStream/snapshot" + snapshotCounter + ".png";
-                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
-                System.err.println("webcam snapshot " + snapshotCounter + " taken");
-                snapshotCounter++;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    @Scheduled(fixedDelay = 2000)
+//    public void snapShotFromStream(){
+//        if(useCameraStream) {
+//            webcam.open();
+//            try {
+//                String filePath = "../CertioremSean/SeansInterface/src/main" +
+//                        "/resources/picsFromStream/snapshot" + snapshotCounter + ".png";
+//                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
+//                System.err.println("webcam snapshot " + snapshotCounter + " taken");
+//                snapshotCounter++;
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     @Scheduled(fixedDelay = 2000)
     public void recognizeLoadedPics() {
