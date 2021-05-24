@@ -47,18 +47,18 @@ public class Algorithm {
         }
     }
 
-//    @Scheduled(fixedDelay = Long.MAX_VALUE)
-//    public void loadVideo() {
-//        String mp4Path = "../CertioremSean/SeansInterface/src/main/resources/vids/anprVideo.mp4";
-//        //String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
-//        //String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
-//        String imagePath = "../CertioremSean/SeansInterface/src/main/resources/picsFromVideo";
-//        try {
-//            finishedLoadingVideo = VideoCapture.convertMovieToJPG(mp4Path, imagePath, "jpg");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @Scheduled(fixedDelay = Long.MAX_VALUE)
+    public void loadVideo() {
+        String mp4Path = "../CertioremSean/SeansInterface/src/main/resources/vids/anprVideo.mp4";
+        //String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
+        //String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
+        String imagePath = "../CertioremSean/SeansInterface/src/main/resources/picsFromVideo";
+        try {
+            finishedLoadingVideo = VideoCapture.convertMovieToJPG(mp4Path, imagePath, "jpg");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Scheduled(fixedDelay = 2000)
     public void recognizeLoadedPics() {

@@ -70,7 +70,7 @@ const deleteRecord = (id) => {
 }
 
 const gotNewNotification = (visitor) =>{
-      Notifier.start("A visitor has arrived!",visitor + " has just arrived","localhost:3000/records", "/SiouxLogo.png");
+      Notifier.start("A visitor has arrived!",visitor + " has just arrived","www.google.com", "/SiouxLogo.png");
 }
   
     

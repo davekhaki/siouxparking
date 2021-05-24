@@ -211,9 +211,9 @@ class ListRecordsComponent extends Component {
                 />
                 {/* <h3>Records</h3> */}
               </div>
-              <div className="search-control-2">
+              {/* <div className="search-control-2">
                 <DateSelectorComponent passDate = {this.dateSelectorReceive}/>
-              </div>
+              </div> */}
           </div>
             
           <div className="records-table list-item-1">
