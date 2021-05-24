@@ -26,12 +26,12 @@ public class Algorithm {
     //should be false for production checks if video has been loaded before recognizing plates
     boolean finishedLoadingVideo = true;
     //if this is true then inputStream will be used instead of a video
-    boolean useCameraStream=false;
+    boolean useCameraStream=true;
     int picCounter = 1;
     MessageInterface messageInterface;
     boolean[] occupiedSpaces;
 
-//    Webcam webcam = Webcam.getDefault();
+    Webcam webcam = Webcam.getDefault();
     int snapshotCounter=1;
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
@@ -65,22 +65,22 @@ public class Algorithm {
 //            e.printStackTrace();
 //        }
 //    }
-//    @Scheduled(fixedDelay = 2000)
-//    public void snapShotFromStream(){
-//        if(useCameraStream) {
-//            webcam.open();
-//            try {
-//                String filePath = "../CertioremSean/SeansInterface/src/main" +
-//                        "/resources/picsFromStream/snapshot" + snapshotCounter + ".png";
-//                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
-//                System.err.println("webcam snapshot " + snapshotCounter + " taken");
-//                snapshotCounter++;
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    @Scheduled(fixedDelay = 2000)
+    public void snapShotFromStream(){
+        if(useCameraStream) {
+            webcam.open();
+            try {
+                String filePath = "../CertioremSean/SeansInterface/src/main" +
+                        "/resources/picsFromStream/snapshot" + snapshotCounter + ".png";
+                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
+                System.err.println("webcam snapshot " + snapshotCounter + " taken");
+                snapshotCounter++;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Scheduled(fixedDelay = 2000)
     public void recognizeLoadedPics() {
