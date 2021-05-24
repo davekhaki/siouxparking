@@ -17,6 +17,14 @@ test-job2:
     - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
     - echo "which simulates a test that runs 20 seconds longer than test-job1"
     - sleep 20
+    
+sonarqube:
+    stage: sonarqube
+    script: 
+    - cd Presentables
+    - cd CertioremSean
+    - cd SeansInterface
+    - mvn sonar:sonar "-Dsonar.login=e68dd7747d2becfa7ad26c0bed24651e22549497"
   
 
 

@@ -15,13 +15,14 @@
 	<description>prototype for the sean&apos;s Interface</description>
 	<properties>
 		<java.version>11</java.version>
+		<sonar.exclusions>D:\S3\certiorem\group1_parkingapp\Presentables\license plate recognition</sonar.exclusions>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>net.sf.javaanpr</groupId>
-			<artifactId>javaanpr</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>net.sf.javaanpr</groupId>-->
+<!--			<artifactId>javaanpr</artifactId>-->
+<!--			<version>2.0.0-SNAPSHOT</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>com.twilio.sdk</groupId>
 			<artifactId>twilio</artifactId>
@@ -80,6 +81,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.sonarsource.sonarqube</groupId>
+			<artifactId>sonar-plugin-api</artifactId>
+			<!-- minimal version of SonarQube to support. -->
+			<version>6.7</version>
+			<!-- mandatory scope -->
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -95,6 +104,29 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+				<artifactId>sonar-packaging-maven-plugin</artifactId>
+				<version>1.18.0.372</version>
+				<extensions>true</extensions>
+				<configuration>
+					<pluginKey>***</pluginKey>
+					<pluginName>***</pluginName>
+					<pluginClass>***</pluginClass>
+					<sonarLintSupported>true</sonarLintSupported>
+					<sonarQubeMinVersion>6.7</sonarQubeMinVersion>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.7.0.1746</version>
 			</plugin>
 		</plugins>
 	</build>
