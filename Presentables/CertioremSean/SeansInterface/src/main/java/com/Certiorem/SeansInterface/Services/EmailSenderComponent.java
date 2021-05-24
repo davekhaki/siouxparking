@@ -1,3 +1,4 @@
+/*
 package com.Certiorem.SeansInterface.Services;
 
 import com.Certiorem.SeansInterface.Model.ProtoSean;
@@ -53,3 +54,4 @@ class EmailSenderComponent {
         });
     }
 }
+*/

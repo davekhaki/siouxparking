@@ -3,6 +3,7 @@ package com.Certiorem.SeansInterface.Controller;
 import com.Certiorem.SeansInterface.Exception.ProtoSeanException;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
+import com.Certiorem.SeansInterface.Services.ProtoSeanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,22 @@ public class ProtoSeanController {
 
 
     @Autowired
+    private ProtoSeanService protoSeanService;
+
+    @Autowired
     private ProtoSeanRepo protoSeanRepo;
 
     // Get all records
     @GetMapping("/records")
-    public List<ProtoSean> getAllRecords(String keyword, String type) {
-            return protoSeanRepo.findAll();
+    public List<ProtoSean> getAllRecords() {
+            return protoSeanService.getAllRecordsFromDb();
+    }
+
+    // Add the records
+    @PostMapping("/records")
+    public ProtoSean createRecords(@RequestBody ProtoSean protoSean) {
+
+        return protoSeanService.submitProtoSeanToDb(protoSean);
     }
 
     @GetMapping("/records/{keyword}/{type}")
@@ -76,12 +87,6 @@ public class ProtoSeanController {
         }
 
         return finalList;
-    }
-
-    // Add the records
-    @PostMapping("/records")
-    public ProtoSean createRecords(@RequestBody ProtoSean protoSean) {
-        return protoSeanRepo.save(protoSean);
     }
 
     // Retrieve per ID of the record
