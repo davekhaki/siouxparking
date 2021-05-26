@@ -12,6 +12,6 @@ public interface ProtoSeanRepo extends JpaRepository<ProtoSean, Long> {
 
     ProtoSean save(ProtoSean protoSean);
     ProtoSean findByNumberPlate(String numberPlate);
-    List<ProtoSean>findAll();
-    ProtoSean findByRecordId(Long id);
+    List<ProtoSean> findAll();
+
 }

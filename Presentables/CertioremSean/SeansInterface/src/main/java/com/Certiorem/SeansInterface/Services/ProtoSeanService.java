@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 @Service
 public class ProtoSeanService {
@@ -24,6 +25,6 @@ public class ProtoSeanService {
     }
 
     public ProtoSean getRecordById(Long id){
-        return protoSeanRepo.findByRecordId(id);
+        return protoSeanRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("user with id "+id+" doesnt exist"));
     }
 }
