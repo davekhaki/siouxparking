@@ -136,3 +136,7 @@ button {
   grid-column-end: 2;
   text-align: center;
 }
+
+.recordFormError {
+  color: red;
+}

@@ -51,11 +51,13 @@ class ListRecordsComponent extends Component {
     const result = pattern.test(email);
     if (result === true) {
       console.log("good email");
+      document.getElementById("emailError").innerHTML = "";
       this.setState({ hostEmail: email });
       return true;
     } else {
       console.log("bad email");
-      alert("Email must have an @ and a .");
+      document.getElementById("emailError").innerHTML = "Email needs @ and .";
+      document.getElementById("emailInput").focus();
       return false;
     }
   }
@@ -66,19 +68,58 @@ class ListRecordsComponent extends Component {
     if (result === true) {
       console.log("good phone");
       this.setState({ phnNumber: number });
+      document.getElementById("phoneError").innerHTML = "";
       return true;
     } else {
       console.log("bad phone");
-      alert("Phone number must only be numbers");
+      document.getElementById("phoneError").innerHTML = "Phone number must be only numbers";
+      document.getElementById("phoneInput").focus();
       return false;
+    }
+  }
+
+  validateVisitor(visitor) {
+    if(visitor === "") {
+      document.getElementById("visitorError").innerHTML = "Please input a visitor"
+      document.getElementById("visitorInput").focus();
+      return false;
+    } else {
+      document.getElementById("visitorError").innerHTML = ""
+      return true;
+    }
+  }
+
+  validateExpectedDate(date) {
+    if(date === "") {
+      document.getElementById("expectedDateError").innerHTML = "Please choose expected arrival date"
+      document.getElementById("expectedAtDateTime").focus();
+      return false;
+    } else {
+      document.getElementById("expectedDateError").innerHTML = ""
+      return true;
+    }
+  }
+
+  validateLicensePlate(licensePlate) {
+    if(licensePlate === "") {
+      document.getElementById("licensePlateError").innerHTML = "Please input a license plate"
+      document.getElementById("licensePlateInput").focus();
+      return false;
+    } else {
+      document.getElementById("licensePlateError").innerHTML = ""
+      return true;
     }
   }
 
   saveRecords = (e) => {
     e.preventDefault();
 
+    console.log()
     if (!this.validateEmail(this.state.hostEmail)) return;
     if (!this.validatePhoneNumber(this.state.phnNumber)) return;
+    if (!this.validateVisitor(this.state.visitor)) return;
+    if (!this.validateLicensePlate(this.state.numberPlate)) return;
+    if (!this.validateExpectedDate(this.state.expectedAt)) return;
 
     let protoSean = {
       visitor: this.state.visitor,
@@ -279,43 +320,51 @@ class ListRecordsComponent extends Component {
                   <div className="form-group">
                     <label>Visitor:</label>
                     <input
+                      id= "visitorInput"
                       name="visitor"
                       className="form-control textbox"
                       value={this.state.visitor}
                       onChange={this.changeVisitorHandeler}
                     />
+                    <p id="visitorError" className="recordFormError"></p>
                   </div>
 
                   <div className="form-group">
                     <label>License Plate:</label>
                     <input
+                      id= "licensePlateInput"
                       name="License Plate"
                       className="form-control textbox"
                       value={this.state.numberPlate}
                       onChange={this.changeNumberPlateHandeler}
                     />
+                    <p id="licensePlateError" className="recordFormError"></p>
                   </div>
 
                   <div className="form-group">
                     <label>Phone Number:</label>
                     <input
+                      id= "phoneInput"
                       type="phone"
                       name="phnNumber"
                       className="form-control textbox"
                       value={this.state.phnNumber}
                       onChange={this.changePhnNumberHandeler}
                     />
+                    <p id="phoneError" className="recordFormError"></p>
                   </div>
 
                   <div className="form-group">
                     <label>Host Email:</label>
                     <input
+                      id= "emailInput"
                       type="email"
                       name="hostEmail"
                       className="form-control textbox"
                       value={this.state.hostEmail}
                       onChange={this.changeHostEmailHandeler}
                     />
+                    <p id="emailError" className="recordFormError"></p>
                   </div>
 
                   <div className="form-group">
@@ -330,6 +379,7 @@ class ListRecordsComponent extends Component {
                         shrink: true,
                       }}
                     />
+                    <p id="expectedDateError" className="recordFormError"></p>
                   </div>
                   <div className="form-group">
                     <input
