@@ -54,6 +54,11 @@ class ListRecordsComponent extends Component {
       document.getElementById("emailError").innerHTML = "";
       this.setState({ hostEmail: email });
       return true;
+    } else if(email == "") {
+      console.log("bad email");
+      document.getElementById("emailError").innerHTML = "Please input an email";
+      document.getElementById("emailInput").focus();
+      return false;
     } else {
       console.log("bad email");
       document.getElementById("emailError").innerHTML = "Email needs @ and .";
@@ -70,6 +75,11 @@ class ListRecordsComponent extends Component {
       this.setState({ phnNumber: number });
       document.getElementById("phoneError").innerHTML = "";
       return true;
+    } else if(number == "") {
+      console.log("bad phone");
+      document.getElementById("phoneError").innerHTML = "Please input a phone number";
+      document.getElementById("phoneInput").focus();
+      return false;
     } else {
       console.log("bad phone");
       document.getElementById("phoneError").innerHTML = "Phone number must be only numbers";
