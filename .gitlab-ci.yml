@@ -3,7 +3,8 @@ image: ruby:2.6
 build-job:
   stage: build
   script:
-    -  cd Presentables\license plate recognition
+    -  cd Presentables
+    -  cd license plate recognition
     - mvn compile
 
 
