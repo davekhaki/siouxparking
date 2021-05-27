@@ -1,5 +1,6 @@
 package com.Certiorem.SeansInterface.Services;
 
+import com.Certiorem.SeansInterface.Exception.ProtoSeanException;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,11 @@ public class ProtoSeanService {
         return recordList;
     }
 
-    public ProtoSean getRecordById(Long id){
-        return protoSeanRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("user with id "+id+" doesnt exist"));
+    public void deleteRecordsById(Long id){
+        protoSeanRepo.deleteById(id);
+    }
+
+    public ProtoSean retrieveRecordsByRecordId(Long id){
+        return protoSeanRepo.findById(id).orElse(null);
     }
 }
