@@ -62,7 +62,8 @@ class ProtoSeanServiceTest {
     }
 
     @Test
-    void retrieveRecordsByRecordId(Long id) {
+    void retrieveRecordsByRecordId() {
+        Long id = 1L;
         ProtoSean protoSean = new ProtoSean(1L,"123HLM","Florin",
                 "0654845654","florin@email.com",0,
                 0,1, new Date());
