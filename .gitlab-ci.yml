@@ -5,7 +5,7 @@ build-job:
   script:
     - cd Presentables
     - cd license plate recognition
-    - mvn build
+    - mvn clean 
 
 
 test-job1:
