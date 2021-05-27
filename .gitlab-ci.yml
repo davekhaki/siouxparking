@@ -3,8 +3,7 @@ image: rvancea/maven-chrome-jdk8:latest
 build-job:
   stage: build
   script:
-    - cd Presentables
-    - cd license plate recognition
+    - cd /Presentables/license plate recognition
     - mvn compile 
 
 
