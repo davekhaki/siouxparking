@@ -10,7 +10,9 @@ import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import ProtoSeanService from "../Services/ProtoSeanService";
 import { useHistory } from "react-router-dom";
-import Notifier from "react-desktop-notification"
+import Notifier from "react-desktop-notifications";
+import StatusComponent from "./StatusComponent";
+
 
 
 export default function InfiniteScrollComponent({records, currentDateTime}) {
@@ -34,13 +36,11 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
                   if(entries[0].isIntersecting) {
                         console.log("Visible");
                         setCurrentPage(previousPageNumber => previousPageNumber + 1);
-                        console.log(currentPage);
                   }
             })
             if(node) {
                   observer.current.observe(node);
             }
-            console.log(node);
       }, [isLoading, hasMore]);
 
       useEffect(() => {
@@ -53,7 +53,7 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
       }
       else {
             setModifiedRecords(modifiedRecords.concat(records.slice(indexOfFirstRecord, indexOfLastRecord)) );
-            console.log(currentPage);
+            console.log("Page: " + currentPage);
       }
 
 
@@ -112,7 +112,7 @@ const tableGenerate = (protoSean, index) => {
             
             return(
                   <tr key={protoSean.id} ref={lastBookElementRef}>
-                  <td>{renderStatus(protoSean.expectedAt, protoSean.arrived)}</td>
+                  <td><StatusComponent protoSean = {protoSean}/></td>
                   <td>{protoSean.visitor}</td>
                   <td>{protoSean.numberPlate}</td>
                   <td>{protoSean.phnNumber}</td>
@@ -150,7 +150,7 @@ const tableGenerate = (protoSean, index) => {
       else {
             return (
                   <tr key={protoSean.id}>
-                  <td>{renderStatus(protoSean.expectedAt, protoSean.arrived)}</td>
+                  <td><StatusComponent protoSean = {protoSean}/></td>
                   <td>{protoSean.visitor}</td>
                   <td>{protoSean.numberPlate}</td>
                   <td>{protoSean.phnNumber}</td>

@@ -4,7 +4,7 @@ import ProtoSeanService from "../Services/ProtoSeanService";
 import TextField from "@material-ui/core/TextField";
 import SearchRecordsComponent from "./SearchRecordsComponent";
 import InfiniteScrollComponent from "./InfiniteScrollComponent";
-import DateSelectorComponent from "./DateSelectorComponent";
+import { LineWeight } from "@material-ui/icons";
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -38,6 +38,7 @@ class ListRecordsComponent extends Component {
     this.changeRecordInputHandler = this.changeRecordInputHandler.bind(this);
     this.changeRecordSelectHandler = this.changeRecordSelectHandler.bind(this);
     this.changeHasWhatsAppHandler = this.changeHasWhatsAppHandler.bind(this);
+    this.dateSelectorReceive = this.dateSelectorReceive.bind(this);
     this.saveRecords = this.saveRecords.bind(this);
     this.addRecord = this.addRecord.bind(this);
     this.sortBy = this.sortBy.bind(this);
@@ -148,6 +149,12 @@ class ListRecordsComponent extends Component {
     });
   };
 
+  dateSelectorReceive = (date) => {
+    this.setState({selectedDate: date}, () => {
+      this.getAllRecords();
+    });
+  }
+
   //changeDateSelection = (event) => {
   //this.setState({ selectedDate: event.target.value }, () => {});
   //};
@@ -158,9 +165,10 @@ class ListRecordsComponent extends Component {
 
   getAllRecords = () => {
     //if selectedDate is 0, else return selected date records, gotta add into API
-    const { keyword, type, selectedDate } = this.state;
+    console.log("ListREcord " + this.state.selectedDate);
+    const { keyword, selectedDate } = this.state;
     this.setState({ isRecord: false });
-    ProtoSeanService.getRecords(keyword, type, selectedDate).then((res) => {
+    ProtoSeanService.getRecords(keyword, selectedDate).then((res) => {
       this.setState({ records: res.data });
       console.log(this.state.records);
       this.setState({ isRecord: true });
@@ -192,10 +200,7 @@ class ListRecordsComponent extends Component {
     }
   }
 
-  dateSelectorReceive(date) {
-    console.log(date);
-    this.setState({selectedDate: date});
-  }
+
 
   render() {
     return (
@@ -203,17 +208,16 @@ class ListRecordsComponent extends Component {
         <div className="row list-row ">
           <div className="search-controls">
             <div className="search-control-1">
-                <SearchRecordsComponent
-                  keyword={this.state.keyword}
-                  type={this.state.type}
-                  changeRecordInputHandler={this.changeRecordInputHandler}
-                  changeRecordSelectHandler={this.changeRecordSelectHandler}
-                />
-                {/* <h3>Records</h3> */}
-              </div>
-              {/* <div className="search-control-2">
-                <DateSelectorComponent passDate = {this.dateSelectorReceive}/>
-              </div> */}
+              <SearchRecordsComponent
+                keyword={this.state.keyword}
+                type={this.state.type}
+                changeRecordInputHandler={this.changeRecordInputHandler}
+                dateSelectorReceive={this.dateSelectorReceive}
+              />
+            </div>
+            {/* <div className="search-control-2">
+              <DateSelectorComponent passDate = {this.dateSelectorReceive}/>
+            </div> */}
           </div>
             
           <div className="records-table list-item-1">
@@ -276,7 +280,7 @@ class ListRecordsComponent extends Component {
           </div>
           
           <div className="list-item-2">
-            <h4 className="text-center">Create new appointment</h4>
+            <h5 style={{margin: "0", fontWeight: "500"}} className="text-center">New appointment</h5>
             <div className="row">
               <div className="card-body">
                 <form>

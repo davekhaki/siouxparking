@@ -13,14 +13,14 @@ public class WapMessage implements MessageInterface{
     public static final String AUTH_TOKEN = "dcc069ad0c735e248eed50e19b9d37ec";
     public static final String SENDER="+14155238886";  //gateway from twilio
 
-    public void sendMessage(String receiver,String date,String hour) {
+    public void sendMessage(String receiver,String spot) {
         // my receiver +40770618495
         //default message  "Your appointment is coming up on July 9999 at 3PM"
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Message message = Message.creator(
                 new com.twilio.type.PhoneNumber("whatsapp:"+receiver),
                 new com.twilio.type.PhoneNumber("whatsapp:"+WapMessage.SENDER),
-                "Your appointment is coming up on "+date+" at "+hour)
+                "Your parkingSpot code is "+spot)
                 .create();
 
         System.out.println(message.getSid());

@@ -3,6 +3,7 @@ package com.Certiorem.SeansInterface.Controller;
 import com.Certiorem.SeansInterface.Exception.ProtoSeanException;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
+import com.Certiorem.SeansInterface.Services.ProtoSeanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,17 +20,26 @@ public class ProtoSeanController {
 
 
     @Autowired
+    private ProtoSeanService protoSeanService;
+
+    @Autowired
     private ProtoSeanRepo protoSeanRepo;
 
     // Get all records
     @GetMapping("/records")
-    public List<ProtoSean> getAllRecords(String keyword, String type) {
-            return protoSeanRepo.findAll();
+    public List<ProtoSean> getAllRecords() {
+            return protoSeanService.getAllRecordsFromDb();
     }
 
-    @GetMapping("/records/{keyword}/{type}")
-    public List<ProtoSean> searchRecords(@PathVariable("keyword") String keyword, @PathVariable("type") String type) {
-        //type 1 = visitor, type 2 = numberPlate, type 3 = phone number
+    // Add the records
+    @PostMapping("/records")
+    public ProtoSean createRecords(@RequestBody ProtoSean protoSean) {
+
+        return protoSeanService.submitProtoSeanToDb(protoSean);
+    }
+
+    @GetMapping("/records/keyword/{keyword}")
+    public List<ProtoSean> searchRecords(@PathVariable("keyword") String keyword) {
 
         keyword = keyword.toLowerCase();
 
@@ -37,13 +47,15 @@ public class ProtoSeanController {
         List<ProtoSean> finalList = new ArrayList<>();
 
         for (ProtoSean record: daList) {
-            if(type.equals("1") && record.getVisitor().toLowerCase().contains(keyword)){
+            if(record.getVisitor().toLowerCase().contains(keyword)){
                 finalList.add(record);
             }
-            else if(type.equals("2") && record.getNumberPlate().toLowerCase().contains(keyword)){
+            else if(record.getNumberPlate().toLowerCase().contains(keyword)){
                 finalList.add(record);
             }
-            else if(type.equals("3") && record.getPhnNumber().toLowerCase().contains(keyword)){
+            else if(record.getPhnNumber().toLowerCase().contains(keyword)){
+                finalList.add(record);
+            }else if(record.getHostEmail() != null && record.getHostEmail().toLowerCase().contains(keyword)){
                 finalList.add(record);
             }
         }
@@ -51,8 +63,8 @@ public class ProtoSeanController {
         return finalList;
     }
 
-    @GetMapping("/records/{keyword}/{type}/{selectedDate}")
-    public List<ProtoSean> searchRecordsWithDate(@PathVariable("keyword") String keyword, @PathVariable("type") String type, @PathVariable("selectedDate") String selectedDate) {
+    @GetMapping("/records/{keyword}/{selectedDate}")
+    public List<ProtoSean> searchRecordsWithDate(@PathVariable("keyword") String keyword, @PathVariable("selectedDate") String selectedDate) {
         keyword = keyword.toLowerCase();
 
         List<ProtoSean> daList = protoSeanRepo.findAll();
@@ -60,25 +72,22 @@ public class ProtoSeanController {
 
         for (ProtoSean record: daList) {
             if(record.getExpectedAt().toString().contains(selectedDate)) {
-                if(type.equals("1") && record.getVisitor().toLowerCase().contains(keyword)){
+                if(keyword.equals("date")) {
                     finalList.add(record);
                 }
-                else if(type.equals("2") && record.getNumberPlate().toLowerCase().contains(keyword)){
+                else if(record.getVisitor().toLowerCase().contains(keyword)){
                     finalList.add(record);
                 }
-                else if(type.equals("3") && record.getPhnNumber().toLowerCase().contains(keyword)){
+                else if(record.getNumberPlate().toLowerCase().contains(keyword)){
+                    finalList.add(record);
+                }
+                else if(record.getPhnNumber().toLowerCase().contains(keyword)){
                     finalList.add(record);
                 }
             }
         }
 
         return finalList;
-    }
-
-    // Add the records
-    @PostMapping("/records")
-    public ProtoSean createRecords(@RequestBody ProtoSean protoSean) {
-        return protoSeanRepo.save(protoSean);
     }
 
     // Retrieve per ID of the record

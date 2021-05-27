@@ -1,12 +1,11 @@
 package com.Certiorem.SeansInterface.LicenseRecognition;
 
-import com.Certiorem.SeansInterface.Exception.ProtoSeanException;
-import com.Certiorem.SeansInterface.LicenseRecognition.VideoCapture;
 import com.Certiorem.SeansInterface.Messaging.MessageInterface;
 import com.Certiorem.SeansInterface.Messaging.SmsMessage;
 import com.Certiorem.SeansInterface.Messaging.WapMessage;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
+import com.github.sarxos.webcam.Webcam;
 import net.sf.javaanpr.imageanalysis.CarSnapshot;
 import net.sf.javaanpr.intelligence.Intelligence;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +19,25 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @EnableScheduling
 @Component
 public class Algorithm {
-    //should be false for production
-    boolean finishedLoadingVideo = false;
+
+    //should be false for production checks if video has been loaded before recognizing plates
+    boolean finishedLoadingVideo = true;
+    //if this is true then inputStream will be used instead of a video
+    boolean useCameraStream=false;
     int picCounter = 1;
     MessageInterface messageInterface;
-    Intelligence intelligence;
+    boolean[] occupiedSpaces;
+
+//    Webcam webcam = Webcam.getDefault();
+    int snapshotCounter=1;
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
-
+    Intelligence intelligence;
     {
         try {
             intelligence = new Intelligence();
@@ -48,27 +51,58 @@ public class Algorithm {
     }
 
     @Scheduled(fixedDelay = Long.MAX_VALUE)
-    public void loadVideo() {
-        String mp4Path = "../CertioremSean/SeansInterface/src/main/resources/vids/anprVideo.mp4";
-        //String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
-        //String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
-        String imagePath = "../CertioremSean/SeansInterface/src/main/resources/picsFromVideo";
-        try {
-            finishedLoadingVideo = VideoCapture.convertMovieToJPG(mp4Path, imagePath, "jpg");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void readCsv(){
+        occupiedSpaces = CsvReader.parseCsv();
     }
+
+//    @Scheduled(fixedDelay = Long.MAX_VALUE)
+//    public void loadVideo() {
+//        String mp4Path = "../CertioremSean/SeansInterface/src/main/resources/vids/anprVideo.mp4";
+//        //String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
+//        //String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
+//        String imagePath = "../CertioremSean/SeansInterface/src/main/resources/picsFromVideo";
+//        try {
+//            finishedLoadingVideo = VideoCapture.convertMovieToJPG(mp4Path, imagePath, "jpg");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    @Scheduled(fixedDelay = 2000)
+//    public void snapShotFromStream(){
+//        if(useCameraStream) {
+//            webcam.open();
+//            try {
+//                String filePath = "../CertioremSean/SeansInterface/src/main" +
+//                        "/resources/picsFromStream/snapshot" + snapshotCounter + ".png";
+//                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
+//                System.err.println("webcam snapshot " + snapshotCounter + " taken");
+//                snapshotCounter++;
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     @Scheduled(fixedDelay = 2000)
     public void recognizeLoadedPics() {
-        if (finishedLoadingVideo) {
+//        if(useCameraStream)
+//            System.err.println("Using camera");
+//        else
+//            System.err.println("Using given video");
+        if (finishedLoadingVideo || useCameraStream) {
             try {
-                String path = "..\\CertioremSean\\" +
-                        "SeansInterface\\src\\main\\resources\\picsFromVideo\\" + picCounter + ".jpg";
+                String path="";
+                if(!useCameraStream) {
+                    path = "..\\CertioremSean\\" +
+                            "SeansInterface\\src\\main\\resources\\picsFromVideo\\" + picCounter + ".jpg";
+                } else {
+                    path="../CertioremSean/SeansInterface/src/main/resources/picsFromStream/snapshot"+picCounter+".png";
+                }
                 Path formattedPath = Paths.get(path);
                 boolean fileExists = Files.exists(formattedPath);
                 if (fileExists) {
+//                    System.err.println(picCounter);
                     CarSnapshot snapshot = new CarSnapshot(path);
                     String plate = intelligence.recognize(snapshot);
                     picCounter++;
@@ -84,6 +118,16 @@ public class Algorithm {
                             Date expectedAt = visitor.getExpectedAt();
                             String date = expectedAt.toString().substring(0, 10);
                             String hour = expectedAt.toString().substring(11);
+                            String spot="parkingSpot";
+                            for (int i = 0; i < occupiedSpaces.length; i++) {
+                                if(!occupiedSpaces[i]) {
+                                    spot = Integer.toString(i);
+                                    occupiedSpaces[i]=true;
+                                    break;
+                                }
+                                spot="noSpace";
+                            }
+
                             if (visitor.getHasWhatsApp() == 1) {
                                 messageInterface = new WapMessage();
 
@@ -91,13 +135,13 @@ public class Algorithm {
                                 messageInterface = new SmsMessage();
 
                             }
-                            if(visitor.getArrived()==0) {
-                                System.err.println("Sending message to "+phoneNumber);
-                                messageInterface.sendMessage(phoneNumber, date, hour);
-                            }
-                            else{
-                                System.err.println("vistor already here, not sending message");
-                            }
+//                            if(visitor.getArrived()==0) {
+//                                System.err.println("Sending message to "+phoneNumber);
+//                                messageInterface.sendMessage(phoneNumber, spot);
+//                            }
+//                            else{
+//                                System.err.println("visitor already here, not sending message");
+//                            }
 
                             visitor.setArrived(1);
                             protoSeanRepo.save(visitor);
