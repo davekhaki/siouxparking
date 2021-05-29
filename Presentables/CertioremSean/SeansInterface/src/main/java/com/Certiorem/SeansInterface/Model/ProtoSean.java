@@ -28,6 +28,8 @@ public class ProtoSean {
 
     private int hostNotified;
 
+    private int secretaryNotified;
+
     @Column(columnDefinition = "integer default 1")
     private int hasWhatsApp;
 
@@ -38,7 +40,7 @@ public class ProtoSean {
     public ProtoSean() {
     }
 
-    public ProtoSean(Long id, String numberPlate, String visitor, String phnNumber, String hostEmail, int arrived, int hostNotified, int hasWhatsApp, Date expectedAt) {
+    public ProtoSean(Long id, String numberPlate, String visitor, String phnNumber, String hostEmail, int arrived, int hostNotified, int secretaryNotified, int hasWhatsApp, Date expectedAt) {
         this.id = id;
         this.numberPlate = numberPlate;
         this.visitor = visitor;
@@ -46,6 +48,7 @@ public class ProtoSean {
         this.hostEmail = hostEmail;
         this.arrived = arrived;
         this.hostNotified = hostNotified;
+        this.secretaryNotified = secretaryNotified;
         this.hasWhatsApp = hasWhatsApp;
         this.expectedAt = expectedAt;
     }

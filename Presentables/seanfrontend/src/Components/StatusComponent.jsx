@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import ReactSpeedometer from "react-d3-speedometer"
 import ErrorIcon from "@material-ui/icons/Error";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Tooltip from "@material-ui/core/Tooltip";
 import InfoIcon from '@material-ui/icons/Info';
 import Notifier from "react-desktop-notifications";
+import ProtoSeanService from '../Services/ProtoSeanService';
 
 const StatusComponent = ({protoSean}) => {
 
     const [listening, setListening] = useState(false);
     const [currentDateTime] = useState(new Date());
     const [appointment, setAppointment] = useState(protoSean);
-    const [visitor, setVisitor] = useState(protoSean.visitor);
-    const [notified, setNotified] = useState(false);
+    
 
     let eventSource = undefined;
 
@@ -20,11 +19,22 @@ const StatusComponent = ({protoSean}) => {
         if (!listening) {
             eventSource = new EventSource('http://localhost:8081/event/arrived');
             eventSource.onmessage = (event) => {
-                var entity = JSON.parse(event.data);
-                if(appointment.id === entity.id ){
-                    setAppointment(JSON.parse(event.data));
-                }
+
+                var visitors = JSON.parse(event.data);
+                // var entity = JSON.parse(event.data);
+                // if(appointment.id === entity.id ){
+                //     setAppointment(JSON.parse(event.data));
+                // }
+               
+                visitors.forEach(entity => {
+                    if(appointment.id === entity.id){
+                        setAppointment(entity)
+                    }
+                });
+                console.log(appointment);
+                
             }
+            
             eventSource.onerror = (err) => {
                 console.error('EventSource failed:', err);
                 eventSource.close();
@@ -38,46 +48,27 @@ const StatusComponent = ({protoSean}) => {
 
     }, [])
 
-
-
-    // if(protoSean.arrived === 1){
-    //     return ( <Tooltip title="Arrived" placement="left" arrow>
-    //     <CheckCircleIcon style={{ color: "green" }} />
-    //     </Tooltip>);
-    // }
-    // else if (protoSean.arrived === 0){
-    //         if (protoSean.expectedAt < currentDateTime) {
-    //             return ( <Tooltip title="Late" placement="left" arrow> 
-    //             <ErrorIcon color="error" /> 
-    //             </Tooltip> )
-    //         }
-    //         else if (protoSean.expectedAt > currentDateTime) {
-    //             return( <Tooltip title="Expected" placement="left" arrow>
-    //             <InfoIcon style={{ color: "orange" }} /> 
-    //             </Tooltip>);
-    //         }
-    // }
-
     const showNewNotification = (visitor) =>{
         Notifier.start("A visitor has arrived!",visitor + " has just arrived","www.google.com", "/SiouxLogo.png");
     }
 
-    const renderStatus = (expectedAtValue, arrivedCheck) => {
+    const renderStatus = (appointmentId,expectedAtValue, arrivedCheck, notifiedCheck, visitor) => {
 
         var expectedAtDateTime = new Date(expectedAtValue);
         
         if(arrivedCheck === 1){
             
-            if(!notified){
-                showNewNotification(visitor);
-                setNotified(true);
+            if(notifiedCheck !== 1){
+                console.log(appointmentId);
+                ProtoSeanService.setNotified(appointmentId);
+                // showNewNotification(visitor);
             }
             
             return ( <Tooltip title="Arrived" placement="left" arrow>
             <CheckCircleIcon style={{ color: "green" }} />
             </Tooltip>);
         }
-        else if (arrivedCheck === 0){
+        else if (arrivedCheck !== 1){
               if (expectedAtDateTime < currentDateTime) {
                     return ( <Tooltip title="Late" placement="left" arrow> 
                     <ErrorIcon color="error" /> 
@@ -91,7 +82,7 @@ const StatusComponent = ({protoSean}) => {
         }
     }
 
-    return renderStatus(appointment.expectedAt, appointment.arrived);
+    return renderStatus(protoSean.id,appointment.expectedAt, appointment.arrived, appointment.secretaryNotified, appointment.visitor);
 
 }
 

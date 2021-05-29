@@ -346,7 +346,7 @@ class ListRecordsComponent extends Component {
                       value={this.state.hasWhatsApp}
                       onChange={this.changeHasWhatsAppHandler}
                     />{" "}
-                    Has WhatsApp? (Check the box, if the visitor has a WhatsApp)
+                    Has WhatsApp?
                   </div>
 
                   <button

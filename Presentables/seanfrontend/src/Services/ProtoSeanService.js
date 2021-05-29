@@ -32,6 +32,10 @@ class ProtoSeanService {
     return axios.put(PROTOSHAUN_API_BASE_URL + "/" + recordId, protoSean);
   }
 
+  setNotified(recordId){
+    return axios.put(PROTOSHAUN_API_BASE_URL + "/notify/" + recordId);
+  }
+
   deleteRecord(recordId) {
     return axios.delete(PROTOSHAUN_API_BASE_URL + "/" + recordId);
   }

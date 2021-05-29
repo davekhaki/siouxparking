@@ -111,10 +111,19 @@ public class ProtoSeanController {
         protoSean.setExpectedAt(protoSeanDetails.getExpectedAt());
         protoSean.setArrived(protoSeanDetails.getArrived());
         protoSean.setHostNotified(protoSeanDetails.getHostNotified());
-
+        protoSean.setSecretaryNotified(protoSeanDetails.getSecretaryNotified());
 
         ProtoSean updatedRecord = protoSeanRepo.save(protoSean);
         return ResponseEntity.ok(updatedRecord);
+    }
+
+    @PutMapping("/records/notify/{id}")
+    public ResponseEntity<ProtoSean> setSecretaryNotified(@PathVariable Long id){
+        ProtoSean protoSean = protoSeanRepo.findById(id)
+                .orElseThrow(() -> new ProtoSeanException("404: Record with id '" + id + "'Not found "));
+        protoSean.setSecretaryNotified(1);
+        ProtoSean notified = protoSeanRepo.save(protoSean);
+        return  ResponseEntity.ok(notified);
     }
 
     @DeleteMapping("/records/{id}")
