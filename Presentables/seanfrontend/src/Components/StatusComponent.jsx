@@ -5,6 +5,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import InfoIcon from '@material-ui/icons/Info';
 import Notifier from "react-desktop-notifications";
 import ProtoSeanService from '../Services/ProtoSeanService';
+import axios from 'axios';
 
 const StatusComponent = ({protoSean}) => {
 
@@ -13,40 +14,46 @@ const StatusComponent = ({protoSean}) => {
     const [appointment, setAppointment] = useState(protoSean);
     
 
-    let eventSource = undefined;
+    // let eventSource = undefined;
 
-    useEffect(() => {
-        if (!listening) {
-            eventSource = new EventSource('http://localhost:8081/event/arrived');
-            eventSource.onmessage = (event) => {
+    // useEffect(() => {
+        
+    //     if (!listening) {
+    //         eventSource = new EventSource('http://localhost:8081/event/arrived');
 
-                var visitors = JSON.parse(event.data);
-                // var entity = JSON.parse(event.data);
-                // if(appointment.id === entity.id ){
-                //     setAppointment(JSON.parse(event.data));
-                // }
-               
-                visitors.forEach(entity => {
-                    if(appointment.id === entity.id){
-                        setAppointment(entity)
-                    }
-                });
-                console.log(appointment);
+    //         eventSource.onopen = (event) => {
+    //             console.log("Connection opened");
+    //         }
+
+    //         eventSource.onmessage = (event) => {
+
+    //             var visitors = JSON.parse(event.data);
                 
-            }
-            
-            eventSource.onerror = (err) => {
-                console.error('EventSource failed:', err);
-                eventSource.close();
-            }
-            setListening(true)
-        }
-        return () => {
-                eventSource.close();
-                console.log('event closed')
-        }
+    //             visitors.forEach(entity => {
+    //                 if(appointment.id === entity.id){
+    //                     if(appointment !== entity){
+    //                         setAppointment(entity)
+    //                     }
+    //                 }
+    //             });
+    //         }
 
-    }, [])
+    //         eventSource.onerror = (event) => {
+    //             console.log(event.target.readyState);
+    //             if(event.target.readyState === EventSource.CLOSED){
+    //                 console.log('eventSource closed(' + event.target.readyState +')')
+    //             }
+    //             eventSource.close();
+    //         }
+
+    //         setListening(true)
+    //     }
+
+    //     return () => {
+    //             eventSource.close();
+    //             console.log('eventSource closed')
+    //     }
+    // }, [])
 
     const showNewNotification = (visitor) =>{
         Notifier.start("A visitor has arrived!",visitor + " has just arrived","www.google.com", "/SiouxLogo.png");
@@ -60,8 +67,8 @@ const StatusComponent = ({protoSean}) => {
             
             if(notifiedCheck !== 1){
                 console.log(appointmentId);
+                showNewNotification(visitor);
                 ProtoSeanService.setNotified(appointmentId);
-                // showNewNotification(visitor);
             }
             
             return ( <Tooltip title="Arrived" placement="left" arrow>

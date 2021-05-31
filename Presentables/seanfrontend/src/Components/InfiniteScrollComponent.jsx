@@ -21,8 +21,11 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
       const [isLoading, setIsLoading] = useState(false);
       const [hasMore, setHasMore] = useState(false);
       const [currentPage, setCurrentPage] = useState(1);
-      const [recordsPerPage, setRecordsPerPage] = useState(9);
-      const [modifiedRecords, setModifiedRecords] = useState(records);  
+      const [recordsPerPage, setRecordsPerPage] = useState(100);
+      const [modifiedRecords, setModifiedRecords] = useState(records);
+      const [listening, setListening] = useState(false);
+
+      let eventSource = undefined;
 
       const observer = useRef();
       const lastBookElementRef = useCallback(node => {
@@ -44,15 +47,48 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
       }, [isLoading, hasMore]);
 
       useEffect(() => {
+        
+            if (!listening) {
+                  eventSource = new EventSource('http://localhost:8081/event/arrived');
+
+                  eventSource.onopen = (event) => {
+                        console.log("Connection opened");
+                  }
+
+                  eventSource.onmessage = (event) => {
+
+                        var appointments = JSON.parse(event.data);
+                        setModifiedRecords(appointments);
+                  }
+
+                  eventSource.onerror = (event) => {
+                        console.log(event.target.readyState);
+                        if(event.target.readyState === EventSource.CLOSED){
+                        console.log('eventSource closed(' + event.target.readyState +')')
+                        }
+                        eventSource.close();
+                  }
+
+                  setListening(true)
+            }
+
+            return () => {
+                        eventSource.close();
+                        console.log('eventSource closed')
+            }
+
+      }, [])
+
+      useEffect(() => {
 
       const indexOfLastRecord = currentPage * recordsPerPage;
       const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
       if(currentPage === 1){
-            setModifiedRecords(records.slice(indexOfFirstRecord, indexOfLastRecord));
+            setModifiedRecords(modifiedRecords.slice(indexOfFirstRecord, indexOfLastRecord));
 
       }
       else {
-            setModifiedRecords(modifiedRecords.concat(records.slice(indexOfFirstRecord, indexOfLastRecord)) );
+            setModifiedRecords(modifiedRecords.concat(modifiedRecords.slice(indexOfFirstRecord, indexOfLastRecord)) );
             console.log("Page: " + currentPage);
       }
 
@@ -63,13 +99,12 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
 
 const deleteRecord = (id) => {
       ProtoSeanService.deleteRecord(id).then((res) => {
-
-            records.filter((protoSean) => protoSean.id !== id)
-            window.location.reload(true);
+            
+            setModifiedRecords(records.filter((protoSean) => protoSean.id !== id))
       });
 }
 
-const gotNewNotification = (visitor) =>{
+const showNewNotification = (visitor) =>{
       Notifier.start("A visitor has arrived!",visitor + " has just arrived","www.google.com", "/SiouxLogo.png");
 }
   
@@ -78,16 +113,22 @@ const editRecord = (id) => {
       history.push(`/update-record/${id}`);
 }
 
-const renderStatus = (expectedAtValue, arrivedCheck) => {
+const renderStatus = (appointmentId,expectedAtValue, arrivedCheck, notifiedCheck, visitor) => {
 
       var expectedAtDateTime = new Date(expectedAtValue);
       
       if(arrivedCheck === 1){
-            return ( <Tooltip title="Arrived" placement="left" arrow>
-            <CheckCircleIcon style={{ color: "green" }} />
-            </Tooltip>);
+          
+          if(notifiedCheck !== 1){
+              showNewNotification(visitor);
+              ProtoSeanService.setNotified(appointmentId);
+          }
+          
+          return ( <Tooltip title="Arrived" placement="left" arrow>
+          <CheckCircleIcon style={{ color: "green" }} />
+          </Tooltip>);
       }
-      else if (arrivedCheck === 0){
+      else if (arrivedCheck !== 1){
             if (expectedAtDateTime < currentDateTime) {
                   return ( <Tooltip title="Late" placement="left" arrow> 
                   <ErrorIcon color="error" /> 
@@ -99,12 +140,7 @@ const renderStatus = (expectedAtValue, arrivedCheck) => {
                   </Tooltip>);
             }
       }
-
-      
-      
-
-      /* <CheckCircleIcon style={{ color: "green" }} /> */
-}
+  }
 
 const tableGenerate = (protoSean, index) => {
 
@@ -112,7 +148,7 @@ const tableGenerate = (protoSean, index) => {
             
             return(
                   <tr key={protoSean.id} ref={lastBookElementRef}>
-                  <td><StatusComponent protoSean = {protoSean}/></td>
+                  <td>{renderStatus(protoSean.id, protoSean.expectedAt, protoSean.arrived, protoSean.secretaryNotified, protoSean.visitor)}</td>
                   <td>{protoSean.visitor}</td>
                   <td>{protoSean.numberPlate}</td>
                   <td>{protoSean.phnNumber}</td>
@@ -150,7 +186,7 @@ const tableGenerate = (protoSean, index) => {
       else {
             return (
                   <tr key={protoSean.id}>
-                  <td><StatusComponent protoSean = {protoSean}/></td>
+                  <td>{renderStatus(protoSean.id, protoSean.expectedAt, protoSean.arrived, protoSean.secretaryNotified, protoSean.visitor)}</td>
                   <td>{protoSean.visitor}</td>
                   <td>{protoSean.numberPlate}</td>
                   <td>{protoSean.phnNumber}</td>
