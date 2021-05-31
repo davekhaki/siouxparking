@@ -120,6 +120,7 @@ public class Algorithm {
                             String hour = expectedAt.toString().substring(11);
                             String spot="parkingSpot";
                             for (int i = 0; i < occupiedSpaces.length; i++) {
+                                occupiedSpaces[0]=true;
                                 if(!occupiedSpaces[i]) {
                                     spot = Integer.toString(i);
                                     occupiedSpaces[i]=true;
