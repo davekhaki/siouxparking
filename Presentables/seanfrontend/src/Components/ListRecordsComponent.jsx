@@ -69,7 +69,7 @@ class ListRecordsComponent extends Component {
   }
 
   validatePhoneNumber(number) {
-    const pattern = /^\d+$/;
+    const pattern = /^\+?\d+$/;
     const result = pattern.test(number);
     if (result === true) {
       console.log("good phone");
