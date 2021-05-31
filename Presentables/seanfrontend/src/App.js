@@ -20,24 +20,26 @@ function App() {
     <div>
       <BrowserRouter>
         <HeaderComponent />
-        <div className="container">
-          <Switch>
-            <Route path="/" exact component={HomeComponent}></Route>
-            <Route
-              path="/records"
-              exact
-              component={ListRecordsComponent}
-            ></Route>
-            <Route path="/add-record" component={AddRecordsComponent}></Route>
-            <Route
-              path="/update-record/:id"
-              component={UpdateRecordsComponent}
-            ></Route>
-            <Route
-              path="/visit-history"
-              component={VisitHistoryComponent}
-            ></Route>
-          </Switch>
+        <div className="content-outer">
+          <div className="content-inner">
+            <Switch>
+              <Route path="/" exact component={HomeComponent}></Route>
+              <Route
+                path="/records"
+                exact
+                component={ListRecordsComponent}
+              ></Route>
+              <Route path="/add-record" component={AddRecordsComponent}></Route>
+              <Route
+                path="/update-record/:id"
+                component={UpdateRecordsComponent}
+              ></Route>
+              <Route
+                path="/visit-history"
+                component={VisitHistoryComponent}
+              ></Route>
+            </Switch>
+          </div>
         </div>
         <FooterComponent />
       </BrowserRouter>

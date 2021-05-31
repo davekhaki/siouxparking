@@ -17,7 +17,7 @@ class SeansInterfaceApplicationTests {
 	//arrange
 		ProtoSean protoSean = new ProtoSean(1L,"123KLM","Batshal",
 				"065489654","email@email.com",0,
-				0,1, new Date());
+				0,1,1, new Date());
         //act
 		Long id = protoSean.getId();
 		String numberPlate = protoSean.getNumberPlate();
@@ -26,6 +26,7 @@ class SeansInterfaceApplicationTests {
 		String hostEmail = protoSean.getHostEmail();
 		int arrived = protoSean.getArrived();
 		int hostNotified = protoSean.getHostNotified();
+		int secretaryNotified = protoSean.getSecretaryNotified();
 		int hasWhatsApp = protoSean.getHasWhatsApp();
 		Date expectedAt = protoSean.getExpectedAt();
         //assert
@@ -36,6 +37,7 @@ class SeansInterfaceApplicationTests {
 		assertEquals("email@email.com", hostEmail);
 		assertEquals(0, arrived);
 		assertEquals(0, hostNotified);
+		assertEquals(1, secretaryNotified);
 		assertEquals(1, hasWhatsApp);
 		assertEquals(new Date(), expectedAt);
 

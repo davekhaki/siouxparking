@@ -16,6 +16,7 @@
     "history": "^5.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
+    "react-d3-speedometer": "^1.0.1",
     "react-datepicker": "^3.8.0",
     "react-desktop-notifications": "^1.0.0",
     "react-dom": "^17.0.2",

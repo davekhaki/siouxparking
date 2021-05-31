@@ -24,6 +24,7 @@ import java.util.Date;
 @EnableScheduling
 @Component
 public class Algorithm {
+
     //should be false for production checks if video has been loaded before recognizing plates
     boolean finishedLoadingVideo = true;
     //if this is true then inputStream will be used instead of a video
