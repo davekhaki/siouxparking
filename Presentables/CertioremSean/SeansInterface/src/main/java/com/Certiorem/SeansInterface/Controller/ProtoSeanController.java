@@ -114,10 +114,9 @@ public class ProtoSeanController {
 
     @PutMapping("/records/notify/{id}")
     public ResponseEntity<ProtoSean> setSecretaryNotified(@PathVariable Long id){
-        ProtoSean protoSean = protoSeanRepo.findById(id)
-                .orElseThrow(() -> new ProtoSeanException("404: Record with id '" + id + "'Not found "));
+        ProtoSean protoSean = protoSeanService.retrieveRecordsByRecordId(id);
         protoSean.setSecretaryNotified(1);
-        ProtoSean notified = protoSeanRepo.save(protoSean);
+        ProtoSean notified = protoSeanService.submitProtoSeanToDb(protoSean);
         return  ResponseEntity.ok(notified);
     }
 

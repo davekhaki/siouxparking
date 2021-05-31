@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 @Service
-public class ProtoSeanService {
+public class    ProtoSeanService {
 
     @Autowired
     ProtoSeanRepo protoSeanRepo;
@@ -30,6 +30,6 @@ public class ProtoSeanService {
     }
 
     public ProtoSean retrieveRecordsByRecordId(Long id){
-        return protoSeanRepo.findById(id).orElse(null);
+        return protoSeanRepo.findById(id).orElseThrow(() -> new ProtoSeanException("404: Record with id '" + id + "'Not found "));
     }
 }

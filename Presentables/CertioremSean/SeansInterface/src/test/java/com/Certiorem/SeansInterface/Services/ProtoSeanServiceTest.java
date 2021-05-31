@@ -31,7 +31,7 @@ class ProtoSeanServiceTest {
     void submitProtoSeanToDb() {
         ProtoSean protoSean = new ProtoSean(1L,"123KLM","Batshal",
                 "065489654","email@email.com",0,
-                0,1, new Date());
+                0,0,1, new Date());
         protoSeanService.submitProtoSeanToDb(protoSean);
         verify(protoSeanRepo,times(1)).save(protoSean);
     }
@@ -40,10 +40,10 @@ class ProtoSeanServiceTest {
     void getAllRecordsFromDb() {
         ProtoSean protoSean = new ProtoSean(1L,"123KLM","Batshal",
                 "065489654","email@email.com",0,
-                0,1, new Date());
+                0,0,1, new Date());
         ProtoSean protoSean1 = new ProtoSean(2L,"123HLM","Florin",
                 "0654845654","florin@email.com",0,
-                0,1, new Date());
+                0,0,1, new Date());
         List<ProtoSean> protoSeanList = new ArrayList<ProtoSean>();
         protoSeanList.add(protoSean);
         protoSeanList.add(protoSean1);
@@ -56,7 +56,7 @@ class ProtoSeanServiceTest {
     void deleteRecordsById() {
         ProtoSean protoSean = new ProtoSean(2L,"123HLM","Florin",
                 "0654845654","florin@email.com",0,
-                0,1, new Date());
+                0,0,1, new Date());
         protoSeanService.deleteRecordsById(protoSean.getId());
         verify(protoSeanRepo,times(1)).deleteById(protoSean.getId());
     }
@@ -66,7 +66,7 @@ class ProtoSeanServiceTest {
         Long id = 1L;
         ProtoSean protoSean = new ProtoSean(1L,"123HLM","Florin",
                 "0654845654","florin@email.com",0,
-                0,1, new Date());
+                0,0,1, new Date());
         when(protoSeanRepo.findById(id)).thenReturn(Optional.of(protoSean));
         assertEquals(protoSean, protoSeanService.retrieveRecordsByRecordId(id));
 
