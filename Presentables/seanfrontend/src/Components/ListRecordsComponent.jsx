@@ -4,7 +4,7 @@ import ProtoSeanService from "../Services/ProtoSeanService";
 import TextField from "@material-ui/core/TextField";
 import SearchRecordsComponent from "./SearchRecordsComponent";
 import InfiniteScrollComponent from "./InfiniteScrollComponent";
-import DateSelectorComponent from "./DateSelectorComponent";
+import { LineWeight } from "@material-ui/icons";
 
 class ListRecordsComponent extends Component {
   constructor(props) {
@@ -52,34 +52,85 @@ class ListRecordsComponent extends Component {
     const result = pattern.test(email);
     if (result === true) {
       console.log("good email");
+      document.getElementById("emailError").innerHTML = "";
       this.setState({ hostEmail: email });
       return true;
+    } else if(email == "") {
+      console.log("bad email");
+      document.getElementById("emailError").innerHTML = "Please input an email";
+      document.getElementById("emailInput").focus();
+      return false;
     } else {
       console.log("bad email");
-      alert("Email must have an @ and a .");
+      document.getElementById("emailError").innerHTML = "Email needs @ and .";
+      document.getElementById("emailInput").focus();
       return false;
     }
   }
 
   validatePhoneNumber(number) {
-    const pattern = /^\d+$/;
+    const pattern = /^\+?\d+$/;
     const result = pattern.test(number);
     if (result === true) {
       console.log("good phone");
       this.setState({ phnNumber: number });
+      document.getElementById("phoneError").innerHTML = "";
       return true;
+    } else if(number == "") {
+      console.log("bad phone");
+      document.getElementById("phoneError").innerHTML = "Please input a phone number";
+      document.getElementById("phoneInput").focus();
+      return false;
     } else {
       console.log("bad phone");
-      alert("Phone number must only be numbers");
+      document.getElementById("phoneError").innerHTML = "Phone number must be only numbers";
+      document.getElementById("phoneInput").focus();
       return false;
+    }
+  }
+
+  validateVisitor(visitor) {
+    if(visitor === "") {
+      document.getElementById("visitorError").innerHTML = "Please input a visitor"
+      document.getElementById("visitorInput").focus();
+      return false;
+    } else {
+      document.getElementById("visitorError").innerHTML = ""
+      return true;
+    }
+  }
+
+  validateExpectedDate(date) {
+    if(date === "") {
+      document.getElementById("expectedDateError").innerHTML = "Please choose expected arrival date"
+      document.getElementById("expectedAtDateTime").focus();
+      return false;
+    } else {
+      document.getElementById("expectedDateError").innerHTML = ""
+      return true;
+    }
+  }
+
+  validateLicensePlate(licensePlate) {
+    if(licensePlate === "") {
+      document.getElementById("licensePlateError").innerHTML = "Please input a license plate"
+      document.getElementById("licensePlateInput").focus();
+      return false;
+    } else {
+      document.getElementById("licensePlateError").innerHTML = ""
+      return true;
     }
   }
 
   saveRecords = (e) => {
     e.preventDefault();
 
+    console.log()
     if (!this.validateEmail(this.state.hostEmail)) return;
     if (!this.validatePhoneNumber(this.state.phnNumber)) return;
+    if (!this.validateVisitor(this.state.visitor)) return;
+    if (!this.validateLicensePlate(this.state.numberPlate)) return;
+    if (!this.validateExpectedDate(this.state.expectedAt)) return;
 
     let protoSean = {
       visitor: this.state.visitor,
@@ -166,9 +217,9 @@ class ListRecordsComponent extends Component {
   getAllRecords = () => {
     //if selectedDate is 0, else return selected date records, gotta add into API
     console.log("ListREcord " + this.state.selectedDate);
-    const { keyword, type, selectedDate } = this.state;
+    const { keyword, selectedDate } = this.state;
     this.setState({ isRecord: false });
-    ProtoSeanService.getRecords(keyword, type, selectedDate).then((res) => {
+    ProtoSeanService.getRecords(keyword, selectedDate).then((res) => {
       this.setState({ records: res.data });
       console.log(this.state.records);
       this.setState({ isRecord: true });
@@ -205,116 +256,133 @@ class ListRecordsComponent extends Component {
   render() {
     return (
       <div>
-        <div className="row list-row records-table">
-          <SearchRecordsComponent
-            keyword={this.state.keyword}
-            type={this.state.type}
-            changeRecordInputHandler={this.changeRecordInputHandler}
-            changeRecordSelectHandler={this.changeRecordSelectHandler}
-          />
-          <h3>Records</h3>
-          <DateSelectorComponent passDate = {this.dateSelectorReceive}/>
-          <table className="table table-striped table-borderless list-item-1">
-            <thead>
-              <tr>
-                <th> Status </th>
-                <th
-                  onClick={() => {
-                    this.sortBy("visitor");
-                  }}
-                >
-                  {" "}
-                  Visitor{" "}
-                </th>
-                <th
-                  onClick={() => {
-                    this.sortBy("numberPlate");
-                  }}
-                >
-                  {" "}
-                  License Plate{" "}
-                </th>
-                <th
-                  onClick={() => {
-                    this.sortBy("phnNumber");
-                  }}
-                >
-                  {" "}
-                  Phone Number{" "}
-                </th>
-                <th
-                  onClick={() => {
-                    this.sortBy("hostEmail");
-                  }}
-                >
-                  Host Email{" "}
-                </th>
-                <th
-                  onClick={() => {
-                    this.sortBy("expectedAt");
-                  }}
-                >
-                  {" "}
-                  Expected At{" "}
-                </th>
-                <th> Actions </th>
-              </tr>
-            </thead>
+        <div className="row list-row ">
+          <div className="search-controls">
+            <div className="search-control-1">
+              <SearchRecordsComponent
+                keyword={this.state.keyword}
+                type={this.state.type}
+                changeRecordInputHandler={this.changeRecordInputHandler}
+                dateSelectorReceive={this.dateSelectorReceive}
+              />
+            </div>
+            {/* <div className="search-control-2">
+              <DateSelectorComponent passDate = {this.dateSelectorReceive}/>
+            </div> */}
+          </div>
+            
+          <div className="records-table list-item-1">
+            <table className="table table-striped table-borderless ">
+              <thead className="table-head">
+                <tr>
+                  <th> Status </th>
+                  <th
+                    onClick={() => {
+                      this.sortBy("visitor");
+                    }}
+                  >
+                    {" "}
+                    Visitor{" "}
+                  </th>
+                  <th
+                    onClick={() => {
+                      this.sortBy("numberPlate");
+                    }}
+                  >
+                    {" "}
+                    License Plate{" "}
+                  </th>
+                  <th
+                    onClick={() => {
+                      this.sortBy("phnNumber");
+                    }}
+                  >
+                    {" "}
+                    Phone Number{" "}
+                  </th>
+                  <th
+                    onClick={() => {
+                      this.sortBy("hostEmail");
+                    }}
+                  >
+                    Host Email{" "}
+                  </th>
+                  <th
+                    onClick={() => {
+                      this.sortBy("expectedAt");
+                    }}
+                  >
+                    {" "}
+                    Expected At{" "}
+                  </th>
+                  <th> Actions </th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {this.state.isRecord && (
-                <InfiniteScrollComponent
-                  records={this.state.records}
-                  currentDateTime={this.state.currentDateTime}
-                />
-              )}
-            </tbody>
-          </table>
+              <tbody>
+                {this.state.isRecord && (
+                  <InfiniteScrollComponent
+                    records={this.state.records}
+                    currentDateTime={this.state.currentDateTime}
+                  />
+                )}
+              </tbody>
+            </table>
+          </div>
+          
           <div className="list-item-2">
-            <h3 className="text-center">Add Record</h3>
+            <h5 style={{margin: "0", fontWeight: "500"}} className="text-center">New appointment</h5>
             <div className="row">
               <div className="card-body">
                 <form>
                   <div className="form-group">
                     <label>Visitor:</label>
                     <input
+                      id= "visitorInput"
                       name="visitor"
                       className="form-control textbox"
                       value={this.state.visitor}
                       onChange={this.changeVisitorHandeler}
                     />
+                    <p id="visitorError" className="recordFormError"></p>
                   </div>
 
                   <div className="form-group">
                     <label>License Plate:</label>
                     <input
+                      id= "licensePlateInput"
                       name="License Plate"
                       className="form-control textbox"
                       value={this.state.numberPlate}
                       onChange={this.changeNumberPlateHandeler}
                     />
+                    <p id="licensePlateError" className="recordFormError"></p>
                   </div>
 
                   <div className="form-group">
                     <label>Phone Number:</label>
                     <input
+                      id= "phoneInput"
                       type="phone"
                       name="phnNumber"
                       className="form-control textbox"
                       value={this.state.phnNumber}
                       onChange={this.changePhnNumberHandeler}
                     />
+                    <p id="phoneError" className="recordFormError"></p>
                   </div>
 
                   <div className="form-group">
                     <label>Host Email:</label>
                     <input
+                      id= "emailInput"
                       type="email"
                       name="hostEmail"
                       className="form-control textbox"
                       value={this.state.hostEmail}
                       onChange={this.changeHostEmailHandeler}
                     />
+                    <p id="emailError" className="recordFormError"></p>
                   </div>
 
                   <div className="form-group">
@@ -329,6 +397,7 @@ class ListRecordsComponent extends Component {
                         shrink: true,
                       }}
                     />
+                    <p id="expectedDateError" className="recordFormError"></p>
                   </div>
                   <div className="form-group">
                     <input
@@ -337,14 +406,14 @@ class ListRecordsComponent extends Component {
                       value={this.state.hasWhatsApp}
                       onChange={this.changeHasWhatsAppHandler}
                     />{" "}
-                    Has WhatsApp? (Check the box, if the visitor has a WhatsApp)
+                    Has WhatsApp?
                   </div>
 
                   <button
                     className="btn btn-success"
                     onClick={this.saveRecords}
                   >
-                    Add Record
+                    Create
                   </button>
                 </form>
               </div>

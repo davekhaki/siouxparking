@@ -1,6 +1,8 @@
 package com.Certiorem.SeansInterface;
 
+import com.Certiorem.SeansInterface.LicenseRecognition.CsvReader;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
+import com.github.sarxos.webcam.Webcam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,6 +13,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 //@EnableScheduling
@@ -29,6 +34,19 @@ public class SeansInterfaceApplication implements CommandLineRunner {
 		SpringApplication.run(SeansInterfaceApplication.class, args);
 
 		System.err.println("something");
+
+//		boolean[] parkingSpaces= CsvReader.parseCsv();
+//		System.err.println("sth");
+//		Webcam webcam = Webcam.getDefault();
+//		webcam.open();
+//		try {
+//			String filePath="../CertioremSean/SeansInterface/src/main/resources/picsFromStream/snapshot1.png";
+//			ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
+//			System.err.println("webcam snapshot taken");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+
 
 //		MessageInterface messageInterface=new SmsMessage();
 //		messageInterface.sendMessage("+40770618495","sometime","soon");

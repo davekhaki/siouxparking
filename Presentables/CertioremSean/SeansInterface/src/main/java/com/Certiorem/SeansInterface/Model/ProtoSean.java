@@ -10,8 +10,6 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity (name = "ParkingInfo")
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class ProtoSean {
     @Id
@@ -30,6 +28,8 @@ public class ProtoSean {
 
     private int hostNotified;
 
+    private int secretaryNotified;
+
     @Column(columnDefinition = "integer default 1")
     private int hasWhatsApp;
 
@@ -37,4 +37,19 @@ public class ProtoSean {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date expectedAt;
 
+    public ProtoSean() {
+    }
+
+    public ProtoSean(Long id, String numberPlate, String visitor, String phnNumber, String hostEmail, int arrived, int hostNotified, int secretaryNotified, int hasWhatsApp, Date expectedAt) {
+        this.id = id;
+        this.numberPlate = numberPlate;
+        this.visitor = visitor;
+        this.phnNumber = phnNumber;
+        this.hostEmail = hostEmail;
+        this.arrived = arrived;
+        this.hostNotified = hostNotified;
+        this.secretaryNotified = secretaryNotified;
+        this.hasWhatsApp = hasWhatsApp;
+        this.expectedAt = expectedAt;
+    }
 }

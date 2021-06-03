@@ -35,6 +35,15 @@
         <char content="0123456789"/>
         <char content="0123456789"/>
     </type>
+
+    <type name="netherlands20">
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+        <char content="0123456789"/>
+        <char content="0123456789"/>
+        <char content="0123456789"/>
+        <char content="abcdefghijklmno0pqrstuvwxyz"/>
+    </type>
 	
 	<type name="netherlands10">
 		<char content="abcdefghijklmno0pqrstuvwxyz"/>
