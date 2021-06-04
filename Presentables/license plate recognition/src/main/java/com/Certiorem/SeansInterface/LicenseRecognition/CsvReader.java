@@ -10,13 +10,13 @@ import java.util.List;
 
 public class CsvReader {
 
-    private static final String csvPath = "../CertioremSean/SeansInterface/src/main/resources/csvFile/parking.csv";
+
 
 
     private static List<List<String>> readCsv() {
         List<List<String>> records = new ArrayList<>();
         try (
-                BufferedReader br = new BufferedReader(new FileReader(csvPath))) {
+                BufferedReader br = new BufferedReader(new FileReader(FilePath.csvPath))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
