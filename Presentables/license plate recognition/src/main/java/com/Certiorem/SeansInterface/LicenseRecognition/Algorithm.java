@@ -35,7 +35,7 @@ public class Algorithm {
     MessageInterface messageInterface;
     boolean[] occupiedSpaces;
 
-    Webcam webcam = Webcam.getDefault();
+//    Webcam webcam = Webcam.getDefault();
     int snapshotCounter=1;
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
@@ -69,21 +69,21 @@ public class Algorithm {
 //            e.printStackTrace();
 //        }
 //    }
-    @Scheduled(fixedDelay = 2000)
-    public void snapShotFromStream(){
-        if(useCameraStream) {
-            webcam.open();
-            try {
-                String filePath = FilePath.snapshotPath + snapshotCounter + ".png";
-                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
-                System.err.println("webcam snapshot " + snapshotCounter + " taken");
-                snapshotCounter++;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    @Scheduled(fixedDelay = 2000)
+//    public void snapShotFromStream(){
+//        if(useCameraStream) {
+//            webcam.open();
+//            try {
+//                String filePath = FilePath.snapshotPath + snapshotCounter + ".png";
+//                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
+//                System.err.println("webcam snapshot " + snapshotCounter + " taken");
+//                snapshotCounter++;
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     @Scheduled(fixedDelay = 2000)
     public void recognizeLoadedPics() {
@@ -136,13 +136,13 @@ public class Algorithm {
                                 messageInterface = new SmsMessage();
 
                             }
-//                            if(visitor.getArrived()==0) {
-//                                System.err.println("Sending message to "+phoneNumber);
+                            if(visitor.getArrived()==0) {
+                                System.err.println("Sending message to "+phoneNumber);
 //                                messageInterface.sendMessage(phoneNumber, spot);
-//                            }
-//                            else{
-//                                System.err.println("visitor already here, not sending message");
-//                            }
+                            }
+                            else{
+                                System.err.println("visitor already here, not sending message");
+                            }
 
                             visitor.setArrived(1);
                             protoSeanRepo.save(visitor);
