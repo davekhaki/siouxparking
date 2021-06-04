@@ -14,7 +14,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,14 +28,14 @@ import java.util.Date;
 public class Algorithm {
 
     //should be false for production checks if video has been loaded before recognizing plates
-    boolean finishedLoadingVideo = true;
+    boolean finishedLoadingVideo = false;
     //if this is true then inputStream will be used instead of a video
-    boolean useCameraStream=false;
+    boolean useCameraStream=true;
     int picCounter = 1;
     MessageInterface messageInterface;
     boolean[] occupiedSpaces;
 
-//    Webcam webcam = Webcam.getDefault();
+    Webcam webcam = Webcam.getDefault();
     int snapshotCounter=1;
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
@@ -55,34 +57,33 @@ public class Algorithm {
         occupiedSpaces = CsvReader.parseCsv();
     }
 
-//    @Scheduled(fixedDelay = Long.MAX_VALUE)
-//    public void loadVideo() {
-//        String mp4Path = "../CertioremSean/SeansInterface/src/main/resources/vids/anprVideo.mp4";
-//        //String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
-//        //String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
-//        String imagePath = "../CertioremSean/SeansInterface/src/main/resources/picsFromVideo";
-//        try {
-//            finishedLoadingVideo = VideoCapture.convertMovieToJPG(mp4Path, imagePath, "jpg");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    @Scheduled(fixedDelay = 2000)
-//    public void snapShotFromStream(){
-//        if(useCameraStream) {
-//            webcam.open();
-//            try {
-//                String filePath = "../CertioremSean/SeansInterface/src/main" +
-//                        "/resources/picsFromStream/snapshot" + snapshotCounter + ".png";
-//                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
-//                System.err.println("webcam snapshot " + snapshotCounter + " taken");
-//                snapshotCounter++;
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    @Scheduled(fixedDelay = Long.MAX_VALUE)
+    public void loadVideo() {
+        String mp4Path = FilePath.mp4PathVideo;
+        //String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
+        //String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
+        String imagePath = FilePath.imagePathVideoOutput;
+        try {
+            finishedLoadingVideo = VideoCapture.convertMovieToJPG(mp4Path, imagePath, "jpg");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Scheduled(fixedDelay = 2000)
+    public void snapShotFromStream(){
+        if(useCameraStream) {
+            webcam.open();
+            try {
+                String filePath = FilePath.snapshotPath + snapshotCounter + ".png";
+                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
+                System.err.println("webcam snapshot " + snapshotCounter + " taken");
+                snapshotCounter++;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Scheduled(fixedDelay = 2000)
     public void recognizeLoadedPics() {
@@ -94,10 +95,9 @@ public class Algorithm {
             try {
                 String path="";
                 if(!useCameraStream) {
-                    path = "..\\CertioremSean\\" +
-                            "SeansInterface\\src\\main\\resources\\picsFromVideo\\" + picCounter + ".jpg";
+                    path = FilePath.picsFromVideoPath+ picCounter + ".jpg";
                 } else {
-                    path="../CertioremSean/SeansInterface/src/main/resources/picsFromStream/snapshot"+picCounter+".png";
+                    path=FilePath.picsFromSnapshotPath+picCounter+".png";
                 }
                 Path formattedPath = Paths.get(path);
                 boolean fileExists = Files.exists(formattedPath);
