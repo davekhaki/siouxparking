@@ -12,6 +12,11 @@ test-job1:
   script:
     - mvn test
 
+sonarqube:
+  stage: sonar
+  script: 
+   - cd "/Presentables/license plate recognition"
+   - mvn sonar:sonar "-Dsonar.login=e68dd7747d2becfa7ad26c0bed24651e22549497"
   
 
 
