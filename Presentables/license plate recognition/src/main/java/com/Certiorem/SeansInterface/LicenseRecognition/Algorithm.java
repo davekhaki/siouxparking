@@ -70,16 +70,17 @@ public class Algorithm {
 //            e.printStackTrace();
 //        }
 //    }
-    @Scheduled(fixedDelay = 2000)
-    public void snapShotFromStream(){
-        if(useCameraStream) {
-            if(myWebcam.snapPicture(snapshotCounter))
-                snapshotCounter++;
-        }
-    }
+
+//    @Scheduled(fixedRate = 2000)
+//    public void snapShotFromStream(){
+//        if(useCameraStream) {
+//            if(myWebcam.snapPicture(snapshotCounter))
+//                snapshotCounter++;
+//        }
+//    }
 
 
-    @Scheduled(fixedDelay = 2000)
+    @Scheduled(fixedRate = 2000)
     public void recognizeLoadedPics() {
 //        if(useCameraStream)
 //            System.err.println("Using camera");
@@ -99,7 +100,7 @@ public class Algorithm {
 //                    System.err.println(picCounter);
                     CarSnapshot snapshot = new CarSnapshot(path);
                     String plate = intelligence.recognize(snapshot);
-                    picCounter++;
+
                     if (plate != null) {
                         //plate recognized
                         System.err.println("picture "+picCounter+" has plate "+plate);
@@ -151,6 +152,7 @@ public class Algorithm {
                         //plate not recognized
                         System.err.println("Plate from pic " + picCounter + " is null");
                     }
+                    picCounter++;
                 } else {
                     System.err.println("File " + picCounter + " does not exist");
                 }
