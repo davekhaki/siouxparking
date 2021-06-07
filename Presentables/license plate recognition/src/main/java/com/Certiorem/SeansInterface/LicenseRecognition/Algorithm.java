@@ -71,16 +71,16 @@ public class Algorithm {
 //        }
 //    }
 
-//    @Scheduled(fixedRate = 2000)
-//    public void snapShotFromStream(){
-//        if(useCameraStream) {
-//            if(myWebcam.snapPicture(snapshotCounter))
-//                snapshotCounter++;
-//        }
-//    }
+    @Scheduled(fixedDelay = 2000)
+    public void snapShotFromStream(){
+        if(useCameraStream) {
+            if(myWebcam.snapPicture(snapshotCounter))
+                snapshotCounter++;
+        }
+    }
 
 
-    @Scheduled(fixedRate = 2000)
+    @Scheduled(fixedDelay = 2000)
     public void recognizeLoadedPics() {
 //        if(useCameraStream)
 //            System.err.println("Using camera");
