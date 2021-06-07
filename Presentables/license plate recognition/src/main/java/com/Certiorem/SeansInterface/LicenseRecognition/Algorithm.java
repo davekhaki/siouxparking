@@ -122,11 +122,12 @@ public class Algorithm {
                             for (int i = 0; i < occupiedSpaces.length; i++) {
                                 occupiedSpaces[0]=true;
                                 if(!occupiedSpaces[i]) {
-                                    spot = Integer.toString(i);
+//                                    spot = Integer.toString(i);
+                                    spot="FreeSpace";
                                     occupiedSpaces[i]=true;
                                     break;
                                 }
-                                spot="noSpace";
+                                spot="https://goo.gl/maps/eqcWjuKzQAeZVVJH6";
                             }
 
                             if (visitor.getHasWhatsApp() == 1) {
