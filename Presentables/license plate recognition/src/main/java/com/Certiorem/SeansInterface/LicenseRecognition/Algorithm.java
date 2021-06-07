@@ -5,7 +5,6 @@ import com.Certiorem.SeansInterface.Messaging.SmsMessage;
 import com.Certiorem.SeansInterface.Messaging.WapMessage;
 import com.Certiorem.SeansInterface.Model.ProtoSean;
 import com.Certiorem.SeansInterface.Repository.ProtoSeanRepo;
-import com.github.sarxos.webcam.Webcam;
 import net.sf.javaanpr.imageanalysis.CarSnapshot;
 import net.sf.javaanpr.intelligence.Intelligence;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,10 @@ import org.xml.sax.SAXException;
 
 import javax.imageio.ImageIO;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,12 +31,12 @@ public class Algorithm {
     //should be false for production checks if video has been loaded before recognizing plates
     boolean finishedLoadingVideo = true;
     //if this is true then inputStream will be used instead of a video
-    boolean useCameraStream=false;
+    boolean useCameraStream=true;
     int picCounter = 1;
     MessageInterface messageInterface;
     boolean[] occupiedSpaces;
+    MyWebcam myWebcam=new FoscamWebcam();
 
-//    Webcam webcam = Webcam.getDefault();
     int snapshotCounter=1;
     @Autowired
     private ProtoSeanRepo protoSeanRepo;
@@ -69,21 +70,14 @@ public class Algorithm {
 //            e.printStackTrace();
 //        }
 //    }
-//    @Scheduled(fixedDelay = 2000)
-//    public void snapShotFromStream(){
-//        if(useCameraStream) {
-//            webcam.open();
-//            try {
-//                String filePath = FilePath.snapshotPath + snapshotCounter + ".png";
-//                ImageIO.write(webcam.getImage(), "PNG", new File(filePath));
-//                System.err.println("webcam snapshot " + snapshotCounter + " taken");
-//                snapshotCounter++;
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    @Scheduled(fixedDelay = 2000)
+    public void snapShotFromStream(){
+        if(useCameraStream) {
+            if(myWebcam.snapPicture(snapshotCounter))
+                snapshotCounter++;
+        }
+    }
+
 
     @Scheduled(fixedDelay = 2000)
     public void recognizeLoadedPics() {
@@ -97,7 +91,7 @@ public class Algorithm {
                 if(!useCameraStream) {
                     path = FilePath.picsFromVideoPath+ picCounter + ".jpg";
                 } else {
-                    path=FilePath.picsFromSnapshotPath+picCounter+".png";
+                    path=FilePath.picsFromSnapshotPath+picCounter+".jpg";
                 }
                 Path formattedPath = Paths.get(path);
                 boolean fileExists = Files.exists(formattedPath);
@@ -108,7 +102,7 @@ public class Algorithm {
                     picCounter++;
                     if (plate != null) {
                         //plate recognized
-                        System.err.println(plate);
+                        System.err.println("picture "+picCounter+" has plate "+plate);
                         ProtoSean visitor = protoSeanRepo.findByNumberPlate(plate);
 
                         if (visitor != null) {
