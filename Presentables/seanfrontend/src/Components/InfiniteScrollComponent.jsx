@@ -15,7 +15,7 @@ import StatusComponent from "./StatusComponent";
 
 
 
-export default function InfiniteScrollComponent({records, currentDateTime}) {
+export default function InfiniteScrollComponent({records, currentDateTime, originalRecords}) {
 
       let history = useHistory();
       const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,7 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
       const [listening, setListening] = useState(false);
 
       let eventSource = undefined;
-
+      var i = 0;
       const observer = useRef();
       const lastBookElementRef = useCallback(node => {
             if(isLoading) {
@@ -56,9 +56,30 @@ export default function InfiniteScrollComponent({records, currentDateTime}) {
                   }
 
                   eventSource.onmessage = (event) => {
-
                         var appointments = JSON.parse(event.data);
-                        setModifiedRecords(appointments);
+                        console.log(originalRecords);
+                        for(var record of originalRecords) {
+                              
+                              console.log(i)
+                              var appointment = appointments[i];
+
+                              if(appointment.id === record.id) {
+
+                                    console.log(appointment.id + " and " + record.id)
+                                    if(appointment.arrived !== record.arrived) {
+                                          console.log("different");
+                                          if(originalRecords.length === modifiedRecords.length){
+                                                setModifiedRecords(appointments);
+                                          }
+                                          
+                                    }
+                              }
+                              
+                              i++;
+                        }
+
+                        i = 0;
+                        
                   }
 
                   eventSource.onerror = (event) => {

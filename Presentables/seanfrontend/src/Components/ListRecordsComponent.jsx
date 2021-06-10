@@ -26,6 +26,7 @@ class ListRecordsComponent extends Component {
       isRecord: false,
       selectedDate: "",
       hasWhatsApp: 0,
+      originalRecords: [],
       // currentPage: 1,
       // recordsPerPage: 10,
     };
@@ -212,6 +213,8 @@ class ListRecordsComponent extends Component {
 
   componentDidMount() {
     this.getAllRecords();
+
+
   }
 
   getAllRecords = () => {
@@ -219,6 +222,10 @@ class ListRecordsComponent extends Component {
     console.log("ListREcord " + this.state.selectedDate);
     const { keyword, selectedDate } = this.state;
     this.setState({ isRecord: false });
+    ProtoSeanService.getDaRecords().then((res) => {
+      this.setState({originalRecords: res.data});
+      console.log(res.data)
+    })
     ProtoSeanService.getRecords(keyword, selectedDate).then((res) => {
       this.setState({ records: res.data });
       console.log(this.state.records);
@@ -324,6 +331,7 @@ class ListRecordsComponent extends Component {
                   <InfiniteScrollComponent
                     records={this.state.records}
                     currentDateTime={this.state.currentDateTime}
+                    originalRecords = {this.state.originalRecords}
                   />
                 )}
               </tbody>
