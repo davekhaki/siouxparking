@@ -31,7 +31,7 @@ public class Algorithm {
     //should be false for production checks if video has been loaded before recognizing plates
     boolean finishedLoadingVideo = true;
     //if this is true then inputStream will be used instead of a video
-    boolean useCameraStream=true;
+    boolean useCameraStream=false;
     int picCounter = 1;
     MessageInterface messageInterface;
     boolean[] occupiedSpaces;
@@ -71,13 +71,13 @@ public class Algorithm {
 //        }
 //    }
 
-    @Scheduled(fixedDelay = 2000)
-    public void snapShotFromStream(){
-        if(useCameraStream) {
-            if(myWebcam.snapPicture(snapshotCounter))
-                snapshotCounter++;
-        }
-    }
+//    @Scheduled(fixedDelay = 2000)
+//    public void snapShotFromStream(){
+//        if(useCameraStream) {
+//            if(myWebcam.snapPicture(snapshotCounter))
+//                snapshotCounter++;
+//        }
+//    }
 
 
     @Scheduled(fixedDelay = 2000)
