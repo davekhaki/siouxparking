@@ -16,6 +16,10 @@ class ProtoSeanService {
     return axios.get(PROTOSHAUN_API_BASE_URL);
   }
 
+  getDaRecords() {
+    return axios.get(PROTOSHAUN_API_BASE_URL);
+  }
+
   addRecords(protoSean) {
     return axios.post(PROTOSHAUN_API_BASE_URL, protoSean);
   }
