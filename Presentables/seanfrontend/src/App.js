@@ -2,7 +2,6 @@ import "./App.css";
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import ListRecordsComponent from "./Components/ListRecordsComponent";
 import HeaderComponent from "./Components/HeaderComponent";
 import FooterComponent from "./Components/FooterComponent";
 import AddRecordsComponent from "./Components/AddRecordsComponent";
@@ -14,6 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import Grid from "@material-ui/core/Grid";
 import VisitHistoryComponent from "./Components/VisitHistoryComponent";
 import HomeComponent from "./Components/HomeComponent";
+import RecordComponent from "./Components/RecordComponent";
 
 function App() {
   return (
@@ -24,11 +24,7 @@ function App() {
           <div className="content-inner">
             <Switch>
               <Route path="/" exact component={HomeComponent}></Route>
-              <Route
-                path="/records"
-                exact
-                component={ListRecordsComponent}
-              ></Route>
+              <Route path="/records" exact component={RecordComponent}></Route>
               <Route path="/add-record" component={AddRecordsComponent}></Route>
               <Route
                 path="/update-record/:id"
