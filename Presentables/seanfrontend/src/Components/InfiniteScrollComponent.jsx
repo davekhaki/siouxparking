@@ -17,6 +17,7 @@ export default function InfiniteScrollComponent({
   records,
   currentDateTime,
   originalRecords,
+  sortKeyword,
 }) {
   let history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,7 @@ export default function InfiniteScrollComponent({
   const [recordsPerPage, setRecordsPerPage] = useState(100);
   const [modifiedRecords, setModifiedRecords] = useState(records);
   const [listening, setListening] = useState(false);
+  const [isAscending, setIsAscending] = useState(false);
 
   let eventSource = undefined;
   var i = 0;
@@ -51,6 +53,7 @@ export default function InfiniteScrollComponent({
   );
 
   useEffect(() => {
+
     if (!listening) {
       eventSource = new EventSource("http://localhost:8081/event/arrived");
 
@@ -60,18 +63,18 @@ export default function InfiniteScrollComponent({
 
       eventSource.onmessage = (event) => {
         var appointments = JSON.parse(event.data);
-        console.log(originalRecords);
-        for (var record of originalRecords) {
-          console.log(i);
+
+        for (var record of originalRecords) {  // Check if there is a difference in appointments list and original records
+
           var appointment = appointments[i];
 
           if (appointment.id === record.id) {
-            console.log(appointment.id + " and " + record.id);
+
             if (appointment.arrived !== record.arrived) {
-              console.log("different");
+
               if (originalRecords.length === modifiedRecords.length) {
                 setModifiedRecords(appointments);
-              }
+              } 
             }
           }
 
@@ -99,6 +102,11 @@ export default function InfiniteScrollComponent({
   }, []);
 
   useEffect(() => {
+    console.log(sortKeyword)
+    if(sortKeyword != "") {
+      sortRecords();
+    }
+
     const indexOfLastRecord = currentPage * recordsPerPage;
     const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
     if (currentPage === 1) {
@@ -113,9 +121,9 @@ export default function InfiniteScrollComponent({
       );
       console.log("Page: " + currentPage);
     }
-  }, [currentPage]);
 
-  // const [records, setRecords] = useState(records);
+
+  }, [currentPage, sortKeyword]);
 
   const deleteRecord = (id) => {
     if (window.confirm("Are you sure you want to delete this appointment?")) {
@@ -124,6 +132,18 @@ export default function InfiniteScrollComponent({
       });
     }
   };
+
+  const sortRecords = () => {
+    
+    if (isAscending) {
+      modifiedRecords.sort((a, b) => (a[sortKeyword] < b[sortKeyword] ? 1 : -1))
+      setIsAscending(false);
+
+    } else {
+      modifiedRecords.sort((a, b) => (a[sortKeyword] > b[sortKeyword] ? 1 : -1))
+      setIsAscending(true);
+    }
+  }
 
   const showNewNotification = (visitor) => {
     Notifier.start(
@@ -290,6 +310,7 @@ export default function InfiniteScrollComponent({
       );
     }
   };
+
 
   return modifiedRecords.map((protoSean, index) =>
     tableGenerate(protoSean, index)

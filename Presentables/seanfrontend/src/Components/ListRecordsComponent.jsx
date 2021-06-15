@@ -27,6 +27,7 @@ class ListRecordsComponent extends Component {
       selectedDate: "",
       hasWhatsApp: 0,
       originalRecords: [],
+      sortKeyword: "",
       // currentPage: 1,
       // recordsPerPage: 10,
     };
@@ -217,19 +218,28 @@ class ListRecordsComponent extends Component {
   //};
 
   componentDidMount() {
+    console.log("mount")
     this.getAllRecords();
+
   }
+
+  componentDidUpdate() {
+    if(this.state.sortKeyword != "") {
+      this.setState({ sortKeyword: ""});
+    }
+
+  }
+
 
   getAllRecords = () => {
     //if selectedDate is 0, else return selected date records, gotta add into API
-    console.log("ListREcord " + this.state.selectedDate);
     const { keyword, selectedDate } = this.state;
     this.setState({ isRecord: false });
-    ProtoSeanService.getDaRecords().then((res) => {
+    ProtoSeanService.getDaRecords().then((res) => { // all records
       this.setState({ originalRecords: res.data });
       console.log(res.data);
     });
-    ProtoSeanService.getRecords(keyword, selectedDate).then((res) => {
+    ProtoSeanService.getRecords(keyword, selectedDate).then((res) => { // Filtered records
       this.setState({ records: res.data });
       console.log(this.state.records);
       this.setState({ isRecord: true });
@@ -241,8 +251,7 @@ class ListRecordsComponent extends Component {
   }
 
   sortBy(key) {
-    var variable = this.state.records.sort();
-    console.log(variable);
+    console.log(this.state.isAscending);
 
     if (this.state.isAscending) {
       this.setState({
@@ -286,7 +295,9 @@ class ListRecordsComponent extends Component {
                   <th> Status </th>
                   <th
                     onClick={() => {
-                      this.sortBy("visitor");
+                      // this.sortBy("visitor");
+                      console.log("visiotr boi")
+                      this.setState({sortKeyword: "visitor"})
                     }}
                   >
                     {" "}
@@ -294,7 +305,8 @@ class ListRecordsComponent extends Component {
                   </th>
                   <th
                     onClick={() => {
-                      this.sortBy("numberPlate");
+                      // this.sortBy("numberPlate");
+                      this.setState({sortKeyword: "numberPlate"})
                     }}
                   >
                     {" "}
@@ -302,7 +314,8 @@ class ListRecordsComponent extends Component {
                   </th>
                   <th
                     onClick={() => {
-                      this.sortBy("phnNumber");
+                      // this.sortBy("phnNumber");
+                      this.setState({sortKeyword: "phnNumber"})
                     }}
                   >
                     {" "}
@@ -310,14 +323,16 @@ class ListRecordsComponent extends Component {
                   </th>
                   <th
                     onClick={() => {
-                      this.sortBy("hostEmail");
+                      // this.sortBy("hostEmail");
+                      this.setState({sortKeyword: "hostEmail"})
                     }}
                   >
                     Host Email{" "}
                   </th>
                   <th
                     onClick={() => {
-                      this.sortBy("expectedAt");
+                      this.setState({sortKeyword: "expectedAt"})
+                      // this.sortBy("expectedAt");
                     }}
                   >
                     {" "}
@@ -333,6 +348,7 @@ class ListRecordsComponent extends Component {
                     records={this.state.records}
                     currentDateTime={this.state.currentDateTime}
                     originalRecords={this.state.originalRecords}
+                    sortKeyword = {this.state.sortKeyword}
                   />
                 )}
               </tbody>
