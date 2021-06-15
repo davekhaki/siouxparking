@@ -56,7 +56,7 @@ class ListRecordsComponent extends Component {
       document.getElementById("emailError").innerHTML = "";
       this.setState({ hostEmail: email });
       return true;
-    } else if(email == "") {
+    } else if (email === "") {
       console.log("bad email");
       document.getElementById("emailError").innerHTML = "Please input an email";
       document.getElementById("emailInput").focus();
@@ -77,48 +77,53 @@ class ListRecordsComponent extends Component {
       this.setState({ phnNumber: number });
       document.getElementById("phoneError").innerHTML = "";
       return true;
-    } else if(number == "") {
+    } else if (number === "") {
       console.log("bad phone");
-      document.getElementById("phoneError").innerHTML = "Please input a phone number";
+      document.getElementById("phoneError").innerHTML =
+        "Please input a phone number";
       document.getElementById("phoneInput").focus();
       return false;
     } else {
       console.log("bad phone");
-      document.getElementById("phoneError").innerHTML = "Phone number must be only numbers";
+      document.getElementById("phoneError").innerHTML =
+        "Phone number must be only numbers";
       document.getElementById("phoneInput").focus();
       return false;
     }
   }
 
   validateVisitor(visitor) {
-    if(visitor === "") {
-      document.getElementById("visitorError").innerHTML = "Please input a visitor"
+    if (visitor === "") {
+      document.getElementById("visitorError").innerHTML =
+        "Please input a visitor";
       document.getElementById("visitorInput").focus();
       return false;
     } else {
-      document.getElementById("visitorError").innerHTML = ""
+      document.getElementById("visitorError").innerHTML = "";
       return true;
     }
   }
 
   validateExpectedDate(date) {
-    if(date === "") {
-      document.getElementById("expectedDateError").innerHTML = "Please choose expected arrival date"
+    if (date === "") {
+      document.getElementById("expectedDateError").innerHTML =
+        "Please choose expected arrival date";
       document.getElementById("expectedAtDateTime").focus();
       return false;
     } else {
-      document.getElementById("expectedDateError").innerHTML = ""
+      document.getElementById("expectedDateError").innerHTML = "";
       return true;
     }
   }
 
   validateLicensePlate(licensePlate) {
-    if(licensePlate === "") {
-      document.getElementById("licensePlateError").innerHTML = "Please input a license plate"
+    if (licensePlate === "") {
+      document.getElementById("licensePlateError").innerHTML =
+        "Please input a license plate";
       document.getElementById("licensePlateInput").focus();
       return false;
     } else {
-      document.getElementById("licensePlateError").innerHTML = ""
+      document.getElementById("licensePlateError").innerHTML = "";
       return true;
     }
   }
@@ -126,7 +131,7 @@ class ListRecordsComponent extends Component {
   saveRecords = (e) => {
     e.preventDefault();
 
-    console.log()
+    console.log();
     if (!this.validateEmail(this.state.hostEmail)) return;
     if (!this.validatePhoneNumber(this.state.phnNumber)) return;
     if (!this.validateVisitor(this.state.visitor)) return;
@@ -202,10 +207,10 @@ class ListRecordsComponent extends Component {
   };
 
   dateSelectorReceive = (date) => {
-    this.setState({selectedDate: date}, () => {
+    this.setState({ selectedDate: date }, () => {
       this.getAllRecords();
     });
-  }
+  };
 
   //changeDateSelection = (event) => {
   //this.setState({ selectedDate: event.target.value }, () => {});
@@ -213,8 +218,6 @@ class ListRecordsComponent extends Component {
 
   componentDidMount() {
     this.getAllRecords();
-
-
   }
 
   getAllRecords = () => {
@@ -223,9 +226,9 @@ class ListRecordsComponent extends Component {
     const { keyword, selectedDate } = this.state;
     this.setState({ isRecord: false });
     ProtoSeanService.getDaRecords().then((res) => {
-      this.setState({originalRecords: res.data});
-      console.log(res.data)
-    })
+      this.setState({ originalRecords: res.data });
+      console.log(res.data);
+    });
     ProtoSeanService.getRecords(keyword, selectedDate).then((res) => {
       this.setState({ records: res.data });
       console.log(this.state.records);
@@ -258,8 +261,6 @@ class ListRecordsComponent extends Component {
     }
   }
 
-
-
   render() {
     return (
       <div>
@@ -277,7 +278,7 @@ class ListRecordsComponent extends Component {
               <DateSelectorComponent passDate = {this.dateSelectorReceive}/>
             </div> */}
           </div>
-            
+
           <div className="records-table list-item-1">
             <table className="table table-striped table-borderless ">
               <thead className="table-head">
@@ -331,22 +332,27 @@ class ListRecordsComponent extends Component {
                   <InfiniteScrollComponent
                     records={this.state.records}
                     currentDateTime={this.state.currentDateTime}
-                    originalRecords = {this.state.originalRecords}
+                    originalRecords={this.state.originalRecords}
                   />
                 )}
               </tbody>
             </table>
           </div>
-          
+
           <div className="list-item-2">
-            <h5 style={{margin: "0", fontWeight: "500"}} className="text-center">New appointment</h5>
+            <h5
+              style={{ margin: "0", fontWeight: "500" }}
+              className="text-center"
+            >
+              New appointment
+            </h5>
             <div className="row">
               <div className="card-body">
                 <form>
                   <div className="form-group">
                     <label>Visitor:</label>
                     <input
-                      id= "visitorInput"
+                      id="visitorInput"
                       name="visitor"
                       className="form-control textbox"
                       value={this.state.visitor}
@@ -358,7 +364,7 @@ class ListRecordsComponent extends Component {
                   <div className="form-group">
                     <label>License Plate:</label>
                     <input
-                      id= "licensePlateInput"
+                      id="licensePlateInput"
                       name="License Plate"
                       className="form-control textbox"
                       value={this.state.numberPlate}
@@ -370,7 +376,7 @@ class ListRecordsComponent extends Component {
                   <div className="form-group">
                     <label>Phone Number:</label>
                     <input
-                      id= "phoneInput"
+                      id="phoneInput"
                       type="phone"
                       name="phnNumber"
                       className="form-control textbox"
@@ -383,7 +389,7 @@ class ListRecordsComponent extends Component {
                   <div className="form-group">
                     <label>Host Email:</label>
                     <input
-                      id= "emailInput"
+                      id="emailInput"
                       type="email"
                       name="hostEmail"
                       className="form-control textbox"
