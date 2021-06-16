@@ -128,7 +128,8 @@ export default function InfiniteScrollComponent({
   const deleteRecord = (id) => {
     if (window.confirm("Are you sure you want to delete this appointment?")) {
       ProtoSeanService.deleteRecord(id).then((res) => {
-        setModifiedRecords(records.filter((protoSean) => protoSean.id !== id));
+        // setModifiedRecords(records.filter((protoSean) => protoSean.id !== id));
+        window.location.reload(true);
       });
     }
   };
