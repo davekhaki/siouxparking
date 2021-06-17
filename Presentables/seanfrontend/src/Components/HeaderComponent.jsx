@@ -31,7 +31,7 @@ class HeaderComponent extends Component {
 
                 <li>
                   <Link to='/records'>
-                    Records
+                    Appointments
                   </Link>
                 </li>
 

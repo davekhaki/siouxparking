@@ -15,7 +15,7 @@ class SearchRecordsComponent extends Component {
         <div className="row" style={{ alignItems: 'flex-end' }}>
           <TextField
             className="record-search-input"
-            label="Record keyword"
+            label="Search..."
             value={this.props.keyword}
             onInput={this.props.changeRecordInputHandler}
           />
