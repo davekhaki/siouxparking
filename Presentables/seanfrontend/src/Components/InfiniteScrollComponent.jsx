@@ -7,11 +7,11 @@ import WatchLaterIcon from "@material-ui/icons/WatchLater";
 import InfoIcon from "@material-ui/icons/Info";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
-import Brightness1Icon from "@material-ui/icons/Brightness1";
+import Brightness1 from "@material-ui/icons/Brightness1";
 import ProtoSeanService from "../Services/ProtoSeanService";
 import { useHistory } from "react-router-dom";
 import Notifier from "react-desktop-notifications";
-import StatusComponent from "./StatusComponent";
+import moment from 'moment'
 
 export default function InfiniteScrollComponent({
   records,
@@ -159,42 +159,57 @@ export default function InfiniteScrollComponent({
     history.push(`/update-record/${id}`);
   };
 
-  const renderStatus = (
-    appointmentId,
-    expectedAtValue,
-    arrivedCheck,
-    notifiedCheck,
-    visitor
-  ) => {
-    var expectedAtDateTime = new Date(expectedAtValue);
+      const renderStatus = (appointmentId,expectedAtValue, arrivedCheck, notifiedCheck, visitor) => {
 
-    if (arrivedCheck === 1) {
-      if (notifiedCheck !== 1) {
-        showNewNotification(visitor);
-        ProtoSeanService.setNotified(appointmentId);
-      }
+            var expectedAtDateTime = new Date(expectedAtValue);
+            var halfHourAfterExpected = moment(expectedAtDateTime).add(30, 'm').toDate();
+            var dayAfterExpected = moment(expectedAtDateTime).add(1,'d').toDate();
+            var dayBeforeExpected = moment(expectedAtDateTime).subtract(1,'d').toDate();
 
-      return (
-        <Tooltip title="Arrived" placement="left" arrow>
-          <CheckCircleIcon style={{ color: "green" }} />
-        </Tooltip>
-      );
-    } else if (arrivedCheck !== 1) {
-      if (expectedAtDateTime < currentDateTime) {
-        return (
-          <Tooltip title="Late" placement="left" arrow>
-            <ErrorIcon color="error" />
-          </Tooltip>
-        );
-      } else if (expectedAtDateTime > currentDateTime) {
-        return (
-          <Tooltip title="Expected" placement="left" arrow>
-            <InfoIcon style={{ color: "orange" }} />
-          </Tooltip>
-        );
+            // console.log("expectedAtDateTime " + expectedAtDateTime);
+            // console.log("halfHourAfterExpected " + halfHourAfterExpected);
+            // console.log("dayAfterExpected " + dayAfterExpected);
+            // console.log("dayBeforeExpected " + dayBeforeExpected);
+
+            if(currentDateTime <= dayBeforeExpected || dayAfterExpected <= currentDateTime){
+                  return ( <Tooltip title="Not relevant" placement="left" arrow>
+            <Brightness1 style={{ color: "#9e9e9e" }} />
+            </Tooltip>);
+            }
+            else
+            {
+                  if(arrivedCheck === 1){
+                        
+                        if(notifiedCheck !== 1){
+                        showNewNotification(visitor);
+                        ProtoSeanService.setNotified(appointmentId);
+                        }
+            
+                        return ( <Tooltip title="Arrived" placement="left" arrow>
+                        <CheckCircleIcon style={{ color: "green" }} />
+                        </Tooltip>);
+                  } else if (arrivedCheck !== 1){
+
+                        if(currentDateTime >= halfHourAfterExpected){
+                              return ( <Tooltip title="Not relevant" placement="left" arrow>
+                              <Brightness1 style={{ color: "#9e9e9e" }} />
+                              </Tooltip>);
+                        } else {
+
+                              if (expectedAtDateTime < currentDateTime) {
+                                    return ( <Tooltip title="Late" placement="left" arrow> 
+                                    <ErrorIcon color="error" /> 
+                                    </Tooltip> )
+                              }
+                              else if (expectedAtDateTime > currentDateTime) {
+                                    return( <Tooltip title="Expected" placement="left" arrow>
+                                    <InfoIcon style={{ color: "orange" }} /> 
+                                    </Tooltip>);
+                              }
+                        }
+                  }
+            }
       }
-    }
-  };
 
   const tableGenerate = (protoSean, index) => {
     if (modifiedRecords.length === index + 1) {
