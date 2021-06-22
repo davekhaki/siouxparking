@@ -298,8 +298,8 @@
                             </checkstyleRules>
                             <consoleOutput>true</consoleOutput>
                             <logViolationsToConsole>true</logViolationsToConsole>
-                            <failOnViolation>true</failOnViolation>
-                            <failsOnError>true</failsOnError>
+                            <failOnViolation>false</failOnViolation>
+                            <failsOnError>false</failsOnError>
                             <includeResources>true</includeResources>
                             <includeTestResources>true</includeTestResources>
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
