@@ -5,7 +5,7 @@ build-job:
   script:
     - ls
     - cd Presentables/"license plate recognition"
-    - mvn compile 
+    - mvn clean package
 
 test-job1:
   stage: test
