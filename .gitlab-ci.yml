@@ -3,13 +3,13 @@ image: rvancea/maven-chrome-jdk8:latest
 build-job:
   stage: build
   script:
-    - ls
     - cd Presentables/"license plate recognition"
     - mvn clean package
 
 test-job1:
   stage: test
   script:
+    - cd Presentables/"license plate recognition"
     - mvn test
 
 sonarqube:
