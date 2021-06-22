@@ -3,7 +3,7 @@ image: rvancea/maven-chrome-jdk8:latest
 build-job:
   stage: build
   script:
-    - cd "/Presentables/license plate recognition"
+    - cd /Presentables/"license plate recognition"
     - mvn compile 
 
 test-job1:
@@ -14,5 +14,5 @@ test-job1:
 sonarqube:
   stage: test
   script: 
-   - cd "/Presentables/license plate recognition"
+   - cd /Presentables/"license plate recognition"
    - mvn sonar:sonar "-Dsonar.login=e68dd7747d2becfa7ad26c0bed24651e22549497"
