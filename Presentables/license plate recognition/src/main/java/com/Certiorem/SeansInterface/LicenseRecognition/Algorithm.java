@@ -29,7 +29,7 @@ import java.util.Date;
 public class Algorithm {
 
     //should be false for production checks if video has been loaded before recognizing plates
-    boolean finishedLoadingVideo = true;
+    boolean finishedLoadingVideo = false;
     //if this is true then inputStream will be used instead of a video
     boolean useCameraStream=false;
     int picCounter = 1;
@@ -58,26 +58,26 @@ public class Algorithm {
         occupiedSpaces = CsvReader.parseCsv();
     }
 
-//    @Scheduled(fixedDelay = Long.MAX_VALUE)
-//    public void loadVideo() {
-//        String mp4Path = FilePath.mp4PathVideo;
-//        //String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
-//        //String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
-//        String imagePath = FilePath.imagePathVideoOutput;
-//        try {
-//            finishedLoadingVideo = VideoCapture.convertMovieToJPG(mp4Path, imagePath, "jpg");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @Scheduled(fixedDelay = Long.MAX_VALUE)
+    public void loadVideo() {
+        String mp4Path = FilePath.mp4PathVideo;
+        //String mp4Path="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\vids\\anprVideo.mp4";
+        //String imagePath="G:\\ICT Sem 3\\group1_parkingapp\\Presentables\\CertioremSean\\SeansInterface\\src\\main\\resources\\picsFromVideo";
+        String imagePath = FilePath.imagePathVideoOutput;
+        try {
+            finishedLoadingVideo = VideoCapture.convertMovieToJPG(mp4Path, imagePath, "jpg");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-//    @Scheduled(fixedDelay = 2000)
-//    public void snapShotFromStream(){
-//        if(useCameraStream) {
-//            if(myWebcam.snapPicture(snapshotCounter))
-//                snapshotCounter++;
-//        }
-//    }
+    @Scheduled(fixedDelay = 2000)
+    public void snapShotFromStream(){
+        if(useCameraStream) {
+            if(myWebcam.snapPicture(snapshotCounter))
+                snapshotCounter++;
+        }
+    }
 
 
     @Scheduled(fixedDelay = 2000)

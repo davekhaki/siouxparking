@@ -1,4 +1,3 @@
-/*
 package com.Certiorem.SeansInterface.Services;
 
 import com.Certiorem.SeansInterface.Model.ProtoSean;
@@ -39,7 +38,7 @@ class EmailSenderComponent {
 
     }
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 60000)
     public void NotifyByEmail(){
         List<ProtoSean> visitors = protoSeanRepo.findAll();
 
@@ -54,4 +53,3 @@ class EmailSenderComponent {
         });
     }
 }
-*/
